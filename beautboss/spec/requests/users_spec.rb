@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "Users API", type: :request do
+RSpec.describe "Users API v1", type: :request do
 
   describe "GET /api/v1/users/:id" do
     it "returns a requested user" do
       user = FactoryGirl.create :user, name: "John Doe"
-      # get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json" }
-      get api_users_path(user.id), {}, { "Accept" => "application/json" }
+      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json" }
+      # get api_v1_user(user.id), {}, { "Accept" => "application/json" }
       expect(response.status).to eq 200
       body = JSON.parse(response.body)
       expect(body["name"]).to eq "John Doe"
