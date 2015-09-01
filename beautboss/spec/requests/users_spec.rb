@@ -80,6 +80,19 @@ RSpec.describe "Users API v1", type: :request do
 
   end
 
+  describe "DELETE /api/v1/users/:id" do
+
+    it "deletes user (permanently) from the db" do
+      user = FactoryGirl.create :user
+      token = Token.get_token(user, 1)
+      delete "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token }
+      expect(response.status).to eq 204 # ok, no content
+      expect{User.find(user.id)}.to raise_error ActiveRecord::RecordNotFound
+      expect(Token.get_user(token)).to be_nil
+    end
+
+  end
+
   # describe "GET /users" do
   #   it "works! (now write some real specs)" do
   #     get api_users_path

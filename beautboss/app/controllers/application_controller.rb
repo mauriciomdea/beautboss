@@ -15,10 +15,16 @@ class ApplicationController < ActionController::Base
 
     def current_user
 
-      token = request.headers['HTTP_TOKEN'] || request.headers['HTTP_SESSION_ID']
+      token = request.headers['HTTP_TOKEN']
       @current_user = Token.get_user(token) || User.from_token(token)
       
     end
+
+    def verify_user
+    if params[:id].to_i != @current_user.id
+      _not_authorized
+    end
+  end
 
     def _not_authorized message = "Not Authorized"
 

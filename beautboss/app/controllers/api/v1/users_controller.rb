@@ -24,30 +24,32 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    if params[:id].to_i == @current_user.id
-      user = @current_user
-      user.name = user_params[:name]
-      user.email = user_params[:email]
-      user.password = user_params[:password]
-      user.avatar = user_params[:avatar]
-      user.website = user_params[:website]
-      user.location = user_params[:location]
-      user.bio = user_params[:bio]
-      if user.save
-        render json: UserSerializer.new(user).as_json,
-        location: "/api/v1/users/#{user.id}",
-        status: :ok,
-        root: false
-      else
-       render json: { errors: user.errors.full_messages }, status: 422
-      end
+    verify_user
+    user = @current_user
+    user.name = user_params[:name]
+    user.email = user_params[:email]
+    user.password = user_params[:password]
+    user.avatar = user_params[:avatar]
+    user.website = user_params[:website]
+    user.location = user_params[:location]
+    user.bio = user_params[:bio]
+    if user.save
+      render json: UserSerializer.new(user).as_json,
+      location: "/api/v1/users/#{user.id}",
+      status: :ok,
+      root: false
     else
-      _not_authorized
+     render json: { errors: user.errors.full_messages }, status: 422
     end
   end
 
   def destroy
+    if @current_user.destroy
+      Token.destroy_token(request.headers['HTTP_TOKEN'])
+      head :no_content
+    end
   end
+
 end
 
 # def default_serializer_options
