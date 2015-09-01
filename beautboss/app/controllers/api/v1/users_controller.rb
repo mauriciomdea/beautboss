@@ -1,4 +1,5 @@
 class Api::V1::UsersController < ApplicationController
+  before_action :authenticate_user, except: :create
 
   def show
     render json: User.find(params[:id]), root: false
@@ -29,12 +30,12 @@ class Api::V1::UsersController < ApplicationController
   end
 end
 
+def default_serializer_options
+  {root: false}
+end
+
 private
 
   def user_params
     params.permit(:name, :email, :password)
   end
-
-def default_serializer_options
-  {root: false}
-end

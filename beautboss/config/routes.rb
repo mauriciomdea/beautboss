@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
       resources :users, except: [:index, :new, :edit]
 
+      resources :authentications, only: [:create]
+
     end
   end
 

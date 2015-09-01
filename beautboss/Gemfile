@@ -51,4 +51,8 @@ group :test do
   gem "capybara"
 end
 
+# ActiveModel::Serializer implementation and Rails hooks
 gem 'active_model_serializers'
+
+# High performance memcached client for Ruby
+gem 'dalli'
