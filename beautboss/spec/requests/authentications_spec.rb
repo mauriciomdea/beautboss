@@ -33,11 +33,16 @@ RSpec.describe "Authentications", type: :request do
       expect(response.status).to eq 404 # not found
     end
 
-  # describe "GET /authentications" do
-  #   it "works! (now write some real specs)" do
-  #     get authentications_path
-  #     expect(response).to have_http_status(200)
-  #   end
+  end
+
+  describe "DELETE /api/v1/authentications" do
+
+    it "destroys authentication token (and log user out)" do
+      user = FactoryGirl.create :user
+      token = Token.get_token(user, 1)
+      delete api_v1_authentication_path(token), {}, { "Accept" => "application/json", "HTTP_TOKEN" => token }
+      expect(response.status).to eq 204 # ok, no content
+    end
 
   end
 

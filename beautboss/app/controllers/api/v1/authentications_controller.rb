@@ -13,8 +13,11 @@ class Api::V1::AuthenticationsController < ApplicationController
 
   def destroy
 
-    Token.destroy_token(params[:id])
-    head :no_content
+    if Token.destroy_token(params[:id])
+      head :no_content
+    else
+      head :not_found
+    end
 
   end
 

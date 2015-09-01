@@ -2,26 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "Users API v1", type: :request do
 
-  describe "GET /api/v1/users/:id" do
-
-    it "returns requested user" do
-      user = FactoryGirl.create :user, name: "John Doe"
-      token = Token.get_token(user, 1)
-      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token }
-      expect(response.status).to eq 200 # ok
-      body = JSON.parse(response.body)
-      expect(body["name"]).to eq "John Doe"
-    end
-
-    it "returns not found error for unknown user" do
-      user = FactoryGirl.create :user
-      token = Token.get_token(user, 1)
-      get "/api/v1/users/#{user.id+1}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token  }
-      expect(response.status).to eq 404 # not found
-    end
-
-  end
-
   describe "POST /api/v1/users" do
 
     it "creates a new user" do
@@ -49,6 +29,26 @@ RSpec.describe "Users API v1", type: :request do
       }
       post "/api/v1/users", user_params, request_headers
       expect(response.status).to eq 422 # unprocessable entity
+    end
+
+  end
+  
+  describe "GET /api/v1/users/:id" do
+
+    it "returns requested user" do
+      user = FactoryGirl.create :user, name: "John Doe"
+      token = Token.get_token(user, 1)
+      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["name"]).to eq "John Doe"
+    end
+
+    it "returns not found error for unknown user" do
+      user = FactoryGirl.create :user
+      token = Token.get_token(user, 1)
+      get "/api/v1/users/#{user.id+1}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token  }
+      expect(response.status).to eq 404 # not found
     end
 
   end
