@@ -32,7 +32,7 @@ RSpec.describe "Users API v1", type: :request do
     end
 
   end
-  
+
   describe "GET /api/v1/users/:id" do
 
     it "returns requested user" do
@@ -49,6 +49,33 @@ RSpec.describe "Users API v1", type: :request do
       token = Token.get_token(user, 1)
       get "/api/v1/users/#{user.id+1}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token  }
       expect(response.status).to eq 404 # not found
+    end
+
+  end
+
+  describe "PUT/PATCH /api/v1/users/:id" do
+
+    it "updates user information" do
+      user = FactoryGirl.create :user
+      token = Token.get_token(user, 1)
+      user_params = {
+        "name" => "Jane Smith",
+        "email" => "jane_smith@example.com",
+        "password" => "4321",
+        "avatar" => "http://some.cdn.com/some_image.jpg",
+        "website" => "example.com",
+        "location" => "Somewhere, NA",
+        "bio" => "Blablabla."
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => token
+      }
+      put "/api/v1/users/#{user.id}", user_params, request_headers
+      expect(response.status).to eq 200 # ok
+      expect(User.find(user.id).name).to eq "Jane Smith"
+      expect(User.find(user.id).website).to eq "example.com"
     end
 
   end
