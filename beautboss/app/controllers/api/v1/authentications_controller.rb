@@ -11,4 +11,11 @@ class Api::V1::AuthenticationsController < ApplicationController
 
   end
 
+  def destroy
+
+    Token.destroy_token(params[:id])
+    head :no_content
+
+  end
+
 end
