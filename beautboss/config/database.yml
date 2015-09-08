@@ -23,4 +23,6 @@ staging:
   pool: 5
   username: root
   password: bbstaging2015
-  socket: /var/run/mysqld/mysqld.sock
+  # socket: /var/run/mysqld/mysqld.sock
+  host: beautboss-staging.czn9y43ptinh.us-west-2.rds.amazonaws.com
+  port: 3306
