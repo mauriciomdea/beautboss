@@ -2,7 +2,8 @@ class Api::V1::UsersController < ApplicationController
   before_action :authenticate_user, except: :create
 
   def show
-    render json: User.find(params[:id]), root: false
+    user = User.find(params[:id])
+    _render_user(user)
   rescue ActiveRecord::RecordNotFound
     render json: {error: "Not found"}, status: :not_found, root: false
   end
@@ -14,10 +15,7 @@ class Api::V1::UsersController < ApplicationController
       password: user_params[:password]
     )
     if user.save
-      render json: UserSerializer.new(user).as_json,
-        location: "/api/v1/users/#{user.id}",
-        status: :created,
-        root: false
+      _render_user(user, :created)
     else
       render json: { errors: user.errors.full_messages }, status: 422
     end
@@ -26,18 +24,8 @@ class Api::V1::UsersController < ApplicationController
   def update
     verify_user
     user = @current_user
-    user.name = user_params[:name]
-    user.email = user_params[:email]
-    user.password = user_params[:password]
-    user.avatar = user_params[:avatar]
-    user.website = user_params[:website]
-    user.location = user_params[:location]
-    user.bio = user_params[:bio]
-    if user.save
-      render json: UserSerializer.new(user).as_json,
-      location: "/api/v1/users/#{user.id}",
-      status: :ok,
-      root: false
+    if user.update(user_params)
+      _render_user(user)
     else
      render json: { errors: user.errors.full_messages }, status: 422
     end
@@ -52,12 +40,14 @@ class Api::V1::UsersController < ApplicationController
 
 end
 
-# def default_serializer_options
-#   {root: false}
-# end
-
 private
 
   def user_params
     params.permit(:name, :email, :password, :avatar, :website, :location, :bio)
+  end
+
+  def _render_user(user, status = :ok)
+    render json: UserSerializer.new(user).as_json(root: false),
+      location: "/api/v1/users/#{user.id}",
+      status: status
   end

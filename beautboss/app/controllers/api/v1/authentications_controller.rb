@@ -2,9 +2,9 @@ class Api::V1::AuthenticationsController < ApplicationController
 
   def create
 
-    if user = User.authenticate(params[:email], params[:password])
-      @token = Token.get_token(user)
-      render json: {token: @token}, status: :created, root: false
+    if @user = User.authenticate(params[:email], params[:password])
+      @token = Token.get_token(@user)
+      render json: { user: @user, token: @token }, status: :created
     else
       head :not_found
     end
@@ -12,14 +12,24 @@ class Api::V1::AuthenticationsController < ApplicationController
   end
 
   def create_from_facebook
-    params.each do |key,value|
-      puts "Param #{key}: #{value}"
+    profile = FbGraph2::User.me(params[:access_token]).fetch
+    profile.fetch
+    @user = User.where(email: profile.email).assign_or_new(
+              facebook: profile.id,
+              email: profile.email, 
+              name: "#{profile.first_name} #{profile.last_name}",
+              bio: profile.bio,
+              avatar: profile.picture.url,
+              website: profile.website,
+              location: profile.location.name)
+    if @user.save
+      @token = Token.get_token(@user)
+      render json: { user: @user, token: @token }, status: :created
+    else
+      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
     end
-    puts "referer: #{request.referrer}"
-    user = FbGraph2::User.me("CAAUzZAJppt5EBAHEKR0y0lxSBNnAtAqNGq3l9eHJOKQp4RGDZC8BbQvA3XZAhVqLfHymyerAqskZCphg12Y7tOpNqYES917Wr6mZBWRYPchb9BZBfh891k3xCD8tGDOOwmdQgiF5h3iLdApzPJE2Fa115zABifwkLSY9C0VAxhDiWowSBCJIK5MhCj5azyJ8wFwLAKZA6QsZCgZDZD").fetch
-    # user = FbGraph2::User.new('user_id').authenticate("CAAUzZAJppt5EBAHEKR0y0lxSBNnAtAqNGq3l9eHJOKQp4RGDZC8BbQvA3XZAhVqLfHymyerAqskZCphg12Y7tOpNqYES917Wr6mZBWRYPchb9BZBfh891k3xCD8tGDOOwmdQgiF5h3iLdApzPJE2Fa115zABifwkLSY9C0VAxhDiWowSBCJIK5MhCj5azyJ8wFwLAKZA6QsZCgZDZD")
-    user.fetch
-    puts user.to_yaml
+  rescue FbGraph2::Exception  => err
+    render json: {error: err.message}, status: :unprocessable_entity
   end
 
   def destroy
