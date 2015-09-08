@@ -16,12 +16,30 @@ test:
   password:
   socket: /var/run/mysqld/mysqld.sock
 
+# staging:
+#   adapter: mysql2
+#   encoding: utf8
+#   database: beautboss_staging
+#   pool: 5
+#   username: beautboss
+#   password: g4sPtHghybpjg9Ap
+#   host: 
+#   port: 3306
+
 staging:
   adapter: mysql2
   encoding: utf8
   database: beautboss_staging
-  pool: 5
-  username: beautboss
-  password: bbstaging2015
-  host: beautboss-staging.czn9y43ptinh.us-west-2.rds.amazonaws.com
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: 3306
+
+production:
+  adapter: mysql2
+  encoding: utf8
+  database: beautboss
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
   port: 3306
