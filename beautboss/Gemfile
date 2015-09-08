@@ -50,3 +50,12 @@ group :test do
   gem "factory_girl_rails"
   gem "capybara"
 end
+
+# ActiveModel::Serializer implementation and Rails hooks
+gem 'active_model_serializers'
+
+# High performance memcached client for Ruby
+gem 'dalli'
+
+# Facebook Graph API v2.x Wrapper in Ruby
+gem 'fb_graph2'

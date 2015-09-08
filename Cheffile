@@ -3,6 +3,7 @@ site "http://community.opscode.com/api/v1"
 cookbook 'apt'
 cookbook 'build-essential'
 cookbook 'mysql', '5.5.3'
+cookbook 'memcached'
 cookbook 'ruby_build', '0.8.0'
 cookbook 'nodejs'
 cookbook 'rbenv', git: 'https://github.com/aminin/chef-rbenv'
