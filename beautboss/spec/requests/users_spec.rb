@@ -16,7 +16,10 @@ RSpec.describe "Users API v1", type: :request do
       }
       post "/api/v1/users", user_params, request_headers
       expect(response.status).to eq 201 # created
-      expect(User.first.name).to eq "John Doe"
+      expect(User.last.name).to eq "John Doe"
+      body = JSON.parse(response.body)
+      expect(body["user"]["name"]).to eq "John Doe"
+      expect(body["token"]).not_to be_nil
     end
 
     it "returns an error for invalid user" do

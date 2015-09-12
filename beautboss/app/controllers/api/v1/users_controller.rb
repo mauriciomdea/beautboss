@@ -15,7 +15,11 @@ class Api::V1::UsersController < ApplicationController
       password: user_params[:password]
     )
     if user.save
-      _render_user(user, :created)
+      @token = Token.get_token(user)
+      # _render_user(user, :created)
+      render json: { user: UserSerializer.new(user).as_json(root: false), token: @token },
+        location: "/api/v1/users/#{user.id}",
+        status: :created
     else
       render json: { errors: user.errors.full_messages }, status: 422
     end
