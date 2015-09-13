@@ -74,6 +74,7 @@ RSpec.describe "Authentications", type: :request do
       token = Token.get_token(user, 1)
       delete api_v1_authentication_path(token), {}, { "Accept" => "application/json", "HTTP_TOKEN" => token }
       expect(response.status).to eq 204 # ok, no content
+      expect(Token.get_user(token)).to be_nil
     end
 
   end
