@@ -9,7 +9,7 @@ RSpec.describe "Authentications", type: :request do
       user = FactoryGirl.create :user
       auth_params = {
         "email" => "#{user.email}",
-        "password" => "#{user.password}"
+        "password" => "1234"
       }.to_json
       request_headers = {
         "Accept" => "application/json",

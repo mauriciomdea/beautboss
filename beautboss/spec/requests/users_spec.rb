@@ -96,6 +96,11 @@ RSpec.describe "Users API v1", type: :request do
 
   end
 
+  describe "POST /api/v1/users/reset_password" do
+    # The :test delivery method accumulates sent emails in the
+    # ActionMailer::Base.deliveries array.
+  end
+
   # describe "GET /users" do
   #   it "works! (now write some real specs)" do
   #     get api_users_path

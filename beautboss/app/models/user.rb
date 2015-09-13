@@ -1,11 +1,12 @@
 class User < ActiveRecord::Base
+  has_secure_password
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :password, presence: true
+  validates_presence_of :password, :on => :create
 
   def self.authenticate(email, password)
-    user = User.where(email: email, password: password).first
+    user = User.find_by(email: email).try(:authenticate, password)
   end
 
   def self.from_token(token)
