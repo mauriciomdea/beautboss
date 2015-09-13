@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       resources :users, except: [:index, :new, :edit]
 
       resources :authentications, only: [:create, :destroy]
-      get 'authentications/facebook' => 'authentications#create_from_facebook', as: :authentications_facebook
+      post 'authentications/facebook' => 'authentications#create_from_facebook', as: :authentications_facebook
 
     end
   end
