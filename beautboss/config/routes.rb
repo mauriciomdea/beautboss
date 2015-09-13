@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
       resources :authentications, only: [:create, :destroy]
       post 'authentications/facebook' => 'authentications#create_from_facebook', as: :authentications_facebook
+      post 'authentications/password_reset' => 'authentications#password_reset', as: :password_reset
 
     end
   end

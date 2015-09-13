@@ -67,6 +67,38 @@ RSpec.describe "Authentications", type: :request do
 
   end
 
+  describe "POST /api/v1/authentications/reset_password" do
+
+    it "returns not found for invalid email address" do 
+      auth_params = {
+        "email" => "notfound@example.com"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json"
+      }
+      post "/api/v1/authentications/password_reset", auth_params, request_headers
+      expect(response.status).to eq 404 # not found
+    end
+
+    it "sends token to valid user" do
+      user = FactoryGirl.create :user
+      auth_params = {
+        "email" => "#{user.email}"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json"
+      }
+      post "/api/v1/authentications/password_reset", auth_params, request_headers
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["message"]).to eq "Token sent to #{user.email}!"
+      expect(ActionMailer::Base.deliveries.last.to).to eq user.email
+    end
+
+  end
+
   describe "DELETE /api/v1/authentications" do
 
     it "destroys authentication token (and log user out)" do
