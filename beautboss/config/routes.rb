@@ -3,11 +3,15 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
 
-      resources :users, except: [:index, :new, :edit]
+      resources :users, except: [:index, :new, :edit] do
+        resources :posts, only: :index
+      end
 
       resources :authentications, only: [:create, :destroy]
       post 'authentications/facebook' => 'authentications#create_from_facebook', as: :authentications_facebook
       post 'authentications/password_reset' => 'authentications#password_reset', as: :password_reset
+
+      resources :posts, except: [:new, :edit]
 
     end
   end

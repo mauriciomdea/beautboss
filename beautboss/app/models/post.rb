@@ -5,5 +5,6 @@ class Post < ActiveRecord::Base
 	belongs_to :place
 	belongs_to :category
 
+	validates_presence_of :user, :place, :image
 
 end

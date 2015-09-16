@@ -94,7 +94,7 @@ RSpec.describe "Authentications", type: :request do
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["message"]).to eq "Token sent to #{user.email}!"
-      expect(ActionMailer::Base.deliveries.last.to).to eq user.email
+      expect(ActionMailer::Base.deliveries.last.to.first).to eq user.email
     end
 
   end
