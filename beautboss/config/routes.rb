@@ -11,7 +11,9 @@ Rails.application.routes.draw do
       post 'authentications/facebook' => 'authentications#create_from_facebook', as: :authentications_facebook
       post 'authentications/password_reset' => 'authentications#password_reset', as: :password_reset
 
-      resources :posts, except: [:new, :edit]
+      resources :posts, except: [:new, :edit] do 
+        resources :wows, only: [:index, :create, :destroy]
+      end
 
     end
   end

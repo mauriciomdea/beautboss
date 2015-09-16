@@ -19,4 +19,9 @@ FactoryGirl.define do
     association :place, factory: :place
   end
 
+  factory :wow do
+    association :user, factory: :user
+    association :post, factory: :post
+  end
+
 end

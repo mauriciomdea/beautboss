@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   validates_presence_of :password, :on => :create
 
   has_many :posts
+  has_many :wows
 
   def self.authenticate(email, password)
     user = User.find_by(email: email).try(:authenticate, password)

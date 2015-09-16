@@ -101,19 +101,44 @@ RSpec.describe "Posts API v1", type: :request do
 
   describe "POST /api/v1/posts/:id/wows" do
 
-    xit "wows a post"
+    it "wows a post" do 
+      user = FactoryGirl.create :user
+      post = FactoryGirl.create :post
+      wow = FactoryGirl.create :wow, post: post
+      post "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(post.wows.size).to eq 2
+      expect(response.status).to eq 201 # created
+      body = JSON.parse(response.body)
+      expect(body["post_id"]).to eq post.id
+      expect(body["user_id"]).to eq user.id
+    end
 
   end
 
   describe "GET /api/v1/posts/:id/wows" do
 
-    xit "returns all wows from a post"
+    it "returns all wows from a post" do 
+      post = FactoryGirl.create :post
+      wow1 = FactoryGirl.create :wow, post: post
+      wow2 = FactoryGirl.create :wow, post: post
+      get "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body.size).to eq 2
+    end
     
   end
 
   describe "DELETE /api/v1/posts/:id/wows" do
 
-    xit "de-wows a post"
+    it "de-wows a post" do
+      post = FactoryGirl.create :post
+      user = FactoryGirl.create :user
+      wow = FactoryGirl.create :wow, post: post, user: user
+      delete "/api/v1/posts/#{post.id}/wows/#{wow.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(response.status).to eq 204 # ok, no content
+      expect(post.wows.size).to eq 0
+    end
     
   end
 
@@ -121,19 +146,19 @@ RSpec.describe "Posts API v1", type: :request do
 
   describe "POST /api/v1/posts/:id/comments" do
 
-    xit "makes a new comment to a post"
+    it "makes a new comment to a post"
 
   end
 
   describe "GET /api/v1/posts/:id/comments" do
 
-    xit "returns all comments from a post"
+    it "returns all comments from a post"
     
   end
 
   describe "DELETE /api/v1/posts/:id/comments" do
 
-    xit "deletes a comment"
+    it "deletes a comment"
     
   end
 
