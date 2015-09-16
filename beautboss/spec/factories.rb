@@ -24,4 +24,10 @@ FactoryGirl.define do
     association :post, factory: :post
   end
 
+  factory :comment do
+    comment "Some trivial comment"
+    association :user, factory: :user
+    association :post, factory: :post
+  end
+
 end

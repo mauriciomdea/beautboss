@@ -129,7 +129,7 @@ RSpec.describe "Posts API v1", type: :request do
     
   end
 
-  describe "DELETE /api/v1/posts/:id/wows" do
+  describe "DELETE /api/v1/posts/:id/wows/:id" do
 
     it "de-wows a post" do
       post = FactoryGirl.create :post
@@ -146,19 +146,52 @@ RSpec.describe "Posts API v1", type: :request do
 
   describe "POST /api/v1/posts/:id/comments" do
 
-    it "makes a new comment to a post"
+    it "makes a new comment to a post" do 
+      user = FactoryGirl.create :user
+      post = FactoryGirl.create :post
+      comment_params = {
+        "comment" => "A trivial comment"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts/#{post.id}/comments", comment_params, request_headers
+      expect(post.comments.size).to eq 1
+      expect(response.status).to eq 201 # created
+      body = JSON.parse(response.body)
+      expect(body["comment"]).to eq "A trivial comment"
+      expect(body["post_id"]).to eq post.id
+      expect(body["user_id"]).to eq user.id
+    end
 
   end
 
   describe "GET /api/v1/posts/:id/comments" do
 
-    it "returns all comments from a post"
+    it "returns all comments from a post" do 
+      post = FactoryGirl.create :post
+      c1 = FactoryGirl.create :comment, post: post
+      c2 = FactoryGirl.create :comment, post: post
+      get "/api/v1/posts/#{post.id}/comments", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body.size).to eq 2
+    end
     
   end
 
-  describe "DELETE /api/v1/posts/:id/comments" do
+  describe "DELETE /api/v1/posts/:id/comments/:id" do
 
-    it "deletes a comment"
+    it "deletes a comment" do
+      post = FactoryGirl.create :post
+      user = FactoryGirl.create :user
+      comment = FactoryGirl.create :comment, post: post, user: user
+      delete "/api/v1/posts/#{post.id}/comments/#{comment.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(response.status).to eq 204 # ok, no content
+      expect(post.comments.size).to eq 0
+    end
     
   end
 

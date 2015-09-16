@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 
   has_many :posts
   has_many :wows
+  has_many :comments
 
   def self.authenticate(email, password)
     user = User.find_by(email: email).try(:authenticate, password)

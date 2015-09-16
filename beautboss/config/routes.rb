@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
       resources :posts, except: [:new, :edit] do 
         resources :wows, only: [:index, :create, :destroy]
+        resources :comments, only: [:index, :create, :destroy]
       end
 
     end
