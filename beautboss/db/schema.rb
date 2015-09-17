@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916062833) do
+ActiveRecord::Schema.define(version: 20150917054842) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -31,10 +31,18 @@ ActiveRecord::Schema.define(version: 20150916062833) do
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "places", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "name",          limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "lat",           limit: 255
+    t.string   "lon",           limit: 255
+    t.string   "address",       limit: 255
+    t.string   "foursquare_id", limit: 255
+    t.string   "contact",       limit: 255
+    t.string   "website",       limit: 255
   end
+
+  add_index "places", ["foursquare_id"], name: "index_places_on_foursquare_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.string   "image",       limit: 255

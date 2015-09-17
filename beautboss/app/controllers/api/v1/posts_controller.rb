@@ -24,7 +24,7 @@ class Api::V1::PostsController < ApplicationController
       caption: post_params[:caption],
       image: post_params[:image]
     )
-    post.place = Place.find_by(post_params[:place_id]) 
+    post.place = Place.find_by(post_params[:place_id])
     if post.save
       render json: PostSerializer.new(post).as_json(root: false),
         location: "/api/v1/posts/#{post.id}",
@@ -47,7 +47,7 @@ class Api::V1::PostsController < ApplicationController
   private
 
     def post_params
-      params.permit(:caption, :image, :service_id, :category_id, :place_id)
+      params.permit(:caption, :image, :place_id, :service_id, :category_id)
     end
 
 end

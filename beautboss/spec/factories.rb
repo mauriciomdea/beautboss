@@ -9,7 +9,11 @@ FactoryGirl.define do
   end
 
   factory :place do
+    sequence(:foursquare_id)
     name "Somewhere Hair Style"
+    lat "00.00"
+    lon "00.00"
+    address "Somewhere"
   end
 
   factory :post do

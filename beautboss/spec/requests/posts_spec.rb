@@ -8,7 +8,7 @@ RSpec.describe "Posts API v1", type: :request do
 
   describe "POST /api/v1/posts" do
 
-    it "creates a new post" do
+    it "creates a new post for a registered place" do
       user = FactoryGirl.create :user
       place = FactoryGirl.create :place
       post_params = {
@@ -27,8 +27,36 @@ RSpec.describe "Posts API v1", type: :request do
       body = JSON.parse(response.body)
       expect(body["id"]).to eq Post.last.id       # did it return the post id?
       expect(body["user"]["id"]).to eq user.id 	  # checks if post belongs to authorized user
-      expect(body["place"]["id"]).not_to be_nil   # checks if place was set
+      expect(body["place"]["id"]).to eq place.id  # checks if place was set
   	end
+
+    # it "creates a new post for a new place" do
+    #   user = FactoryGirl.create :user
+    #   post_params = {
+    #     "caption" => "Post example",
+    #     "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/somepost.png",
+    #     "place" => {
+    #       "foursquare_id": "0000000b498e241bb615b53b",
+    #       "name": "Example Haircut",
+    #       "lat": "-23.99440171762515",
+    #       "lon": "-46.15780148090618",
+    #       "address": "SP, Brasil",
+    #       "contact": "+551155555555"
+    #     }
+    #   }.to_json
+    #   request_headers = {
+    #     "Accept" => "application/json",
+    #     "Content-Type" => "application/json",
+    #     "HTTP_TOKEN" => valid_auth_token(user)
+    #   }
+    #   post "/api/v1/posts", post_params, request_headers
+    #   expect(response.status).to eq 201 # created
+    #   expect(Post.last.caption).to eq "Post example"  # did it save post to DB?
+    #   body = JSON.parse(response.body)
+    #   expect(body["id"]).to eq Post.last.id       # did it return the post id?
+    #   expect(body["user"]["id"]).to eq user.id    # checks if post belongs to authorized user
+    #   expect(body["place"]["id"]).not_to be_nil   # checks if place was saved
+    # end
 
     it "returns an error for an invalid post" do 
       post_params = {
