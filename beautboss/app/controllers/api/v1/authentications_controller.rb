@@ -4,7 +4,7 @@ class Api::V1::AuthenticationsController < ApplicationController
 
     if @user = User.authenticate(params[:email], params[:password])
       @token = Token.get_token(@user)
-      render json: { user: @user, token: @token }, status: :created
+      render json: { user: UserSerializer.new(@user).as_json(root: false), token: @token }, status: :created
     else
       head :not_found
     end
@@ -24,7 +24,7 @@ class Api::V1::AuthenticationsController < ApplicationController
               location: profile.location.name)
     if @user.save
       @token = Token.get_token(@user)
-      render json: { user: @user, token: @token }, status: :created
+      render json: { user: UserSerializer.new(@user).as_json(root: false), token: @token }, status: :created
     else
       render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
     end
