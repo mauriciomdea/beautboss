@@ -56,6 +56,10 @@ GEM
       xpath (~> 2.0)
     dalli (2.7.4)
     diff-lcs (1.2.5)
+    dotenv (2.0.2)
+    dotenv-rails (2.0.2)
+      dotenv (= 2.0.2)
+      railties (~> 4.0)
     erubis (2.7.0)
     execjs (2.6.0)
     factory_girl (4.5.0)
@@ -185,6 +189,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   capybara
   dalli
+  dotenv-rails
   factory_girl_rails
   fb_graph2
   foursquare2
