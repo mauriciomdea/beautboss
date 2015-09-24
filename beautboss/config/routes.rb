@@ -4,8 +4,14 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       resources :users, except: [:index, :new, :edit] do
-        resources :posts, only: :index
+        resources :posts, only: :index   
+        member do
+          post 'follow' => 'followers#create'
+          delete 'follow' => 'followers#destroy'
+          get :following, :followers
+        end
       end
+
 
       resources :authentications, only: [:create, :destroy]
       post 'authentications/facebook' => 'authentications#create_from_facebook', as: :authentications_facebook

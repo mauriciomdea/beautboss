@@ -42,6 +42,28 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def followers 
+    @user = User.find(params[:id])
+    followers = @user.followers
+    serialized_followers = followers.map { |user| UserSerializer.new(user).as_json(root: false) }
+    render json: serialized_followers,
+      location: "/api/v1/users/#{@user.id}/followers",
+      status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: "Not found"}, status: :not_found, root: false
+  end
+
+  def following 
+    @user = User.find(params[:id])
+    following = @user.following
+    serialized_following = following.map { |user| UserSerializer.new(user).as_json(root: false) }
+    render json: serialized_following,
+      location: "/api/v1/users/#{@user.id}/followers",
+      status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: "Not found"}, status: :not_found, root: false
+  end
+
 end
 
 private

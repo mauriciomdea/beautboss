@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "Users API v1", type: :request do
 
+  def valid_auth_token(user = FactoryGirl.create(:user))
+    Token.get_token(user, 1)
+  end
+
   describe "POST /api/v1/users" do
 
     it "creates a new user" do
@@ -40,8 +44,7 @@ RSpec.describe "Users API v1", type: :request do
 
     it "returns requested user" do
       user = FactoryGirl.create :user, name: "John Doe"
-      token = Token.get_token(user, 1)
-      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token }
+      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["name"]).to eq "John Doe"
@@ -49,8 +52,7 @@ RSpec.describe "Users API v1", type: :request do
 
     it "returns not found error for unknown user" do
       user = FactoryGirl.create :user
-      token = Token.get_token(user, 1)
-      get "/api/v1/users/#{user.id+1}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => token  }
+      get "/api/v1/users/#{user.id+1}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
       expect(response.status).to eq 404 # not found
     end
 
@@ -60,7 +62,6 @@ RSpec.describe "Users API v1", type: :request do
 
     it "updates user information" do
       user = FactoryGirl.create :user
-      token = Token.get_token(user, 1)
       user_params = {
         "name" => "Jane Smith",
         "email" => "jane_smith@example.com",
@@ -73,7 +74,7 @@ RSpec.describe "Users API v1", type: :request do
       request_headers = {
         "Accept" => "application/json",
         "Content-Type" => "application/json",
-        "HTTP_TOKEN" => token
+        "HTTP_TOKEN" => valid_auth_token(user)
       }
       put "/api/v1/users/#{user.id}", user_params, request_headers
       expect(response.status).to eq 200 # ok
@@ -96,11 +97,66 @@ RSpec.describe "Users API v1", type: :request do
 
   end
 
-  # describe "GET /users" do
-  #   it "works! (now write some real specs)" do
-  #     get api_users_path
-  #     expect(response).to have_http_status(200)
-  #   end
-  # end
+  # Followers
+
+  describe "POST /api/v1/users/:id/follow" do 
+
+    it "follows an user" do 
+      user1 = FactoryGirl.create :user, name: "The Followed"
+      user2 = FactoryGirl.create :user, name: "A Follower"
+      post "/api/v1/users/#{user1.id}/follow", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user2) }
+      expect(user1.followers.size).to eq 1
+      expect(user1.followers.last.id).to eq user2.id
+      expect(response.status).to eq 201 # created
+    end
+
+  end
+
+  describe "DELETE /api/v1/users/:id/follow" do 
+
+    it "unfollows an user" do 
+      user1 = FactoryGirl.create :user, name: "The Followed"
+      user2 = FactoryGirl.create :user, name: "A Follower"
+      user2.follow(user1)
+      delete "/api/v1/users/#{user1.id}/follow", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user2) }
+      expect(user1.followers.size).to eq 0
+      expect(response.status).to eq 204 # ok, no content
+    end
+
+  end
+
+  describe "GET /api/v1/users/:id/followers" do 
+
+    it "lists all followers of an user" do 
+      user = FactoryGirl.create :user
+      john = FactoryGirl.create :user, name: "John Doe"
+      jane = FactoryGirl.create :user, name: "Jane Smith"
+      john.follow(user)
+      jane.follow(user)
+      get "/api/v1/users/#{user.id}/followers", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body[0]["name"]).to eq "John Doe"
+      expect(body[1]["name"]).to eq "Jane Smith"
+    end
+
+  end
+
+  describe "GET /api/v1/users/:id/following" do 
+
+    it "lists all users an user follows" do 
+      user = FactoryGirl.create :user
+      john = FactoryGirl.create :user, name: "John Doe"
+      jane = FactoryGirl.create :user, name: "Jane Smith"
+      user.follow(john)
+      user.follow(jane)
+      get "/api/v1/users/#{user.id}/following", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body[0]["name"]).to eq "John Doe"
+      expect(body[1]["name"]).to eq "Jane Smith"
+    end
+
+  end
 
 end
