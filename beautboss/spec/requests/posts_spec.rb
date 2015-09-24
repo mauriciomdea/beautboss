@@ -137,8 +137,8 @@ RSpec.describe "Posts API v1", type: :request do
       expect(post.wows.size).to eq 2
       expect(response.status).to eq 201 # created
       body = JSON.parse(response.body)
-      expect(body["post_id"]).to eq post.id
-      expect(body["user_id"]).to eq user.id
+      expect(body["post"]["id"]).to eq post.id
+      expect(body["user"]["id"]).to eq user.id
     end
 
   end

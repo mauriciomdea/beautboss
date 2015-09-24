@@ -1,3 +1,5 @@
 class WowSerializer < ActiveModel::Serializer
-  attributes :id, :post_id, :user_id, :created_at
+  attributes :id, :created_at
+  has_one :user, serializer: UserSerializer
+  has_one :post, serializer: PostSerializer
 end
