@@ -26,36 +26,60 @@ RSpec.describe "Activities API v1", type: :request do
       get "/api/v1/users/#{followed.id}/notifications", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(followed) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      puts body.to_yaml
+      # puts body.to_yaml
+      expect(body.size).to eq 3
     end
 
-    xit "creates notification for following an user" do
-      user1 = FactoryGirl.create :user, name: "The Followed"
-      user2 = FactoryGirl.create :user, name: "A Follower"
-      post "/api/v1/users/#{user1.id}/follow", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user2) }
+    it "creates notification for following an user" do
+      followed = FactoryGirl.create :user, name: "The Followed"
+      follower = FactoryGirl.create :user, name: "A Follower"
+      post "/api/v1/users/#{followed.id}/follow", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(follower) }
       expect(response.status).to eq 201 # created
+      expect(followed.notifications.size).to eq 1
     end
 
-    xit "creates notification for new post from a followed user" do 
-      user = FactoryGirl.create :user
-      place = FactoryGirl.create :place
-      post_params = {
-        "caption" => "Post example",
-        "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/somepost.png",
-        "place_id" => place.id
+    # xit "creates notification for new post from a followed user" do 
+    #   user = FactoryGirl.create :user
+    #   place = FactoryGirl.create :place
+    #   post_params = {
+    #     "caption" => "Post example",
+    #     "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/somepost.png",
+    #     "place_id" => place.id
+    #   }.to_json
+    #   request_headers = {
+    #     "Accept" => "application/json",
+    #     "Content-Type" => "application/json",
+    #     "HTTP_TOKEN" => valid_auth_token(user)
+    #   }
+    #   post "/api/v1/posts", post_params, request_headers
+    #   expect(response.status).to eq 201 # created
+    # end
+
+    it "creates notification for new wow on user's post" do 
+      followed = FactoryGirl.create :user, name: "The Followed"
+      follower = FactoryGirl.create :user, name: "A Follower Who Wows"
+      post = FactoryGirl.create :post, user: followed
+      post "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(follower) }
+      expect(response.status).to eq 201 # created
+      expect(followed.notifications.size).to eq 1
+    end
+
+    it "creates notification for new comment on user's post" do 
+      followed = FactoryGirl.create :user, name: "The Followed"
+      follower = FactoryGirl.create :user, name: "A Follower Who Comments"
+      post = FactoryGirl.create :post, user: followed
+      comment_params = {
+        "comment" => "A trivial comment"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
         "Content-Type" => "application/json",
-        "HTTP_TOKEN" => valid_auth_token(user)
+        "HTTP_TOKEN" => valid_auth_token(follower)
       }
-      post "/api/v1/posts", post_params, request_headers
+      post "/api/v1/posts/#{post.id}/comments", comment_params, request_headers
       expect(response.status).to eq 201 # created
+      expect(followed.notifications.size).to eq 1
     end
-
-    it "creates notification for new wow on user's post"
-
-    it "creates notification for new comment on user's post"
 
   end
 

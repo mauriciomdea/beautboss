@@ -1,6 +1,6 @@
 class ActivitySerializer < ActiveModel::Serializer
 
-  attributes :created_at, :subject, :url, :read
+  attributes :created_at, :subject, :url, :message, :read
 
   # attributes :created_at, :type, :url, :subject_id, :subject_type, :read
 
@@ -22,6 +22,14 @@ class ActivitySerializer < ActiveModel::Serializer
       :unknow
     end
 
+  end
+
+  def message 
+    if object.subject_type == 'Comment'
+      Comment.find(object.subject_id).comment
+    else
+      nil
+    end
   end
 
 end
