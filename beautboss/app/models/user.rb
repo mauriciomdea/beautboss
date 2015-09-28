@@ -19,6 +19,12 @@ class User < ActiveRecord::Base
   has_many :following, through: :outbound_relationships,  source: :followed
   has_many :followers, through: :inbound_relationships, source: :follower
 
+  has_many :activities, class_name: "Activity",
+                                    foreign_key: "actor_id",
+                                    dependent:   :destroy
+  has_many :notifications,  class_name:  "Activity",
+                            foreign_key: "user_id"
+
   # Follows a user
   def follow(other_user)
     outbound_relationships.create(followed_id: other_user.id)

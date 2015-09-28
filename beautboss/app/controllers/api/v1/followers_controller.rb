@@ -17,6 +17,7 @@ class Api::V1::FollowersController < ApplicationController
     follower = @current_user
     followed = User.find(params[:id])
     if follower.unfollow(followed)
+      # followed.create_activity :destroy, owner: @current_user
       head :no_content
     else
       render json: { errors: follower.errors.full_messages }, status: 422

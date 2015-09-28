@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150924034848) do
+ActiveRecord::Schema.define(version: 20150928140633) do
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "user_id",      limit: 4
+    t.integer  "subject_id",   limit: 4
+    t.string   "subject_type", limit: 255
+    t.boolean  "read",                     default: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.integer  "actor_id",     limit: 4
+  end
+
+  add_index "activities", ["user_id", "subject_id", "subject_type"], name: "index_activities_on_user_id_and_subject_id_and_subject_type", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
