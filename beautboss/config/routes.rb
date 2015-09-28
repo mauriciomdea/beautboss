@@ -9,6 +9,7 @@ Rails.application.routes.draw do
           post 'follow' => 'followers#create'
           delete 'follow' => 'followers#destroy'
           get :following, :followers
+          get :notifications
         end
       end
 

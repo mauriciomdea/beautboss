@@ -1,36 +1,24 @@
 class Activity < ActiveRecord::Base
 
-  belongs_to :owner, class_name: 'User', foreign_key: :user_id
-  has_one :actor, class_name: 'User', foreign_key: :actor_id
-  belongs_to :subject, polymorphic: true
+  belongs_to :owner, class_name: 'User', foreign_key: :user_id  # the user whose activity will be notified to
+  belongs_to :actor, class_name: 'User', foreign_key: :actor_id  # the user who generated the notification
+  belongs_to :subject, polymorphic: true  # can be an User, Wow or Comment
 
-  def self.render(activity)
+  validates :owner, :actor, presence: true
 
-    case activity.trackable_type
+  def url
+
+    case subject_type
+
     when 'User' # Somebody started following you
-      {
-        action: activity.key,
-        message: I18n.translate('notifications.follow', name: User.find(activity.trackable_id).name),
-        url: "/api/v1/users/#{activity.trackable_id}",
-        datetime: activity.created_at
-       }.to_json
+      "/api/v1/users/#{actor_id}"
     when 'Wow' # Somebody wowed your register
-      {
-        action: activity.key,
-        message: I18n.translate('notifications.wow', name: User.find(activity.owner_id).name),
-        url: "/api/v1/posts/#{activity.trackable_id}",
-        datetime: activity.created_at
-       }.to_json
+      "/api/v1/posts/#{Wow.find(subject_id).post.id}/wows"
     when 'Comment' # Somebody said: "Comment"
-      {
-        action: activity.key,
-        message: I18n.translate('notifications.comment', name: User.find(activity.owner_id).name, comment: Comment.find(activity.trackable_id).comment[0..140]),
-        url: "/api/v1/posts/#{activity.trackable_id}",
-        datetime: activity.created_at
-       }.to_json
+      "/api/v1/posts/#{Comment.find(subject_id).post.id}/comments"
     # when 'Post'
     else
-      "Unknow activity."
+      nil
     end
 
   end

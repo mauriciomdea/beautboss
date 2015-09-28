@@ -9,21 +9,22 @@ class User < ActiveRecord::Base
   has_many :wows, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  has_many :outbound_relationships, class_name:  "Relationship",
-                                    foreign_key: "follower_id",
+  has_many :outbound_relationships, class_name:  'Relationship',
+                                    foreign_key: 'follower_id',
                                     dependent:   :destroy
-  has_many :inbound_relationships, class_name:  "Relationship",
-                                   foreign_key: "followed_id",
+  has_many :inbound_relationships, class_name:  'Relationship',
+                                   foreign_key: 'followed_id',
                                    dependent:   :destroy
 
   has_many :following, through: :outbound_relationships,  source: :followed
   has_many :followers, through: :inbound_relationships, source: :follower
 
-  has_many :activities, class_name: "Activity",
-                                    foreign_key: "actor_id",
+  has_many :activities, class_name: 'Activity',
+                                    foreign_key: 'actor_id',
                                     dependent:   :destroy
-  has_many :notifications,  class_name:  "Activity",
-                            foreign_key: "user_id"
+  has_many :notifications,  -> { order(created_at: :desc) },
+                            class_name:  'Activity',
+                            foreign_key: 'user_id'
 
   # Follows a user
   def follow(other_user)

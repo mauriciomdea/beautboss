@@ -12,15 +12,21 @@ RSpec.describe "Activities API v1", type: :request do
       followed = FactoryGirl.create :user, name: "The Followed"
       follower = FactoryGirl.create :user, name: "A Follower"
       follower.follow(followed)
-      Activity.create(owner: followed, subject: follower)
+      Activity.create(owner: followed, actor: follower, subject: followed)
       post = FactoryGirl.create :post, user: followed
       wow = Wow.create(post: post, user: follower)
-      Activity.create(owner: followed, subject: wow)
+      Activity.create(owner: followed, actor: follower, subject: wow)
       comment = Comment.create(post: post, user: follower, comment: "This is just an example comment, please ignore.")
-      Activity.create(owner: followed, subject: comment)
+      Activity.create(owner: followed, actor: follower, subject: comment)
       activities = Activity.where(owner: followed)
-      serialized_activities = activities.map { |activity| ActivitySerializer.new(activity).as_json(root: false) }
+      # serialized_activities = activities.map { |activity| ActivitySerializer.new(activity).as_json(root: false) }
       # puts serialized_activities.to_yaml
+      expect(follower.activities.size).to eq 3
+      expect(followed.notifications.size).to eq 3
+      get "/api/v1/users/#{followed.id}/notifications", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(followed) }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      puts body.to_yaml
     end
 
     xit "creates notification for following an user" do
