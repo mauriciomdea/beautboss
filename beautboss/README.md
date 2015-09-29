@@ -368,10 +368,7 @@ Create user with specifed user params. Returns saved user and authorization toke
             
 + Response 204
 
-## Followers [/users/{user_id}/followers]
-
-+ Parameters
-    + user_id (number) - The ID of the User.
+### Followers [GET /users/{user_id}/followers]
 
 + Request
 
@@ -381,10 +378,14 @@ Create user with specifed user params. Returns saved user and authorization toke
 
 + Response 200 (application/json)
 
-## Following [/users/{user_id}/following]
+    + Headers
 
-+ Parameters
-    + user_id (number) - The ID of the User.
+            Location: /users/{user_id}/followers
+
+    + Body
+    
+
+### Following [GET /users/{user_id}/following]
 
 + Request
 
@@ -393,3 +394,62 @@ Create user with specifed user params. Returns saved user and authorization toke
             TOKEN: {authentication}
 
 + Response 200 (application/json)
+
+    + Headers
+
+            Location: /users/{user_id}/following
+
+    + Body
+    
+
+## Notifications [/users/{user_id}/notifications]
+
++ Parameters
+    
+    + user_id (number) - The ID of the User.
+    
+### Notifications [GET]
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /users/{user_id}/notifications
+
+    + Body
+
+            [
+                {
+                    "created_at": "2015-09-28T23:01:03.000Z",
+                    "subject": "comment",
+                    "url": "/api/v1/posts/42/comments",
+                    "message": "This is just an example comment, please ignore.",
+                    "read": false,
+                    "actor": {
+                        "id": 134
+                        "name": "A Follower"
+                        "email": "robot2@example.com"
+                        "avatar": null
+                    }
+                },
+                {
+                    "created_at": "2015-09-28T22:59:03.000Z",
+                    "subject": "wow",
+                    "url": "/api/v1/posts/42/wows",
+                    "message": "This is just an example comment, please ignore.",
+                    "read": false,
+                    "actor": {
+                        "id": 131
+                        "name": "The Follower"
+                        "email": "robot3@example.com"
+                        "avatar": null
+                    }
+                }
+            ]
+ 

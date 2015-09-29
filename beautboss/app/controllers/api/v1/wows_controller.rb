@@ -17,6 +17,7 @@ class Api::V1::WowsController < ApplicationController
     post = Post.find_by(params[:post_id])
     wow = Wow.new(post: post, user: user)
     if wow.save
+      Activity.create(owner: post.user, actor: user, subject: wow)
       render json: WowSerializer.new(wow).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/wows",
         status: :created

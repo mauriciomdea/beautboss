@@ -21,5 +21,5 @@
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
-# Local ENV variables
+# ENV variables from dotenv
 .env

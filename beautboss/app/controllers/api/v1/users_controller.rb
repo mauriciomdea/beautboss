@@ -64,6 +64,17 @@ class Api::V1::UsersController < ApplicationController
     render json: {error: "Not found"}, status: :not_found, root: false
   end
 
+  def notifications 
+    @user = User.find(params[:id])
+    notifications = @user.notifications
+    serialized_notifications = notifications.map { |notification| ActivitySerializer.new(notification).as_json(root: false) }
+    render json: serialized_notifications,
+      location: "/api/v1/users/#{@user.id}/notifications",
+      status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: "Not found"}, status: :not_found, root: false
+  end
+
 end
 
 private
