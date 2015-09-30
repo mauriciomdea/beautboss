@@ -34,4 +34,23 @@ FactoryGirl.define do
     association :post, factory: :post
   end
 
+  factory :activity do
+    
+    association :owner, factory: :user
+    association :actor, factory: :user
+
+    factory :activity_follow do
+      association :subject, factory: :user
+    end
+
+    factory :activity_wow do
+      association :subject, factory: :wow
+    end
+
+    factory :activity_comment do
+      association :subject, factory: :comment
+    end
+
+  end
+
 end

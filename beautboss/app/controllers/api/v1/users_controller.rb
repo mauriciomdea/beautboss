@@ -44,7 +44,7 @@ class Api::V1::UsersController < ApplicationController
 
   def followers 
     @user = User.find(params[:id])
-    followers = @user.followers
+    followers = @user.followers.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_followers = followers.map { |user| UserSerializer.new(user).as_json(root: false) }
     render json: serialized_followers,
       location: "/api/v1/users/#{@user.id}/followers",
@@ -55,7 +55,7 @@ class Api::V1::UsersController < ApplicationController
 
   def following 
     @user = User.find(params[:id])
-    following = @user.following
+    following = @user.following.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_following = following.map { |user| UserSerializer.new(user).as_json(root: false) }
     render json: serialized_following,
       location: "/api/v1/users/#{@user.id}/followers",
@@ -66,7 +66,7 @@ class Api::V1::UsersController < ApplicationController
 
   def notifications 
     @user = User.find(params[:id])
-    notifications = @user.notifications
+    notifications = @user.notifications.where(read: false).limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_notifications = notifications.map { |notification| ActivitySerializer.new(notification).as_json(root: false) }
     render json: serialized_notifications,
       location: "/api/v1/users/#{@user.id}/notifications",

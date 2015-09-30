@@ -19,15 +19,24 @@ RSpec.describe "Activities API v1", type: :request do
       comment = Comment.create(post: post, user: follower, comment: "This is just an example comment, please ignore.")
       Activity.create(owner: followed, actor: follower, subject: comment)
       activities = Activity.where(owner: followed)
-      # serialized_activities = activities.map { |activity| ActivitySerializer.new(activity).as_json(root: false) }
-      # puts serialized_activities.to_yaml
       expect(follower.activities.size).to eq 3
       expect(followed.notifications.size).to eq 3
       get "/api/v1/users/#{followed.id}/notifications", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(followed) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      # puts body.to_yaml
       expect(body.size).to eq 3
+    end
+
+    it "returns only the last five notifications (limit)" do
+      user = FactoryGirl.create(:user)
+      10.times { 
+        FactoryGirl.create(:activity_wow, owner: user)
+        FactoryGirl.create(:activity_comment, owner: user)
+      }
+      get "/api/v1/users/#{user.id}/notifications?limit=5", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body.size).to eq 5
     end
 
     it "creates notification for following an user" do
