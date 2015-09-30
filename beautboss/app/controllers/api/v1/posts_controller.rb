@@ -2,7 +2,12 @@ class Api::V1::PostsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    posts = @current_user.posts
+    posts = nil
+    if params[:user_id]
+      posts = Post.where(user: params[:user_id])
+    elsif params[:place_id]
+      posts = Post.where(place: params[:place_id])
+    end
     serialized_posts = posts.map { |post| PostSerializer.new(post).as_json(root: false) }
     render json: serialized_posts,
       location: "/api/v1/users/#{@current_user.id}/posts",

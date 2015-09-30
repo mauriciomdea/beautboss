@@ -117,7 +117,21 @@ RSpec.describe "Posts API v1", type: :request do
       user = FactoryGirl.create :user
       post1 = FactoryGirl.create :post, user: user, caption: "Post one"
       post2 = FactoryGirl.create :post, user: user, caption: "Post two"
-      get "/api/v1/users/#{user.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      get "/api/v1/users/#{user.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body.size).to eq 2
+    end
+
+  end
+
+  describe "GET /api/v1/places/:id/posts" do
+
+    it "returns all posts from a place" do
+      place = FactoryGirl.create :place
+      post1 = FactoryGirl.create :post, place: place, caption: "Post one"
+      post2 = FactoryGirl.create :post, place: place, caption: "Post two"
+      get "/api/v1/places/#{place.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body.size).to eq 2
