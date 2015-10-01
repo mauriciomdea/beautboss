@@ -21,10 +21,10 @@ ActiveAdmin.register_page "Dashboard" do
 
           column do
 
-            panel "Latest Users" do
+            panel "#{User.count} total users" do
             
                 table do
-                    User.order("created_at desc").limit(5).map do |user|
+                    User.order("created_at desc").limit(10).map do |user|
                         tr do
                             td image_tag user.avatar, size: '32x32'
                             td "#{time_ago_in_words user.created_at} ago"
@@ -41,7 +41,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           column max_width: "170px", min_width: "170px" do
 
-            panel "Latest Registers" do
+            panel "#{Post.count} total registers" do
 
                 table do
                     Post.order("created_at desc").limit(5).map do |register|
