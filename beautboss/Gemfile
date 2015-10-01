@@ -68,3 +68,11 @@ gem 'aws-sdk', '~> 2'
 
 # Ruby wrapper for the Foursquare v2 API
 gem 'foursquare2'
+
+# The administration framework for Ruby on Rails applications. http://activeadmin.info
+gem 'activeadmin', github: 'activeadmin' # tracking master at Github for Rails 4 compatibility
+# Plus integrations with:
+gem 'devise'
+gem 'cancan' # or cancancan
+gem 'draper'
+gem 'pundit'
