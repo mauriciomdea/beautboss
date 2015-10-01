@@ -70,7 +70,7 @@ gem 'aws-sdk', '~> 2'
 gem 'foursquare2'
 
 # The administration framework for Ruby on Rails applications. http://activeadmin.info
-gem 'activeadmin', github: 'activeadmin' # tracking master at Github for Rails 4 compatibility
+gem 'activeadmin', '~> 1.0.0.pre2' # Rails 4 compatibility
 # Plus integrations with:
 gem 'devise'
 gem 'cancan' # or cancancan
