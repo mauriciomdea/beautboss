@@ -65,7 +65,10 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   # Setup mail delvery
-  config.action_mailer.delivery_method = :ses
+  config.action_mailer.delivery_method = :ses, AWS::SES::Base,
+    server: "email.us-west-2.amazonaws.com",
+    access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+    secret_access_key: ENV['AWS_SECRET_KEY']
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
