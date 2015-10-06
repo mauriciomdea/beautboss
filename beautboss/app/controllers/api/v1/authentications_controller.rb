@@ -14,19 +14,20 @@ class Api::V1::AuthenticationsController < ApplicationController
   def create_from_facebook
     profile = FbGraph2::User.me(params[:access_token]).fetch
     profile.fetch
-    @user = User.where(email: profile.email).assign_or_new(
-              facebook: profile.id,
-              email: profile.email, 
-              name: "#{profile.first_name} #{profile.last_name}",
-              bio: profile.bio,
-              avatar: profile.picture.url,
-              website: profile.website,
-              location: profile.location.name)
+    # profile = nil
+    @user = User.where(facebook: profile.id).first || User.where(email: profile.email).first || User.new
+    @user.facebook = profile.id unless profile.id.empty?
+    @user.email = profile.email unless profile.email.empty?
+    @user.name = "#{profile.first_name} #{profile.last_name}" unless profile.first_name.empty? || profile.last_name.empty?
+    @user.bio = profile.bio unless profile.bio.empty?
+    @user.avatar = profile.picture.url unless profile.picture.url.empty?
+    @user.website = profile.website unless profile.website.empty?
+    @user.location = profile.location.name unless profile.location.name.empty?
     if @user.save
       @token = Token.get_token(@user)
       render json: { user: UserSerializer.new(@user).as_json(root: false), token: @token }, status: :created
     else
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   rescue FbGraph2::Exception  => err
     render json: {error: err.message}, status: :unprocessable_entity

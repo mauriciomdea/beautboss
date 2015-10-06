@@ -1,9 +1,10 @@
 class User < ActiveRecord::Base
-  has_secure_password
+  has_secure_password validations: false
 
   validates :name, presence: true
-  validates :email, presence: true, uniqueness: true
-  validates_presence_of :password, :on => :create
+  validates :email, uniqueness: true
+  validates :email, presence: true, if: 'facebook.nil?'
+  validates :password, presence: true, if: 'facebook.nil?'
 
   has_many :posts
   has_many :wows, dependent: :destroy
