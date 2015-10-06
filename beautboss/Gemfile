@@ -64,7 +64,9 @@ gem 'dalli'
 gem 'fb_graph2'
 
 # AWS SDK for Ruby - Version 2 (mainly for sending emails thru Simple Email Service)
-gem "aws-ses", "~> 0.6.0", :require => 'aws/ses', :group => [:staging, :production]
+# gem "aws-ses", "~> 0.6.0", :require => 'aws/ses', :group => [:staging, :production]
+# gem 'aws-sdk', '~> 2'#, :group => [:staging, :production]
+gem 'aws-sdk-rails'
 
 # Ruby wrapper for the Foursquare v2 API
 gem 'foursquare2'

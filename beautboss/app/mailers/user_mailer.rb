@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
-  default sender: ENV['FROM_EMAIL'] || "no-reply@beautboss.com"
+  default sender: ENV['FROM_EMAIL']
+  default from: ENV['FROM_EMAIL']
 
   # def signup_confirmation(user)
   #   @user = user
