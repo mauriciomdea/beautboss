@@ -24,7 +24,7 @@ RSpec.describe "Activities API v1", type: :request do
       get "/api/v1/users/#{followed.id}/notifications", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(followed) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body.size).to eq 3
+      expect(body["count"]).to eq 3
     end
 
     it "returns only the last five notifications (limit)" do
@@ -36,7 +36,8 @@ RSpec.describe "Activities API v1", type: :request do
       get "/api/v1/users/#{user.id}/notifications?limit=5", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body.size).to eq 5
+      expect(body["count"]).to eq 20
+      expect(body["notifications"].size).to eq 5
     end
 
     it "creates notification for following an user" do

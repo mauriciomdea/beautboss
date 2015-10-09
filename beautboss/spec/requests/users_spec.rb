@@ -136,8 +136,9 @@ RSpec.describe "Users API v1", type: :request do
       get "/api/v1/users/#{user.id}/followers", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body[0]["name"]).to eq "John Doe"
-      expect(body[1]["name"]).to eq "Jane Smith"
+      expect(body["count"]).to eq 2
+      expect(body["followers"][0]["name"]).to eq "John Doe"
+      expect(body["followers"][1]["name"]).to eq "Jane Smith"
     end
 
   end
@@ -153,8 +154,9 @@ RSpec.describe "Users API v1", type: :request do
       get "/api/v1/users/#{user.id}/following", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body[0]["name"]).to eq "John Doe"
-      expect(body[1]["name"]).to eq "Jane Smith"
+      expect(body["count"]).to eq 2
+      expect(body["following"][0]["name"]).to eq "John Doe"
+      expect(body["following"][1]["name"]).to eq "Jane Smith"
     end
 
   end

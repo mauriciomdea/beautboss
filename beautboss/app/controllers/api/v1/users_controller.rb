@@ -46,7 +46,7 @@ class Api::V1::UsersController < ApplicationController
     @user = User.find(params[:id])
     followers = @user.followers.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_followers = followers.map { |user| UserSerializer.new(user).as_json(root: false) }
-    render json: serialized_followers,
+    render json: {count: @user.followers.size, followers: serialized_followers},
       location: "/api/v1/users/#{@user.id}/followers",
       status: :ok
   rescue ActiveRecord::RecordNotFound
@@ -57,8 +57,8 @@ class Api::V1::UsersController < ApplicationController
     @user = User.find(params[:id])
     following = @user.following.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_following = following.map { |user| UserSerializer.new(user).as_json(root: false) }
-    render json: serialized_following,
-      location: "/api/v1/users/#{@user.id}/followers",
+    render json: {count: @user.following.size, following: serialized_following},
+      location: "/api/v1/users/#{@user.id}/following",
       status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: {error: "Not found"}, status: :not_found, root: false
@@ -66,9 +66,9 @@ class Api::V1::UsersController < ApplicationController
 
   def notifications 
     @user = User.find(params[:id])
-    notifications = @user.notifications.where(read: false).limit(params[:limit] || 20).offset(params[:offset] || 0)
+    notifications = @user.notifications.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_notifications = notifications.map { |notification| ActivitySerializer.new(notification).as_json(root: false) }
-    render json: serialized_notifications,
+    render json: {count: @user.notifications.size, notifications: serialized_notifications},
       location: "/api/v1/users/#{@user.id}/notifications",
       status: :ok
   rescue ActiveRecord::RecordNotFound

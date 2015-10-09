@@ -3,13 +3,18 @@ class Api::V1::PostsController < ApplicationController
 
   def index
     posts = nil
+    count = 0
     if params[:user_id]
-      posts = Post.where(user: params[:user_id])
+      user = User.find(params[:user_id])
+      count = user.posts.size
+      posts = user.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
     elsif params[:place_id]
-      posts = Post.where(place: params[:place_id])
+      place = Place.find(params[:place_id])
+      count = place.posts.size
+      posts = place.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
     end
     serialized_posts = posts.map { |post| PostSerializer.new(post).as_json(root: false) }
-    render json: serialized_posts,
+    render json: {count: count, posts: serialized_posts},
       location: "/api/v1/users/#{@current_user.id}/posts",
       status: :ok
   end

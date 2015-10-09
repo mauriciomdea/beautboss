@@ -120,7 +120,8 @@ RSpec.describe "Posts API v1", type: :request do
       get "/api/v1/users/#{user.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body.size).to eq 2
+      expect(body["count"]).to eq 2
+      expect(body["posts"][0]["caption"]).to eq "Post one"
     end
 
   end
@@ -134,7 +135,8 @@ RSpec.describe "Posts API v1", type: :request do
       get "/api/v1/places/#{place.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body.size).to eq 2
+      expect(body["count"]).to eq 2
+      expect(body["posts"][0]["caption"]).to eq "Post one"
     end
 
   end
