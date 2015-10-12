@@ -27,11 +27,16 @@ class Api::V1::CommentsController < ApplicationController
   end
 
   def destroy
-    comment = Comment.find_by(post_id: params[:post_id], user_id: @current_user.id)
-    comment.destroy
-    head :no_content
+    # comment = Comment.find_by(post_id: params[:post_id], user_id: @current_user.id)
+    comment = Comment.find(params[:id])
+    if comment.user == @current_user
+      comment.destroy
+      head :no_content
+    else
+      _not_authorized
+    end
   rescue ActiveRecord::RecordNotFound
-    render json: {error: "Not found"}, status: :not_found, root: false
+    _not_found
   end
 
   private
