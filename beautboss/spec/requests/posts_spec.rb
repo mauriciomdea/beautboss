@@ -206,8 +206,8 @@ RSpec.describe "Posts API v1", type: :request do
       expect(response.status).to eq 201 # created
       body = JSON.parse(response.body)
       expect(body["comment"]).to eq "A trivial comment"
-      expect(body["post_id"]).to eq post.id
-      expect(body["user_id"]).to eq user.id
+      # expect(body["post_id"]).to eq post.id
+      expect(body["user"]["id"]).to eq user.id
     end
 
   end
@@ -221,7 +221,8 @@ RSpec.describe "Posts API v1", type: :request do
       get "/api/v1/posts/#{post.id}/comments", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body.size).to eq 2
+      expect(body["count"]).to eq 2
+      # expect(body.size).to eq 2
     end
     
   end
