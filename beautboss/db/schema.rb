@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150930205656) do
+ActiveRecord::Schema.define(version: 20151013031849) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -90,14 +90,15 @@ ActiveRecord::Schema.define(version: 20150930205656) do
   add_index "places", ["foursquare_id"], name: "index_places_on_foursquare_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
-    t.string   "image",       limit: 255
-    t.string   "caption",     limit: 255
-    t.integer  "user_id",     limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "service_id",  limit: 4
-    t.integer  "place_id",    limit: 4
-    t.integer  "category_id", limit: 4
+    t.string   "image",      limit: 255
+    t.string   "service",    limit: 255
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "place_id",   limit: 4
+    t.integer  "category",   limit: 4
+    t.float    "lat",        limit: 24
+    t.float    "lon",        limit: 24
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
@@ -112,12 +113,6 @@ ActiveRecord::Schema.define(version: 20150930205656) do
   add_index "relationships", ["followed_id"], name: "index_relationships_on_followed_id", using: :btree
   add_index "relationships", ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true, using: :btree
   add_index "relationships", ["follower_id"], name: "index_relationships_on_follower_id", using: :btree
-
-  create_table "services", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                limit: 255

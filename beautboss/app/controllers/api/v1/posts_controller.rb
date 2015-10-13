@@ -31,7 +31,7 @@ class Api::V1::PostsController < ApplicationController
   def create
     post = Post.new(
       user: @current_user,
-      caption: post_params[:caption],
+      service: post_params[:service],
       image: post_params[:image]
     )
     post.place = Place.find_by(post_params[:place_id])
@@ -57,7 +57,7 @@ class Api::V1::PostsController < ApplicationController
   private
 
     def post_params
-      params.permit(:caption, :image, :place_id, :service_id, :category_id)
+      params.permit(:service, :image, :place_id, :category_id)
     end
 
 end

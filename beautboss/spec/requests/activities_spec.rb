@@ -13,7 +13,7 @@ RSpec.describe "Activities API v1", type: :request do
       follower = FactoryGirl.create :user, name: "A Follower"
       follower.follow(followed)
       Activity.create(owner: followed, actor: follower, subject: followed)
-      post = FactoryGirl.create :post, user: followed
+      post = FactoryGirl.create :post_public, user: followed
       wow = Wow.create(post: post, user: follower)
       Activity.create(owner: followed, actor: follower, subject: wow)
       comment = Comment.create(post: post, user: follower, comment: "This is just an example comment, please ignore.")
@@ -68,7 +68,7 @@ RSpec.describe "Activities API v1", type: :request do
     it "creates notification for new wow on user's post" do 
       followed = FactoryGirl.create :user, name: "The Followed"
       follower = FactoryGirl.create :user, name: "A Follower Who Wows"
-      post = FactoryGirl.create :post, user: followed
+      post = FactoryGirl.create :post_public, user: followed
       post "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(follower) }
       expect(response.status).to eq 201 # created
       expect(followed.notifications.size).to eq 1
@@ -77,7 +77,7 @@ RSpec.describe "Activities API v1", type: :request do
     it "creates notification for new comment on user's post" do 
       followed = FactoryGirl.create :user, name: "The Followed"
       follower = FactoryGirl.create :user, name: "A Follower Who Comments"
-      post = FactoryGirl.create :post, user: followed
+      post = FactoryGirl.create :post_public, user: followed
       comment_params = {
         "comment" => "A trivial comment"
       }.to_json

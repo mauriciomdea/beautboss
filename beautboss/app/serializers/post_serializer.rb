@@ -1,9 +1,13 @@
 class PostSerializer < ActiveModel::Serializer
 
-  attributes :id, :caption, :image, :category, :service, :comments, :wows, :created_at
+  attributes :id, :category, :service, :place, :image, :comments, :wows, :created_at
 
   has_one :user, serializer: UserBasicSerializer
-  has_one :place, serializer: PlaceSerializer
+  # has_one :place, serializer: PlaceSerializer
+
+  def place
+    object.place unless object.place.nil?
+  end
 
   def comments
     object.comments.size
