@@ -17,13 +17,16 @@ RSpec.describe "Posts API v1", type: :request do
 
   describe "POST /api/v1/posts" do
 
-    it "creates a new post for a registered place" do
+    it "creates a new post for a public place" do
       user = FactoryGirl.create :user
       place = FactoryGirl.create :place
       post_params = {
-        "service" => "Post example",
-        "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/somepost.png",
-        "place_id" => place.id
+        "category" => "haircut",
+        "service" => "My beautful new haircut!",
+        "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/haircut.png",
+        "place_id" => place.id,
+        "lat" => place.lat,
+        "lon" => place.lon
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -32,12 +35,41 @@ RSpec.describe "Posts API v1", type: :request do
       }
       post "/api/v1/posts", post_params, request_headers
       expect(response.status).to eq 201 # created
-      expect(Post.last.service).to eq "Post example"	# did it save post to DB?
+      expect(Post.last.service).to eq "My beautful new haircut!"	# did it save post to DB?
       body = JSON.parse(response.body)
       expect(body["id"]).to eq Post.last.id       # did it return the post id?
+      expect(body["category"]).to eq "haircut"    # did it return the correct category?
       expect(body["user"]["id"]).to eq user.id 	  # checks if post belongs to authorized user
       expect(body["place"]["id"]).to eq place.id  # checks if place was set
+      expect(body["lat"]).to eq place.lat
+      expect(body["lon"]).to eq place.lon
   	end
+
+    it "creates a new post for a private place" do
+      user = FactoryGirl.create :user
+      place = FactoryGirl.create :place
+      post_params = {
+        "category" => "nails",
+        "service" => "My beautiful nails!",
+        "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/nails.png",
+        "lat" => "00.01",
+        "lon" => "00.02"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts", post_params, request_headers
+      expect(response.status).to eq 201 # created
+      expect(Post.last.service).to eq "My beautiful nails!"  # did it save post to DB?
+      body = JSON.parse(response.body)
+      expect(body["id"]).to eq Post.last.id     # did it return the post id?
+      expect(body["category"]).to eq "nails"    # did it return the correct category?
+      expect(body["user"]["id"]).to eq user.id  # checks if post belongs to authorized user
+      expect(body["lat"]).to eq 0.01
+      expect(body["lon"]).to eq 0.02
+    end
 
     # it "creates a new post for a new place" do
     #   user = FactoryGirl.create :user

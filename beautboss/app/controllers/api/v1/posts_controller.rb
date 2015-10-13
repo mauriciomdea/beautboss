@@ -32,9 +32,12 @@ class Api::V1::PostsController < ApplicationController
     post = Post.new(
       user: @current_user,
       service: post_params[:service],
-      image: post_params[:image]
+      image: post_params[:image],
+      lat: post_params[:lat],
+      lon: post_params[:lon]
     )
-    post.place = Place.find_by(post_params[:place_id])
+    post.category = post_params[:category]
+    post.place = Place.find_by(post_params[:place_id]) unless post_params[:place_id].nil?
     if post.save
       render json: PostSerializer.new(post).as_json(root: false),
         location: "/api/v1/posts/#{post.id}",
@@ -57,7 +60,7 @@ class Api::V1::PostsController < ApplicationController
   private
 
     def post_params
-      params.permit(:service, :image, :place_id, :category_id)
+      params.permit(:service, :image, :place_id, :category, :lat, :lon)
     end
 
 end

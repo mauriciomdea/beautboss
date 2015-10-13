@@ -1,6 +1,6 @@
 class PostSerializer < ActiveModel::Serializer
 
-  attributes :id, :category, :service, :place, :image, :comments, :wows, :created_at
+  attributes :id, :category, :lat, :lon, :service, :place, :image, :comments, :wows, :created_at
 
   has_one :user, serializer: UserBasicSerializer
   # has_one :place, serializer: PlaceSerializer

@@ -11,9 +11,9 @@ FactoryGirl.define do
   factory :place do
     sequence(:foursquare_id)
     name "Somewhere Hair Style"
-    lat { |n| "00.0#{n}" }
-    lon { |n| "00.0#{n}" }
-    address "Somewhere"
+    sequence(:lat) { |n| "00.0#{n}" }
+    sequence(:lon) { |n| "00.0#{n}" }
+    address "Somewhere, SW"
   end
 
   factory :post do
@@ -21,8 +21,8 @@ FactoryGirl.define do
     factory :post_public do 
       service "A Haircut"
       category { ["haircut", "hairstyle", "colouring", "highlights", "nails", "makeup"].sample }
-      lat { |n| "00.0#{n}".to_f }
-      lon { |n| "00.0#{n}".to_f }
+      sequence(:lat) { |n| "00.0#{n}" }
+      sequence(:lon) { |n| "00.0#{n}" }
       sequence(:image)  { |n| "http://elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/#{n}.png" }
       association :user, factory: :user
       association :place, factory: :place
@@ -31,8 +31,8 @@ FactoryGirl.define do
     factory :post_private do 
       service "A Haircut at Home"
       category { ["haircut", "hairstyle", "colouring", "highlights", "nails", "makeup"].sample }
-      lat { |n| "00.0#{n}" }
-      lon { |n| "00.0#{n}" }
+      sequence(:lat) { |n| "00.0#{n}" }
+      sequence(:lon) { |n| "00.0#{n}" }
       sequence(:image)  { |n| "http://elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/#{n}.png" }
       association :user, factory: :user
     end
