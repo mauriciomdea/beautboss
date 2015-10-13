@@ -2,7 +2,7 @@ class Api::V1::PlacesController < ApplicationController
   before_action :authenticate_user
 
   def index
-    places = Place.search(place_params[:lat], place_params[:lon], place_params[:query])
+    places = Place.search(place_params[:latitude], place_params[:longitude], place_params[:query])
     serialized_places = places.map { |place| PlaceSerializer.new(place).as_json(root: false) }
     render json: serialized_places,
       location: "/api/v1/places",
@@ -34,7 +34,7 @@ class Api::V1::PlacesController < ApplicationController
   private
 
     def place_params
-      params.permit(:foursquare_id, :name, :lat, :lon, :address, :contact, :website, :query)
+      params.permit(:foursquare_id, :name, :latitude, :longitude, :address, :contact, :website, :query)
     end
 
 end

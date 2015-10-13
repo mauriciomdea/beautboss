@@ -1,14 +1,15 @@
 class Place < ActiveRecord::Base
-  # self.primary_key = :foursquare_id
+  geocoded_by :address
+  # after_validation :geocode
 
 	has_many :posts
 
   validates_presence_of :foursquare_id
   validates_uniqueness_of :foursquare_id
 
-  def self.search(lat, lon, query)
+  def self.search(latitude, longitude, query)
 
-    response = self.foursquare_client.search_venues(:ll => "#{lat},#{lon}", :query => query)
+    response = self.foursquare_client.search_venues(:ll => "#{latitude},#{longitude}", :query => query)
     results = []
     response.venues.each { |venue| results << from_foursquare(venue) }
     results
@@ -19,8 +20,8 @@ class Place < ActiveRecord::Base
       place = Place.where(foursquare_id: attributes.id).first_or_initialize do |p|
         p.foursquare_id = attributes.id
         p.name = attributes.name.encode("UTF-8")
-        p.lat = attributes.location.lat
-        p.lon = attributes.location.lng
+        p.latitude = attributes.location.lat
+        p.longitude = attributes.location.lng
         p.address = attributes.location.formattedAddress
         p.contact = attributes.contact.phone
         p.website = attributes.url

@@ -11,7 +11,7 @@ RSpec.describe "Posts API v1", type: :request do
     @public_nails = FactoryGirl.create :post, service: "Nails at Someplace"
     @private_haircut = FactoryGirl.create :post_private, service: "My Haircut"
     @private_nails = FactoryGirl.create :post_private, service: "My Nails"
-    far_away_place = place = FactoryGirl.create :place, lat: "99.99", lon: "99.99"
+    far_away_place = place = FactoryGirl.create :place, latitude: "99.99", longitude: "99.99"
     @far_away_register = FactoryGirl.create :post, service: "Haircut at another town", place: far_away_place
   end
 
@@ -22,11 +22,11 @@ RSpec.describe "Posts API v1", type: :request do
       place = FactoryGirl.create :place
       post_params = {
         "category" => "haircut",
-        "service" => "My beautful new haircut!",
+        "service" => "My beautiful new haircut!",
         "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/haircut.png",
         "place_id" => place.id,
-        "lat" => place.lat,
-        "lon" => place.lon
+        "latitude" => place.latitude,
+        "longitude" => place.longitude
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -35,14 +35,14 @@ RSpec.describe "Posts API v1", type: :request do
       }
       post "/api/v1/posts", post_params, request_headers
       expect(response.status).to eq 201 # created
-      expect(Post.last.service).to eq "My beautful new haircut!"	# did it save post to DB?
+      expect(Post.last.service).to eq "My beautiful new haircut!"	# did it save post to DB?
       body = JSON.parse(response.body)
       expect(body["id"]).to eq Post.last.id       # did it return the post id?
       expect(body["category"]).to eq "haircut"    # did it return the correct category?
       expect(body["user"]["id"]).to eq user.id 	  # checks if post belongs to authorized user
       expect(body["place"]["id"]).to eq place.id  # checks if place was set
-      expect(body["lat"]).to eq place.lat
-      expect(body["lon"]).to eq place.lon
+      expect(body["latitude"]).to eq place.latitude
+      expect(body["longitude"]).to eq place.longitude
   	end
 
     it "creates a new post for a private place" do
@@ -52,8 +52,8 @@ RSpec.describe "Posts API v1", type: :request do
         "category" => "nails",
         "service" => "My beautiful nails!",
         "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/nails.png",
-        "lat" => "00.01",
-        "lon" => "00.02"
+        "latitude" => "00.01",
+        "longitude" => "00.02"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -67,8 +67,8 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["id"]).to eq Post.last.id     # did it return the post id?
       expect(body["category"]).to eq "nails"    # did it return the correct category?
       expect(body["user"]["id"]).to eq user.id  # checks if post belongs to authorized user
-      expect(body["lat"]).to eq 0.01
-      expect(body["lon"]).to eq 0.02
+      expect(body["latitude"]).to eq 0.01
+      expect(body["longitude"]).to eq 0.02
     end
 
     # it "creates a new post for a new place" do

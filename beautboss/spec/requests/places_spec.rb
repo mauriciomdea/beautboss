@@ -12,8 +12,8 @@ RSpec.describe "Places API v1", type: :request do
       place_params = {
         "foursquare_id": "0000000x000x000xx000x00x",
         "name": "Example Haircut",
-        "lat": "-23.99440171762515",
-        "lon": "-46.15780148090618",
+        "latitude": "-23.99440171762515",
+        "longitude": "-46.15780148090618",
         "address": "SP, Brasil",
         "contact": "+551155555555"
       }.to_json
@@ -35,8 +35,8 @@ RSpec.describe "Places API v1", type: :request do
 
     it "gets all nearby venues from foursquare" do 
       place_params = {
-        "lat" => "-23.35",
-        "lon" => "-46.46",
+        "latitude" => "-23.35",
+        "longitude" => "-46.46",
         "query" => "hair"
       }
       # }.to_json
@@ -48,7 +48,7 @@ RSpec.describe "Places API v1", type: :request do
       get "/api/v1/places", place_params, request_headers
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(Place.search(place_params["lat"], place_params["lon"], place_params["query"]).size).to eq body.size
+      expect(Place.search(place_params["latitude"], place_params["longitude"], place_params["query"]).size).to eq body.size
     end
 
   end

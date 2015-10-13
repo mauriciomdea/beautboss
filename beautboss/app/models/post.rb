@@ -1,4 +1,5 @@
 class Post < ActiveRecord::Base
+  reverse_geocoded_by :latitude, :longitude
 
 	belongs_to :user
 	belongs_to :place

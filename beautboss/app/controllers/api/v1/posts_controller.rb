@@ -12,6 +12,9 @@ class Api::V1::PostsController < ApplicationController
       place = Place.find(params[:place_id])
       count = place.posts.size
       posts = place.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
+    else
+      posts = Post.where(category: params[:category]).near("#{params[:latitude]},#{params[:longitude]}")
+      count = posts.size
     end
     serialized_posts = posts.map { |post| PostSerializer.new(post).as_json(root: false) }
     render json: {count: count, posts: serialized_posts},
@@ -33,8 +36,8 @@ class Api::V1::PostsController < ApplicationController
       user: @current_user,
       service: post_params[:service],
       image: post_params[:image],
-      lat: post_params[:lat],
-      lon: post_params[:lon]
+      latitude: post_params[:latitude],
+      longitude: post_params[:longitude]
     )
     post.category = post_params[:category]
     post.place = Place.find_by(post_params[:place_id]) unless post_params[:place_id].nil?
@@ -60,7 +63,7 @@ class Api::V1::PostsController < ApplicationController
   private
 
     def post_params
-      params.permit(:service, :image, :place_id, :category, :lat, :lon)
+      params.permit(:service, :image, :place_id, :category, :latitude, :longitude)
     end
 
 end

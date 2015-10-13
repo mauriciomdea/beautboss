@@ -123,6 +123,7 @@ GEM
       faraday (~> 0.8)
       faraday_middleware (>= 0.8)
       hashie (>= 1.0, < 4.0.0)
+    geocoder (1.2.11)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     has_scope (0.6.0)
@@ -276,6 +277,7 @@ DEPENDENCIES
   factory_girl_rails
   fb_graph2
   foursquare2
+  geocoder
   jbuilder (~> 2.0)
   jquery-rails
   mysql2 (~> 0.3.20)

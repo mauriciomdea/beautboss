@@ -71,6 +71,9 @@ gem 'aws-sdk-rails'
 # Ruby wrapper for the Foursquare v2 API
 gem 'foursquare2'
 
+# Complete Ruby geocoding solution. http://www.rubygeocoder.com
+gem 'geocoder'
+
 # The administration framework for Ruby on Rails applications. http://activeadmin.info
 gem 'activeadmin', '~> 1.0.0.pre2' # Rails 4 compatibility
 # Plus integrations with:
