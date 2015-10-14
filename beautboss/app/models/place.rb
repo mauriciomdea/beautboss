@@ -1,15 +1,18 @@
 class Place < ActiveRecord::Base
-  geocoded_by :address
+  # geocoded_by :address
   # after_validation :geocode
+  acts_as_mappable default_units: :kms,
+                   lat_column_name: :latitude,
+                   lng_column_name: :longitude
 
 	has_many :posts
 
   validates_presence_of :foursquare_id
   validates_uniqueness_of :foursquare_id
 
-  def self.search(latitude, longitude, query)
+  def self.search(latitude, longitude, query, limit=20)
 
-    response = self.foursquare_client.search_venues(:ll => "#{latitude},#{longitude}", :query => query)
+    response = self.foursquare_client.search_venues(ll: "#{latitude},#{longitude}", query: query, limit: limit)
     results = []
     response.venues.each { |venue| results << from_foursquare(venue) }
     results

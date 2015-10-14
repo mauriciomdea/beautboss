@@ -7,12 +7,12 @@ RSpec.describe "Posts API v1", type: :request do
   end
 
   def create_example_posts 
-    @public_haircut = FactoryGirl.create :post, service: "Haircut at Someplace"
-    @public_nails = FactoryGirl.create :post, service: "Nails at Someplace"
+    @public_haircut = FactoryGirl.create :post_public, service: "Haircut at Someplace"
+    @public_nails = FactoryGirl.create :post_public, service: "Nails at Someplace"
     @private_haircut = FactoryGirl.create :post_private, service: "My Haircut"
     @private_nails = FactoryGirl.create :post_private, service: "My Nails"
     far_away_place = place = FactoryGirl.create :place, latitude: "99.99", longitude: "99.99"
-    @far_away_register = FactoryGirl.create :post, service: "Haircut at another town", place: far_away_place
+    @far_away_register = FactoryGirl.create :post_public, service: "Haircut at another town", place: far_away_place
   end
 
   describe "POST /api/v1/posts" do
@@ -208,7 +208,19 @@ RSpec.describe "Posts API v1", type: :request do
     #     "created_at": "2015-10-10T16:43:10.000Z"
     # }
 
-    it "returns all nearby Posts"
+    it "returns all nearby Posts" do
+      create_example_posts
+      post_params = {
+        "category" => "haircut",
+        "latitude" => 0.00,
+        "longitude" => 0.00
+      }
+      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      puts body.to_yaml
+      expect(body["count"]).to eq 2
+    end
 
     it "returns all public Posts nearby"
 

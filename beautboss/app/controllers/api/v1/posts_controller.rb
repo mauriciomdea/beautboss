@@ -13,7 +13,8 @@ class Api::V1::PostsController < ApplicationController
       count = place.posts.size
       posts = place.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
     else
-      posts = Post.where(category: params[:category]).near("#{params[:latitude]},#{params[:longitude]}")
+      # posts = Post.where(category: params[:category]).near("#{params[:latitude]},#{params[:longitude]}")
+      posts = Post.where(category: params[:category]).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
       count = posts.size
     end
     serialized_posts = posts.map { |post| PostSerializer.new(post).as_json(root: false) }

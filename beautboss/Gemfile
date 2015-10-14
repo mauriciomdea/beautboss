@@ -72,7 +72,10 @@ gem 'aws-sdk-rails'
 gem 'foursquare2'
 
 # Complete Ruby geocoding solution. http://www.rubygeocoder.com
-gem 'geocoder'
+# gem 'geocoder'
+
+# Official Geokit plugin for Rails/ActiveRecord. Provides location-based goodness for your Rails app. Requires the Geokit gem.
+gem 'geokit-rails'
 
 # The administration framework for Ruby on Rails applications. http://activeadmin.info
 gem 'activeadmin', '~> 1.0.0.pre2' # Rails 4 compatibility
