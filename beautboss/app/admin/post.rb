@@ -1,6 +1,6 @@
 ActiveAdmin.register Post, as: "Register" do 
 
-  permit_params :caption, :image, :user_id, :place_id, :service_id, :category_id
+  permit_params :service, :image, :user_id, :place_id, :service_id, :category_id
 
   filter :user_name_cont, label: 'User'
   filter :place_name_cont, label: 'Place'

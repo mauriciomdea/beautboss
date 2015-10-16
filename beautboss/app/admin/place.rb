@@ -1,17 +1,26 @@
 ActiveAdmin.register Place do
 
-# See permitted parameters documentation:
-# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-#
-# permit_params :list, :of, :attributes, :on, :model
-#
-# or
-#
-# permit_params do
-#   permitted = [:permitted, :attributes]
-#   permitted << :other if resource.something?
-#   permitted
-# end
+permit_params :place_id, :name
 
+  filter :name
+  filter :foursquare_id
+  filter :created_at
+  filter :updated_at
+
+  index do
+    column :id
+    column :name
+    column :latitude
+    column :longitude
+    column :posts do |place| 
+      place.posts.size
+    end
+    column :created_at do |register| 
+      l register.created_at, format: :custom
+    end
+    column :updated_at do |register| 
+      l register.updated_at, format: :custom
+    end
+  end
 
 end
