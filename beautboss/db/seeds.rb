@@ -18,8 +18,8 @@ roja.follow(mma)
 jane.follow(mma)
 john.follow(mma)
 
-place = Place.create(foursquare_id: '0a0000aa0000000a00aa0001', name: 'Hair Cutters', latitude: -23.53, longitude: -46.62)
-another_place = Place.create(foursquare_id: '0a0000aa0000000a00aa0002', name: 'Haircut R Us', latitude: -23.53, longitude: -46.62)
+place = Place.create(foursquare_id: '0a0000aa0000000a00aa0001', name: 'Hair Cutters', latitude: -23.5301, longitude: -46.6201)
+another_place = Place.create(foursquare_id: '0a0000aa0000000a00aa0002', name: 'Haircut R Us', latitude: -23.5301, longitude: -46.6201)
 
 Post.create(user: jane, category: :haircut, service: 'Female Haircut', image: 'https://igcdn-photos-c-a.akamaihd.net/hphotos-ak-xpf1/t51.2885-15/e15/1516667_585777998223954_1516543266_n.jpg', latitude: -23.53, longitude: -46.62, place: place)
 Post.create(user: john, category: :haircut, service: 'Male Haircut', image: 'http://photos-h.ak.instagram.com/hphotos-ak-xfa1/t51.2885-15/s750x750/sh0.08/e35/11374175_112688785756327_281198921_n.jpg', latitude: -23.53, longitude: -46.62, place: place)

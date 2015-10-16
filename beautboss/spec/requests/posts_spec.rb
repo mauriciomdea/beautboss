@@ -7,24 +7,24 @@ RSpec.describe "Posts API v1", type: :request do
   end
 
   def create_example_posts 
-    @public_haircut = FactoryGirl.create :post_public, service: "Haircut at Someplace"
-    @public_nails = FactoryGirl.create :post_public, service: "Nails at Someplace"
-    @private_haircut = FactoryGirl.create :post_private, service: "My Haircut"
-    @private_nails = FactoryGirl.create :post_private, service: "My Nails"
-    far_away_place = place = FactoryGirl.create :place, latitude: "99.99", longitude: "99.99"
-    @far_away_register = FactoryGirl.create :post_public, service: "Haircut at another town", place: far_away_place
+    @public_haircut = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at Someplace", latitude: '-23.5381', longitude: '-46.2191'
+    @public_nails = FactoryGirl.create :post_public, category: :nails, service: "Nails at Someplace", latitude: '-23.5381', longitude: '-46.2191'
+    @private_haircut = FactoryGirl.create :post_private, category: :haircut, service: "My Haircut", latitude: '-23.5381', longitude: '-46.2191'
+    @private_nails = FactoryGirl.create :post_private, category: :nails, service: "My Nails", latitude: '-23.5381', longitude: '-46.2191'
+    far_away_place = place = FactoryGirl.create :place, latitude: "99.9999", longitude: "99.9999"
+    @far_away_register = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at another town", place: far_away_place, latitude: "99.9999", longitude: "99.9999"
   end
 
   describe "POST /api/v1/posts" do
 
-    it "creates a new post for a public place" do
+    it "creates a new post for a existing public place" do
       user = FactoryGirl.create :user
-      place = FactoryGirl.create :place
+      place = FactoryGirl.create :place, foursquare_id: '4e31c8bb18a8dc38fe84a3e9', latitude: '-23.5381', longitude: '-46.2191'
       post_params = {
         "category" => "haircut",
         "service" => "My beautiful new haircut!",
         "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/haircut.png",
-        "place_id" => place.id,
+        "foursquare_id" => place.foursquare_id,
         "latitude" => place.latitude,
         "longitude" => place.longitude
       }.to_json
@@ -40,7 +40,7 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["id"]).to eq Post.last.id       # did it return the post id?
       expect(body["category"]).to eq "haircut"    # did it return the correct category?
       expect(body["user"]["id"]).to eq user.id 	  # checks if post belongs to authorized user
-      expect(body["place"]["id"]).to eq place.id  # checks if place was set
+      expect(body["place"]["foursquare_id"]).to eq place.foursquare_id  # checks if place was set
       expect(body["latitude"]).to eq place.latitude
       expect(body["longitude"]).to eq place.longitude
   	end
@@ -71,33 +71,34 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["longitude"]).to eq 0.02
     end
 
-    # it "creates a new post for a new place" do
-    #   user = FactoryGirl.create :user
-    #   post_params = {
-    #     "service" => "Post example",
-    #     "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/somepost.png",
-    #     "place" => {
-    #       "foursquare_id": "0000000b498e241bb615b53b",
-    #       "name": "Example Haircut",
-    #       "lat": "-23.99440171762515",
-    #       "lon": "-46.15780148090618",
-    #       "address": "SP, Brasil",
-    #       "contact": "+551155555555"
-    #     }
-    #   }.to_json
-    #   request_headers = {
-    #     "Accept" => "application/json",
-    #     "Content-Type" => "application/json",
-    #     "HTTP_TOKEN" => valid_auth_token(user)
-    #   }
-    #   post "/api/v1/posts", post_params, request_headers
-    #   expect(response.status).to eq 201 # created
-    #   expect(Post.last.service).to eq "Post example"  # did it save post to DB?
-    #   body = JSON.parse(response.body)
-    #   expect(body["id"]).to eq Post.last.id       # did it return the post id?
-    #   expect(body["user"]["id"]).to eq user.id    # checks if post belongs to authorized user
-    #   expect(body["place"]["id"]).not_to be_nil   # checks if place was saved
-    # end
+    it "creates a new post for a new public place" do
+      user = FactoryGirl.create :user
+      post_params = {
+        "category" => "haircut",
+        "service" => "My beautiful new haircut!",
+        "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/haircut.png",
+        "foursquare_id" => '4fb18581e4b0d327d5bd0395',
+        "latitude" => '-23.5742',
+        "longitude" => '-46.6482'
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts", post_params, request_headers
+      place = Place.last
+      post = Post.last
+      expect(response.status).to eq 201 # created
+      expect(post.service).to eq "My beautiful new haircut!" # did it save post to DB?
+      body = JSON.parse(response.body)
+      expect(body["id"]).to eq post.id       # did it return the post id?
+      expect(body["category"]).to eq "haircut"    # did it return the correct category?
+      expect(body["user"]["id"]).to eq user.id    # checks if post belongs to authorized user
+      expect(body["place"]["foursquare_id"]).to eq place.foursquare_id  # checks if place was set
+      expect('%.4f' % body["place"]["latitude"].to_f).to eq place.latitude.to_s
+      expect('%.4f' % body["place"]["longitude"].to_f).to eq place.longitude.to_s
+    end
 
     it "returns an error for an invalid post" do 
       post_params = {
@@ -211,22 +212,64 @@ RSpec.describe "Posts API v1", type: :request do
     it "returns all nearby Posts" do
       create_example_posts
       post_params = {
-        "category" => "haircut",
-        "latitude" => 0.00,
-        "longitude" => 0.00
+        # "have_place" => true,
+        "category" => 0,
+        "latitude" => -23.5381,
+        "longitude" => -46.2191
       }
       get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      puts body.to_yaml
       expect(body["count"]).to eq 2
     end
 
-    it "returns all public Posts nearby"
+    it "returns all public Posts nearby" do 
+      create_example_posts
+      post_params = {
+        "have_place" => true,
+        "category" => 0,
+        "latitude" => -23.5381,
+        "longitude" => -46.2191
+      }
+      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 1
+      expect(body["posts"][0]["service"]).to eq "Haircut at Someplace"
+      expect(body["posts"][0]["place"]).not_to be_nil
+    end
 
-    it "returns all private Posts nearby"
+    it "returns all private Posts nearby" do 
+      create_example_posts
+      post_params = {
+        "have_place" => false,
+        "category" => 0,
+        "latitude" => -23.5381,
+        "longitude" => -46.2191
+      }
+      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 1
+      expect(body["posts"][0]["service"]).to eq "My Haircut"
+      expect(body["posts"][0]["place"]).to be_nil
+    end
 
-    it "returns all Posts from a Category"
+    it "returns all Posts from a Category" do 
+      create_example_posts
+      post_params = {
+        # "have_place" => true,
+        "category" => 4,
+        "latitude" => -23.5381,
+        "longitude" => -46.2191
+      }
+      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 2
+      expect(body["posts"][0]["category"]).to eq 'nails'
+      expect(body["posts"][1]["category"]).to eq 'nails'
+    end
 
     it "returns all nearby Posts by service name"
 

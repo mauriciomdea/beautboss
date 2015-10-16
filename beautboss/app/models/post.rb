@@ -1,5 +1,4 @@
 class Post < ActiveRecord::Base
-  # reverse_geocoded_by :latitude, :longitude
   acts_as_mappable default_units: :kms,
                    lat_column_name: :latitude,
                    lng_column_name: :longitude

@@ -9,7 +9,7 @@ FactoryGirl.define do
   end
 
   factory :place do
-    sequence(:foursquare_id)
+    sequence(:foursquare_id) { |n| "4a00a0bb00a0aa00aa00a0a#{n}" } 
     name "Somewhere Hair Style"
     sequence(:latitude) { |n| "0.000#{n}" }
     sequence(:longitude) { |n| "0.000#{n}" }

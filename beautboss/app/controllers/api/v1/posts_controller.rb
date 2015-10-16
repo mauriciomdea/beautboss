@@ -2,25 +2,35 @@ class Api::V1::PostsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    posts = nil
+    @posts = nil
     count = 0
     if params[:user_id]
       user = User.find(params[:user_id])
       count = user.posts.size
-      posts = user.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
+      @posts = user.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
     elsif params[:place_id]
       place = Place.find(params[:place_id])
       count = place.posts.size
-      posts = place.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
+      @posts = place.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
     else
-      # posts = Post.where(category: params[:category]).near("#{params[:latitude]},#{params[:longitude]}")
-      posts = Post.where(category: params[:category]).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
-      count = posts.size
+      params.require(:category)
+      params.require(:latitude)
+      params.require(:longitude)
+      if params[:have_place] && params[:have_place] == "true"
+        @posts = Post.where(category: params[:category]).where.not(place: nil).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+      elsif params[:have_place] && params[:have_place] == "false"
+        @posts = Post.where(category: params[:category], place: nil).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+      else
+        @posts = Post.where(category: params[:category]).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+      end
+      count = @posts.size
     end
-    serialized_posts = posts.map { |post| PostSerializer.new(post).as_json(root: false) }
+    serialized_posts = @posts.map { |post| PostSerializer.new(post).as_json(root: false) }
     render json: {count: count, posts: serialized_posts},
       location: "/api/v1/users/#{@current_user.id}/posts",
       status: :ok
+  rescue => err
+    render json: {error: err.to_s}, status: 422
   end
 
   def show
@@ -41,7 +51,7 @@ class Api::V1::PostsController < ApplicationController
       longitude: post_params[:longitude]
     )
     post.category = post_params[:category]
-    post.place = Place.find_by(post_params[:place_id]) unless post_params[:place_id].nil?
+    post.place = Place.create_from_foursquare(post_params[:foursquare_id]) unless post_params[:foursquare_id].nil?
     if post.save
       render json: PostSerializer.new(post).as_json(root: false),
         location: "/api/v1/posts/#{post.id}",
@@ -64,7 +74,7 @@ class Api::V1::PostsController < ApplicationController
   private
 
     def post_params
-      params.permit(:service, :image, :place_id, :category, :latitude, :longitude)
+      params.permit(:service, :image, :foursquare_id, :category, :latitude, :longitude, :have_place)
     end
 
 end

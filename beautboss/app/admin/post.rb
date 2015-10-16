@@ -15,16 +15,24 @@ ActiveAdmin.register Post, as: "Register" do
     column :image do |register|
       link_to image_tag(register.image, size: '64x64'), admin_register_path(register)
     end
-    column :caption
     column :user
     column :place
     column :category
+    column :latitude
+    column :longitude
     column :service
     column :wows do |register| 
       register.wows.size
     end
-    column :created_at
-    column :updated_at
+    column :comments do |register| 
+      register.comments.size
+    end
+    column :created_at do |register| 
+      l register.created_at, format: :custom
+    end
+    column :updated_at do |register| 
+      l register.updated_at, format: :custom
+    end
   end
 
 end

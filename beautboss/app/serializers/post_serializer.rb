@@ -6,7 +6,7 @@ class PostSerializer < ActiveModel::Serializer
   # has_one :place, serializer: PlaceSerializer
 
   def place
-    object.place unless object.place.nil?
+    PlaceSerializer.new(object.place).as_json(root: false) unless object.place.nil?
   end
 
   def comments
