@@ -61,6 +61,16 @@ ActiveAdmin.register User do
       end
     end
 
+    panel "Followers" do
+      table_for user.followers do
+        column :id
+        column :user do |user| 
+          link_to user.name, admin_user_path(user)
+        end
+        column :created_at
+      end
+    end
+
   end
 
 end

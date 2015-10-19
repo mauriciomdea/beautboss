@@ -43,11 +43,16 @@ RSpec.describe "Users API v1", type: :request do
   describe "GET /api/v1/users/:id" do
 
     it "returns requested user" do
+      current_user = FactoryGirl.create :user
       user = FactoryGirl.create :user, name: "John Doe"
-      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(current_user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["name"]).to eq "John Doe"
+      expect(body["followers"]).to eq 0
+      expect(body["following"]).to eq 0
+      expect(body["posts"]).to eq 0
+      expect(body["is_following"]).to be false
     end
 
     it "returns not found error for unknown user" do
