@@ -11,61 +11,56 @@ ActiveAdmin.register_page "Dashboard" do
   #   end
   # end
 
-    content title: proc{ I18n.t("active_admin.dashboard") } do
+  content title: proc{ I18n.t("active_admin.dashboard") } do
 
-        # panel "Info" do
-        #   para "Welcome to ActiveAdmin."
-        # end
+    columns do
 
-        columns do
+      column max_width: "800px", min_width: "800px" do
 
-          column do
+        panel link_to 'Latest registers', admin_registers_path do
 
-            panel "#{User.count} total users" do
-            
-                table do
-                    User.order("created_at desc").limit(10).map do |user|
-                        tr do
-                            td image_tag user.avatar, size: '32x32'
-                            td "#{time_ago_in_words user.created_at} ago"
-                            td link_to(user.name, admin_user_path(user))
-                            td user.email
-                        end
-                    end
-                end
-                span link_to "Manage all users...", admin_users_path
-
-            end
-
+          Post.order("created_at desc").limit(5).map do |register|
+            span link_to image_tag(register.image, size: '150x150', alt: register.user.name), admin_register_path(register)
           end
+            
+        end
 
-          column max_width: "170px", min_width: "170px" do
+        panel 'Latest reports' do
 
-            panel "#{Post.count} total registers" do
+          Report.order("created_at desc").limit(5).map do |report|
+            span link_to image_tag(report.post.image, size: '150x150', alt: report.user.name), admin_register_path(report.post)
+          end
+            
+        end
 
-                table do
-                    Post.order("created_at desc").limit(5).map do |register|
-                        tr do 
-                            td link_to image_tag(register.image, size: '128x128', alt: register.user.name), admin_register_path(register)
-                        end
-                    end
-                end
-                span link_to "Manage all registers...", admin_registers_path
+        panel "Latest registered users" do
 
+          table do
+            User.order("created_at desc").limit(5).map do |user|
+              tr do
+                td image_tag user.avatar, size: '32x32'
+                td "#{time_ago_in_words user.created_at} ago"
+                td link_to(user.name, admin_user_path(user))
+                td user.email
+              end
             end
-
           end
 
         end
 
-        # panel "Latest Registers" do
-            
-        # end
+      end # left column
 
-        # panel "Recent Users" do
-            
-        # end
+      column max_width: "160px", min_width: "160px" do
 
-    end
+        panel "Metrics" do
+          h2 "#{User.count} users"
+          h2 "#{Post.count} registers"
+        end
 
-end
+      end # right column
+
+    end # columns
+
+  end # content
+
+end # dashboard

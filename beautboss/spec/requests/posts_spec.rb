@@ -185,30 +185,6 @@ RSpec.describe "Posts API v1", type: :request do
 
   describe "GET /api/v1/posts" do 
 
-    # {
-    #     "id": 1,
-    #     "category": "haircut",
-    #     "lat": -23.1234,
-    #     "lon": -46.1234,
-    #     "service": "Female Haircut",
-    #     "user": {
-    #         "id": 2
-    #         "name": "Jane Smith"
-    #         "avatar": "https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p50x50/12038035_10153568053793444_3955325592428203406_n.jpg"
-    #     },
-    #     "place": {
-    #         "id": 123,
-    #         "name": "Beau London",
-    #         "lat": -23.1234,
-    #         "lon": -46.1234
-    #     },
-    #     "wow": 26,
-    #     "wow_friends": 6,
-    #     "my_wow": false,
-    #     "url": "http://symphony.clinic/wp-content/uploads/2015/05/haircut.jpg",
-    #     "created_at": "2015-10-10T16:43:10.000Z"
-    # }
-
     it "returns all nearby Posts" do
       create_example_posts
       post_params = {
@@ -373,5 +349,61 @@ RSpec.describe "Posts API v1", type: :request do
     end
     
   end
+
+  # Reports
+
+  describe "POST /api/v1/posts/:id/reports" do
+
+    it "reports a post" do 
+      user = FactoryGirl.create :user
+      post = FactoryGirl.create :post_public
+      report = FactoryGirl.create :report, post: post
+      report_params = {
+        "flag" => "other",
+        "explanation" => "Report this test!"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts/#{post.id}/reports", report_params, request_headers
+      expect(post.reports.size).to eq 2
+      expect(response.status).to eq 201 # created
+      body = JSON.parse(response.body)
+      expect(body["post"]["id"]).to eq post.id
+      expect(body["user"]["id"]).to eq user.id
+      expect(body["flag"]).to eq "Other"
+      expect(body["explanation"]).to eq "Report this test!"
+    end
+
+  end
+
+  # describe "GET /api/v1/posts/:id/reports" do
+
+  #   it "returns all reports from a post" do 
+  #     post = FactoryGirl.create :post_public
+  #     report1 = FactoryGirl.create :report, post: post
+  #     report2 = FactoryGirl.create :report, post: post
+  #     get "/api/v1/posts/#{post.id}/reports", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+  #     expect(response.status).to eq 200 # ok
+  #     body = JSON.parse(response.body)
+  #     expect(body.size).to eq 2
+  #   end
+    
+  # end
+
+  # describe "DELETE /api/v1/posts/:id/reports/:id" do
+
+  #   it "unreport a post" do
+  #     post = FactoryGirl.create :post_public
+  #     user = FactoryGirl.create :user
+  #     report = FactoryGirl.create :report, post: post, user: user
+  #     delete "/api/v1/posts/#{post.id}/reports/#{report.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+  #     expect(response.status).to eq 204 # ok, no content
+  #     expect(post.reports.size).to eq 0
+  #   end
+    
+  # end
 
 end

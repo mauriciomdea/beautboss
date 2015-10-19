@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true, if: 'facebook.nil?'
   validates :password, presence: true, if: 'facebook.nil?'
 
-  has_many :posts
-  has_many :wows, dependent: :destroy
-  has_many :comments, dependent: :destroy
+  has_many :posts, dependent: :delete_all
+  has_many :wows, dependent: :delete_all
+  has_many :comments, dependent: :delete_all
 
   has_many :outbound_relationships, class_name:  'Relationship',
                                     foreign_key: 'follower_id',

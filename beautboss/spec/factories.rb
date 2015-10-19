@@ -46,6 +46,11 @@ FactoryGirl.define do
     association :post, factory: :post_public
   end
 
+  factory :report do
+    association :user, factory: :user
+    association :post, factory: :post_public
+  end
+
   factory :activity do
     
     association :owner, factory: :user

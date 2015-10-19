@@ -14,7 +14,7 @@ class Api::V1::WowsController < ApplicationController
 
   def create
     user = @current_user
-    post = Post.find_by(params[:post_id])
+    post = Post.find(params[:post_id])
     wow = Wow.new(post: post, user: user)
     if wow.save
       Activity.create(owner: post.user, actor: user, subject: wow)

@@ -6,11 +6,12 @@ class Post < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :place
 
-  has_many :wows
-  has_many :comments
+  has_many :wows, dependent: :delete_all
+  has_many :comments, dependent: :delete_all
+  has_many :reports, dependent: :delete_all
 
   enum category: [:haircut, :hairstyle, :colouring, :highlights, :nails, :makeup]
 
-	validates_presence_of :user, :service, :image
+	validates_presence_of :user, :category, :service, :image
 
 end

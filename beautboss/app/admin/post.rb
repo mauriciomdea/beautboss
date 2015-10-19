@@ -1,4 +1,6 @@
 ActiveAdmin.register Post, as: "Register" do 
+  # actions :index, :show, :new, :create, :update, :edit
+  actions :index, :show, :destroy
 
   permit_params :service, :image, :user_id, :place_id, :service_id, :category_id
 
@@ -15,12 +17,15 @@ ActiveAdmin.register Post, as: "Register" do
     column :image do |register|
       link_to image_tag(register.image, size: '64x64'), admin_register_path(register)
     end
+    column :service
     column :user
     column :place
     column :category
     column :latitude
     column :longitude
-    column :service
+    column :flags do |register| 
+      register.reports.size
+    end
     column :wows do |register| 
       register.wows.size
     end
@@ -33,6 +38,59 @@ ActiveAdmin.register Post, as: "Register" do
     column :updated_at do |register| 
       l register.updated_at, format: :custom
     end
+  end
+
+  show title: :service do
+
+    attributes_table do
+      row :id
+      row :service
+      row :image do |register|
+        link_to register.image, register.image
+      end
+      row :user
+      row :place
+      row :category
+      row :latitude
+      row :longitude
+      row :flags do |register| 
+        register.reports.size
+      end
+      row :wows do |register| 
+        register.wows.size
+      end
+      row :comments do |register| 
+        register.comments.size
+      end
+      row :created_at do |register| 
+        l register.created_at, format: :custom
+      end
+      row :updated_at do |register| 
+        l register.updated_at, format: :custom
+      end
+    end
+
+    panel "Comments" do
+      table_for register.comments do
+        column :id
+        column :comment
+        column :user
+        column :created_at
+      end
+    end
+
+    panel "Flags" do
+      table_for register.reports do
+        column :id
+        column :flag do |report|
+          report.flag.humanize
+        end 
+        column :explanation
+        column :user
+        column :created_at
+      end
+    end
+
   end
 
 end

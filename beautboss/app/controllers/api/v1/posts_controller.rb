@@ -59,6 +59,8 @@ class Api::V1::PostsController < ApplicationController
     else
       render json: { errors: post.errors.full_messages }, status: 422
     end
+  rescue => err
+    render json: {error: err.to_s}, status: 422
   end
 
   def destroy
