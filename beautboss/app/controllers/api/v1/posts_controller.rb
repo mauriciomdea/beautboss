@@ -17,11 +17,11 @@ class Api::V1::PostsController < ApplicationController
       params.require(:latitude)
       params.require(:longitude)
       if params[:have_place] && params[:have_place] == "true"
-        @posts = Post.where(category: params[:category]).where.not(place: nil).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+        @posts = Post.where(category: params[:category]).where("service LIKE :service", service: "%#{post_params[:service]}%").where.not(place: nil).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
       elsif params[:have_place] && params[:have_place] == "false"
-        @posts = Post.where(category: params[:category], place: nil).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+        @posts = Post.where(category: params[:category], place: nil).where("service LIKE :service", service: "%#{post_params[:service]}%").within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
       else
-        @posts = Post.where(category: params[:category]).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+        @posts = Post.where(category: params[:category]).where("service LIKE :service", service: "%#{post_params[:service]}%").within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
       end
       count = @posts.size
     end

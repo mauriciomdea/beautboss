@@ -247,7 +247,19 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["posts"][1]["category"]).to eq 'nails'
     end
 
-    it "returns all nearby Posts by service name"
+    it "returns all nearby Posts by service name" do 
+      create_example_posts
+      post_params = {
+        "category" => 0,
+        "latitude" => -23.5381,
+        "longitude" => -46.2191,
+        "service" => "Haircut at Someplace"
+      }
+      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 1
+    end
 
   end
 
