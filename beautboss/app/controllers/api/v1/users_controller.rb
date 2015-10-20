@@ -77,17 +77,29 @@ class Api::V1::UsersController < ApplicationController
     render json: {error: "Not found"}, status: :not_found, root: false
   end
 
+  def posts 
+    user = User.find(params[:id])
+    count = user.posts.size
+    @posts = user.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
+    serialized_posts = @posts.map { |post| PostSerializer.new(post).as_json(root: false) }
+    render json: {count: count, posts: serialized_posts},
+      location: "/api/v1/users/#{user.id}/posts",
+      status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: "Not found"}, status: :not_found, root: false
+  end
+
+  private
+
+    def user_params
+      params.permit(:name, :email, :password, :avatar, :website, :location, :bio)
+    end
+
+    def _render_user(user, status = :ok)
+      render json: user, serializer: UserFullSerializer, current_user: @current_user, location: "/api/v1/users/#{user.id}", status: status
+      # render json: UserSerializer.new(user, current_user: @current_user).as_json(root: false),
+      #   location: "/api/v1/users/#{user.id}",
+      #   status: status
+    end
+  
 end
-
-private
-
-  def user_params
-    params.permit(:name, :email, :password, :avatar, :website, :location, :bio)
-  end
-
-  def _render_user(user, status = :ok)
-    render json: user, serializer: UserFullSerializer, current_user: @current_user, location: "/api/v1/users/#{user.id}", status: status
-    # render json: UserSerializer.new(user, current_user: @current_user).as_json(root: false),
-    #   location: "/api/v1/users/#{user.id}",
-    #   status: status
-  end

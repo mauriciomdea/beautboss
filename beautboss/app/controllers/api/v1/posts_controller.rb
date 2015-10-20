@@ -2,35 +2,27 @@ class Api::V1::PostsController < ApplicationController
   before_action :authenticate_user
 
   def index
-    @posts = nil
-    count = 0
-    if params[:user_id]
-      user = User.find(params[:user_id])
-      count = user.posts.size
-      @posts = user.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
-    elsif params[:place_id]
-      place = Place.find(params[:place_id])
-      count = place.posts.size
-      @posts = place.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
-    else
-      params.require(:category)
-      params.require(:latitude)
-      params.require(:longitude)
-      if params[:have_place] && params[:have_place] == "true"
-        @posts = Post.where(category: params[:category]).where("service LIKE :service", service: "%#{post_params[:service]}%").where.not(place: nil).within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
-      elsif params[:have_place] && params[:have_place] == "false"
-        @posts = Post.where(category: params[:category], place: nil).where("service LIKE :service", service: "%#{post_params[:service]}%").within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
-      else
-        @posts = Post.where(category: params[:category]).where("service LIKE :service", service: "%#{post_params[:service]}%").within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
-      end
-      count = @posts.size
-    end
-    serialized_posts = @posts.map { |post| PostSerializer.new(post).as_json(root: false) }
-    render json: {count: count, posts: serialized_posts},
+
+    params.require(:category)
+    params.require(:latitude)
+    params.require(:longitude)
+
+    posts = Post.where(category: params[:category]).where("service LIKE :service", service: "%#{post_params[:service]}%")
+
+    # have_place = true for public places, false for private, null for both
+    posts = posts.where.not(place: nil) if params[:have_place] && params[:have_place] == "true"
+    posts = posts.where(place: nil) if params[:have_place] && params[:have_place] == "false"
+
+    posts = posts.within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+
+    serialized_posts = posts.map { |post| PostSerializer.new(post).as_json(root: false) }
+    render json: {count: posts.size, posts: serialized_posts},
       location: "/api/v1/users/#{@current_user.id}/posts",
       status: :ok
+
   rescue => err
     render json: {error: err.to_s}, status: 422
+
   end
 
   def show

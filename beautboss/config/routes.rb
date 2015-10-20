@@ -7,8 +7,8 @@ Rails.application.routes.draw do
     namespace :v1 do
 
       resources :users, except: [:index, :new, :edit] do
-        resources :posts, only: :index   
         member do
+          get 'posts'  => 'users#posts'  
           post 'follow' => 'followers#create'
           delete 'follow' => 'followers#destroy'
           get :following, :followers
@@ -28,7 +28,9 @@ Rails.application.routes.draw do
       end
 
       resources :places, only: [:index, :show] do 
-        resources :posts, only: :index
+        member do 
+          get 'posts'  => 'places#posts'
+        end
       end
 
     end
