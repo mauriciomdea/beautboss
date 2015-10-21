@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151019033225) do
+ActiveRecord::Schema.define(version: 20151020170146) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -93,12 +93,13 @@ ActiveRecord::Schema.define(version: 20151019033225) do
     t.string   "image",      limit: 255
     t.string   "service",    limit: 255
     t.integer  "user_id",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "place_id",   limit: 4
     t.integer  "category",   limit: 4
     t.float    "latitude",   limit: 24
     t.float    "longitude",  limit: 24
+    t.integer  "wows_count", limit: 4,   default: 0
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree

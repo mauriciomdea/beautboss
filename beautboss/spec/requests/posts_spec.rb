@@ -7,10 +7,10 @@ RSpec.describe "Posts API v1", type: :request do
   end
 
   def create_example_posts 
-    @public_haircut = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at Someplace", latitude: '-23.5381', longitude: '-46.2191'
-    @public_nails = FactoryGirl.create :post_public, category: :nails, service: "Nails at Someplace", latitude: '-23.5381', longitude: '-46.2191'
-    @private_haircut = FactoryGirl.create :post_private, category: :haircut, service: "My Haircut", latitude: '-23.5381', longitude: '-46.2191'
-    @private_nails = FactoryGirl.create :post_private, category: :nails, service: "My Nails", latitude: '-23.5381', longitude: '-46.2191'
+    @public_haircut = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at Someplace", latitude: '-23.538103', longitude: '-46.219103'
+    @public_nails = FactoryGirl.create :post_public, category: :nails, service: "Nails at Someplace", latitude: '-23.538104', longitude: '-46.219104'
+    @private_haircut = FactoryGirl.create :post_private, category: :haircut, service: "My Haircut", latitude: '-23.538101', longitude: '-46.219101'
+    @private_nails = FactoryGirl.create :post_private, category: :nails, service: "My Nails", latitude: '-23.538102', longitude: '-46.219102'
     far_away_place = place = FactoryGirl.create :place, latitude: "99.9999", longitude: "99.9999"
     @far_away_register = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at another town", place: far_away_place, latitude: "99.9999", longitude: "99.9999"
   end
@@ -261,6 +261,43 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["count"]).to eq 1
     end
 
+    it "returns all nearby Posts ordered by distance" do 
+      create_example_posts
+      post_params = {
+        "category" => 0,
+        "latitude" => -23.538100,
+        "longitude" => -46.219100,
+        "order" => "closest"
+      }
+      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 2
+      expect(body["posts"][0]["id"]).to eq @private_haircut.id
+      expect(body["posts"][1]["id"]).to eq @public_haircut.id
+    end
+
+    it "returns all nearby Posts ordered by most wows" do 
+      for i in 1..5
+         p = FactoryGirl.create :post_private, category: :haircut, service: "Post #{i}", created_at: i.days.ago
+         for j in 1..i
+          FactoryGirl.create :wow, post: p
+         end
+      end
+      post_params = {
+        "category" => 0,
+        "latitude" => 0.0001,
+        "longitude" => 0.0001,
+        "order" => "best"
+      }
+      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 5
+      expect(body["posts"][0]["wows"]).to eq 5
+      expect(body["posts"][4]["wows"]).to eq 1
+    end
+
   end
 
   # Wows
@@ -269,10 +306,11 @@ RSpec.describe "Posts API v1", type: :request do
 
     it "wows a post" do 
       user = FactoryGirl.create :user
-      post = FactoryGirl.create :post_public
+      post = FactoryGirl.create :post_private
       wow = FactoryGirl.create :wow, post: post
       post "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
-      expect(post.wows.size).to eq 2
+      expect(Post.find(post.id).wows.size).to eq 2
+      expect(Post.find(post.id).wows_count).to eq 2
       expect(response.status).to eq 201 # created
       body = JSON.parse(response.body)
       expect(body["post"]["id"]).to eq post.id
@@ -284,13 +322,14 @@ RSpec.describe "Posts API v1", type: :request do
   describe "GET /api/v1/posts/:id/wows" do
 
     it "returns all wows from a post" do 
-      post = FactoryGirl.create :post_public
-      wow1 = FactoryGirl.create :wow, post: post
-      wow2 = FactoryGirl.create :wow, post: post
+      post = FactoryGirl.create :post_private
+      for i in 0..2
+        FactoryGirl.create :wow, post: post
+      end
       get "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body.size).to eq 2
+      expect(body.size).to eq 3
     end
     
   end
@@ -298,12 +337,13 @@ RSpec.describe "Posts API v1", type: :request do
   describe "DELETE /api/v1/posts/:id/wows/:id" do
 
     it "de-wows a post" do
-      post = FactoryGirl.create :post_public
+      post = FactoryGirl.create :post_private
       user = FactoryGirl.create :user
       wow = FactoryGirl.create :wow, post: post, user: user
       delete "/api/v1/posts/#{post.id}/wows/#{wow.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
       expect(response.status).to eq 204 # ok, no content
-      expect(post.wows.size).to eq 0
+      expect(Post.find(post.id).wows.size).to eq 0
+      expect(Post.find(post.id).wows_count).to eq 0
     end
     
   end
