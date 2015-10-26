@@ -90,17 +90,21 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def friends
-    profile = FbGraph2::User.me(user_params[:access_token]).fetch
-    profile.fetch
-    ids = []
-    profile.friends.each do |friend|
-      ids << friend.id
+    friends = []
+    if user_params[:emails]
+      emails = params[:emails].split(/,/)
+      friends = User.where("email IN (?)", emails)
+    elsif user_params[:access_token]
+      profile = FbGraph2::User.me(user_params[:access_token]).fetch
+      profile.fetch
+      ids = []
+      profile.friends.each do |friend|
+        ids << friend.id
+      end
+      friends = User.where("facebook IN (?)", ids)
     end
-    friends = User.where("facebook IN (?)", ids)
-    # render json: { count: 0, friends: ActiveModel::ArraySerializer.new(friends, each_serializer: UserFullSerializer, current_user: @current_user).to_json },
     serialized_friends = friends.map { |user| FriendSerializer.new(Friend.new(user: user, other_user: @current_user)).as_json(root:false) }
     render json: {count: friends.size, friends: serialized_friends },
-    # render json: friends, each_serializer: UserFullSerializer, current_user: @current_user,
       location: "/api/v1/users/#{params[:id]}/friends",
       status: :ok
   rescue FbGraph2::Exception  => err
@@ -110,7 +114,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
     def user_params
-      params.permit(:name, :email, :password, :avatar, :website, :location, :bio, :access_token)
+      params.permit(:name, :email, :password, :avatar, :website, :location, :bio, :access_token, :emails)
     end
 
     def _render_user(user, status = :ok)

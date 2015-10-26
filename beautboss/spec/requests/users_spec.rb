@@ -170,7 +170,7 @@ RSpec.describe "Users API v1", type: :request do
 
   describe "GET /api/v1/users/:id/friends" do
 
-    it "gets friends from Facebook" do 
+    xit "gets friends from Facebook" do 
       user = FactoryGirl.create :user, name: "Mauricio Almeida", facebook: "815418443"
       friend = FactoryGirl.create :user, name: "Rogerio Shimizu", facebook: "10207863495531706"
       request_headers = {
@@ -185,7 +185,7 @@ RSpec.describe "Users API v1", type: :request do
       expect(body["friends"][0]["name"]).to eq "Rogerio Shimizu"
     end
 
-    xit "gets friends from contact's emails" do 
+    it "gets friends from contact's emails" do 
       user = FactoryGirl.create :user
       friend1 = FactoryGirl.create :user, email: "one@example.com"
       friend2 = FactoryGirl.create :user, email: "two@example.com"
