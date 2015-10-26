@@ -1,10 +1,13 @@
 class User < ActiveRecord::Base
   has_secure_password validations: false
 
+  before_validation :generate_username
+
   validates :name, presence: true
   validates :email, uniqueness: true
   validates :email, presence: true, if: 'facebook.nil?'
-  validates :password, presence: true, if: 'facebook.nil?'
+  validates :password, presence: true, if: 'facebook.nil? && password_digest.nil?'
+  validates :username, uniqueness: true, presence: true
 
   has_many :posts, dependent: :delete_all
   has_many :wows, dependent: :delete_all
@@ -26,6 +29,20 @@ class User < ActiveRecord::Base
   has_many :notifications,  -> { order(created_at: :desc) },
                             class_name:  'Activity',
                             foreign_key: 'user_id'
+
+  # def to_param
+  #   username # or name.parameterize
+  # end
+
+  def generate_username
+    username = name.parameterize.underscore
+    i = 1
+    while User.find_by(username: username) 
+      username = "#{username}#{i}"
+      i += 1
+    end
+    self.username ||= username
+  end
 
   # Follows a user
   def follow(other_user)

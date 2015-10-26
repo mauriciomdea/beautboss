@@ -23,6 +23,7 @@ RSpec.describe "Users API v1", type: :request do
       expect(User.last.name).to eq "John Doe"
       body = JSON.parse(response.body)
       expect(body["user"]["name"]).to eq "John Doe"
+      expect(body["user"]["username"]).to eq "john_doe"
       expect(body["token"]).not_to be_nil
     end
 
@@ -49,6 +50,7 @@ RSpec.describe "Users API v1", type: :request do
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["name"]).to eq "John Doe"
+      expect(body["username"]).to eq "john_doe"
       expect(body["followers"]).to eq 0
       expect(body["following"]).to eq 0
       expect(body["posts"]).to eq 0
@@ -74,7 +76,8 @@ RSpec.describe "Users API v1", type: :request do
         "avatar" => "http://some.cdn.com/some_image.jpg",
         "website" => "example.com",
         "location" => "Somewhere, NA",
-        "bio" => "Blablabla."
+        "bio" => "Blablabla.",
+        "username" => "janexxx"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -84,6 +87,7 @@ RSpec.describe "Users API v1", type: :request do
       put "/api/v1/users/#{user.id}", user_params, request_headers
       expect(response.status).to eq 200 # ok
       expect(User.find(user.id).name).to eq "Jane Smith"
+      expect(User.find(user.id).username).to eq "janexxx"
       expect(User.find(user.id).website).to eq "example.com"
     end
 

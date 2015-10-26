@@ -114,7 +114,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
     def user_params
-      params.permit(:name, :email, :password, :avatar, :website, :location, :bio, :access_token, :emails)
+      params.permit(:name, :username, :email, :password, :avatar, :website, :location, :bio, :access_token, :emails)
     end
 
     def _render_user(user, status = :ok)

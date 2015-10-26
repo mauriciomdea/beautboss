@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020170146) do
+ActiveRecord::Schema.define(version: 20151026185424) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -143,7 +143,10 @@ ActiveRecord::Schema.define(version: 20151020170146) do
     t.boolean  "notify_new_follower"
     t.boolean  "notify_new_comment"
     t.boolean  "notify_new_wow"
+    t.string   "username",            limit: 255
   end
+
+  add_index "users", ["username"], name: "index_users_on_username", using: :btree
 
   create_table "wows", force: :cascade do |t|
     t.integer  "post_id",    limit: 4
