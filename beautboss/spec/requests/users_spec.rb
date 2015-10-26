@@ -166,4 +166,43 @@ RSpec.describe "Users API v1", type: :request do
 
   end
 
+  # Friends
+
+  describe "GET /api/v1/users/:id/friends" do
+
+    it "gets friends from Facebook" do 
+      user = FactoryGirl.create :user, name: "Mauricio Almeida", facebook: "815418443"
+      friend = FactoryGirl.create :user, name: "Rogerio Shimizu", facebook: "10207863495531706"
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      get "/api/v1/users/#{user.id}/friends?access_token=#{ENV['ACCESS_TOKEN']}", {}, request_headers
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 1
+      expect(body["friends"][0]["name"]).to eq "Rogerio Shimizu"
+    end
+
+    xit "gets friends from contact's emails" do 
+      user = FactoryGirl.create :user
+      friend1 = FactoryGirl.create :user, email: "one@example.com"
+      friend2 = FactoryGirl.create :user, email: "two@example.com"
+      friend3 = FactoryGirl.create :user, email: "three@example.com"
+      emails = "two@example.com,three@example.com,four@example.com"
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      get "/api/v1/users/#{user.id}/friends?emails=#{emails}", {}, request_headers
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 2
+      expect(body["friends"][0]["email"]).to eq "two@example.com"
+    end
+
+  end
+
 end

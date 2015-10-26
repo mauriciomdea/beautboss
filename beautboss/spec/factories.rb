@@ -1,11 +1,10 @@
 FactoryGirl.define do
 
   factory :user do
-    # name "John Doe"
-    # email { "#{name.underscore}@example.com" }
     sequence(:name)  { |n| "Robot #{n}" }
     sequence(:email) { |n| "robot#{n}@example.com"}
     password "1234"
+    sequence(:facebook)  { |n| "#{n}" }
   end
 
   factory :place do

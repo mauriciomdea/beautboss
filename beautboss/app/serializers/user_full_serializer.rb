@@ -15,7 +15,7 @@ class UserFullSerializer < ActiveModel::Serializer
   end
 
   def is_following
-    serialization_options[:current_user].following.include?(object)
+    serialization_options[:current_user].following?(object)
   end
 
 end

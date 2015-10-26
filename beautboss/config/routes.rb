@@ -13,6 +13,7 @@ Rails.application.routes.draw do
           delete 'follow' => 'followers#destroy'
           get :following, :followers
           get :notifications
+          get 'friends'  => 'users#friends'
         end
       end
 
