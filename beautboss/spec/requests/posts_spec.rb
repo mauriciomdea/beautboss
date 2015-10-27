@@ -100,6 +100,26 @@ RSpec.describe "Posts API v1", type: :request do
       expect('%.4f' % body["place"]["longitude"].to_f).to eq place.longitude.to_s
     end
 
+    it "creates a new post with a caption" do
+      user = FactoryGirl.create :user
+      post_params = {
+        "category" => "haircut",
+        "service" => "My beautiful new haircut!",
+        "image" => "elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/haircut.png",
+        "latitude" => 0.0001,
+        "longitude" => 0.0001,
+        "caption" => "Look how beautiful it is!"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts", post_params, request_headers
+      expect(response.status).to eq 201 # created
+      expect(Post.last.comments.first.comment).to eq "Look how beautiful it is!" # did it save post to DB?
+    end
+
     it "returns an error for an invalid post" do 
       post_params = {
         "service" => ""
