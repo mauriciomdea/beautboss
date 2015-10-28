@@ -5,6 +5,14 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
   protect_from_forgery with: :null_session
 
+  rescue_from ActiveRecord::RecordNotFound do 
+    _not_found
+  end
+
+  rescue_from Exception do |exception|
+    _error exception.message
+  end
+
   def default_serializer_options
     {root: false}
   end
@@ -12,35 +20,30 @@ class ApplicationController < ActionController::Base
   private
 
     def authenticate_user
-
       current_user || _not_authorized
-
     end
 
     def current_user
-
       token = request.headers['HTTP_TOKEN']
       @current_user = Token.get_user(token) || User.from_token(token)
-      
     end
 
     def verify_user
-    if params[:id].to_i != @current_user.id
-      _not_authorized
+      if params[:id].to_i != @current_user.id
+        _not_authorized
+      end
     end
-  end
 
     def _not_authorized message = "Not Authorized"
-
       render json: {error: message}, status: 401
-
     end
 
     def _not_found message = "Not Found"
-
-      # render nothing: true, status: 404
       render json: {error: message}, status: 404
-      
+    end
+
+    def _error error = "Internal Server Error"
+      render json: { error: error }.to_json, status: 500
     end
 
 end
