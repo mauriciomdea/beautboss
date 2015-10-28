@@ -144,6 +144,19 @@ RSpec.describe "Posts API v1", type: :request do
       body = JSON.parse(response.body)
       expect(body["id"]).to eq post.id
       expect(body["service"]).to eq "Some random post"
+      expect(body["wowed"]).to be false
+    end
+
+    it "returns requested wowed post" do
+      user = FactoryGirl.create :user
+      post = FactoryGirl.create :post_public, service: "Some random post"
+      wow = Wow.create(user: user, post: post)
+      get "/api/v1/posts/#{post.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["id"]).to eq post.id
+      expect(body["service"]).to eq "Some random post"
+      expect(body["wowed"]).to be true
     end
 
     it "returns not found error for unknown post" do
@@ -177,13 +190,19 @@ RSpec.describe "Posts API v1", type: :request do
 
     it "returns all posts from an user" do
       user = FactoryGirl.create :user
+      other_user = FactoryGirl.create :user
       post1 = FactoryGirl.create :post_public, user: user, service: "Post one"
       post2 = FactoryGirl.create :post_private, user: user, service: "Post two"
-      get "/api/v1/users/#{user.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      wow = Wow.create(user: other_user, post: post2)
+      get "/api/v1/users/#{user.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(other_user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 2
+      expect(body["posts"][0]["user"]["id"]).to eq user.id
       expect(body["posts"][0]["service"]).to eq "Post one"
+      expect(body["posts"][0]["wowed"]).to be false
+      expect(body["posts"][1]["service"]).to eq "Post two"
+      expect(body["posts"][1]["wowed"]).to be true
     end
 
   end
@@ -191,14 +210,20 @@ RSpec.describe "Posts API v1", type: :request do
   describe "GET /api/v1/places/:id/posts" do
 
     it "returns all posts from a place" do
+      user = FactoryGirl.create :user
       place = FactoryGirl.create :place
       post1 = FactoryGirl.create :post_public, place: place, service: "Post one"
       post2 = FactoryGirl.create :post_private, place: place, service: "Post two"
-      get "/api/v1/places/#{place.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      wow = Wow.create(user: user, post: post2)
+      get "/api/v1/places/#{place.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 2
+      expect(body["posts"][0]["place"]["id"]).to eq place.id
       expect(body["posts"][0]["service"]).to eq "Post one"
+      expect(body["posts"][0]["wowed"]).to be false
+      expect(body["posts"][1]["service"]).to eq "Post two"
+      expect(body["posts"][1]["wowed"]).to be true
     end
 
   end

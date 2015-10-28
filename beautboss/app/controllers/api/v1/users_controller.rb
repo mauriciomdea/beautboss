@@ -80,8 +80,8 @@ class Api::V1::UsersController < ApplicationController
   def posts 
     user = User.find(params[:id])
     count = user.posts.size
-    @posts = user.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
-    serialized_posts = @posts.map { |post| PostSerializer.new(post).as_json(root: false) }
+    posts = user.posts.limit(params[:limit] || 20).offset(params[:offset] || 0)
+    serialized_posts = posts.map { |post| RegisterSerializer.new(Register.new(post: post, observer: @current_user)).as_json(root:false) }
     render json: {count: count, posts: serialized_posts},
       location: "/api/v1/users/#{user.id}/posts",
       status: :ok

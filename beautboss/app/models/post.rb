@@ -14,4 +14,9 @@ class Post < ActiveRecord::Base
 
 	validates_presence_of :user, :category, :service, :image
 
+  # Returns true if the current user has wowed this post
+  def wowed?(user)
+    Wow.exists?(post: self, user: user)
+  end
+
 end

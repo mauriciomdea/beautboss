@@ -15,7 +15,7 @@ class Api::V1::PostsController < ApplicationController
     posts = posts.reverse_order if (params[:order] && params[:order] == "closest")
     posts = posts.order('wows_count DESC') if (params[:order] && params[:order] == "best")
     # response 
-    serialized_posts = posts.map { |post| PostSerializer.new(post).as_json(root: false) }
+    serialized_posts = posts.map { |post| RegisterSerializer.new(Register.new(post: post, observer: @current_user)).as_json(root:false) }
     render json: {count: posts.size, posts: serialized_posts},
       location: "/api/v1/users/#{@current_user.id}/posts",
       status: :ok
@@ -25,7 +25,7 @@ class Api::V1::PostsController < ApplicationController
 
   def show
     post = Post.find(params[:id])
-    render json: PostSerializer.new(post).as_json(root: false),
+    render json: RegisterSerializer.new(Register.new(post: post, observer: @current_user)).as_json(root:false),
       location: "/api/v1/posts/#{post.id}",
       status: status
   rescue ActiveRecord::RecordNotFound
