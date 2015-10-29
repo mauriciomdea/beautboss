@@ -12,12 +12,12 @@ RSpec.describe "Activities API v1", type: :request do
       followed = FactoryGirl.create :user, name: "The Followed"
       follower = FactoryGirl.create :user, name: "A Follower"
       follower.follow(followed)
-      Activity.create(owner: followed, actor: follower, subject: followed)
+      Activity.create(owner: followed, actor: follower, subject: followed, created_at: Time.now.ago(1.day))
       post = FactoryGirl.create :post_public, user: followed
       wow = Wow.create(post: post, user: follower)
-      Activity.create(owner: followed, actor: follower, subject: wow)
+      Activity.create(owner: followed, actor: follower, subject: wow, created_at: Time.now.ago(1.hour))
       comment = Comment.create(post: post, user: follower, comment: "This is just an example comment, please ignore.")
-      Activity.create(owner: followed, actor: follower, subject: comment)
+      Activity.create(owner: followed, actor: follower, subject: comment, created_at: Time.now.ago(1.minute))
       activities = Activity.where(owner: followed)
       expect(follower.activities.size).to eq 3
       expect(followed.notifications.size).to eq 3
@@ -25,6 +25,12 @@ RSpec.describe "Activities API v1", type: :request do
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 3
+      expect(body["notifications"][0]["subject"]).to eq "comment"
+      expect(body["notifications"][0]["image"]).to eq post.image
+      expect(body["notifications"][1]["subject"]).to eq "wow"
+      expect(body["notifications"][1]["image"]).to eq post.image
+      expect(body["notifications"][2]["subject"]).to eq "follow"
+      expect(body["notifications"][2]["image"]).to eq followed.avatar
     end
 
     it "returns all recent activities for the user and mark them as read" do 

@@ -1,6 +1,6 @@
 class ActivitySerializer < ActiveModel::Serializer
 
-  attributes :created_at, :subject, :url, :message, :read
+  attributes :created_at, :subject, :url, :message, :image, :read
 
   # attributes :created_at, :type, :url, :subject_id, :subject_type, :read
 
@@ -30,6 +30,22 @@ class ActivitySerializer < ActiveModel::Serializer
     else
       nil
     end
+  end
+
+  def image 
+
+    case object.subject_type
+    
+    when 'User'
+      object.subject.avatar
+    when 'Wow'
+      object.subject.post.image
+    when 'Comment'
+      object.subject.post.image
+    else
+      nil
+    end
+
   end
 
 end
