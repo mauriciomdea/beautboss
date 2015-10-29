@@ -2,7 +2,7 @@ class Friend
   include ActiveModel::Model
   include ActiveModel::Serialization
 
-  attr_accessor :id, :name, :email, :avatar, :location, :following, :user, :other_user
+  attr_accessor :id, :name, :username, :email, :avatar, :location, :is_following, :user, :other_user
 
   validates_presence_of :user, :other_user
 
@@ -12,6 +12,10 @@ class Friend
 
   def name 
     user.name
+  end
+
+  def username 
+    user.username
   end
 
   def email
@@ -26,8 +30,8 @@ class Friend
     user.location
   end
 
-  def following
-    user.following?(other_user)
+  def is_following
+    other_user.following?(user)
   end
 
 end

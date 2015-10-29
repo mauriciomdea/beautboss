@@ -1,5 +1,5 @@
 class FriendSerializer < ActiveModel::Serializer
   
-  attributes :id, :name, :email, :avatar, :location, :following
+  attributes :id, :name, :username, :email, :avatar, :location, :is_following
 
 end

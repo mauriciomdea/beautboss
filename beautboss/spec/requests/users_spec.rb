@@ -57,6 +57,17 @@ RSpec.describe "Users API v1", type: :request do
       expect(body["is_following"]).to be false
     end
 
+    it "returns followed user" do
+      current_user = FactoryGirl.create :user
+      user = FactoryGirl.create :user, name: "John Doe"
+      current_user.follow(user)
+      get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(current_user) }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["followers"]).to eq 1
+      expect(body["is_following"]).to be true
+    end
+
     it "returns not found error for unknown user" do
       user = FactoryGirl.create :user
       get "/api/v1/users/#{user.id+1}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }

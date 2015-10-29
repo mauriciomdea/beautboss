@@ -43,11 +43,8 @@ class Api::V1::UsersController < ApplicationController
   def followers 
     @user = User.find(params[:id])
     followers = @user.followers.limit(params[:limit] || 20).offset(params[:offset] || 0)
-    # serialized_followers = followers.map { |user| UserSerializer.new user, current_user: @current_user }
-    # serialized_followers = followers.map { |user| (user, serializer: UserSerializer, current_user: @current_user).to_json }
-    # render json: {count: @user.followers.size, followers: serialized_followers},
-    # render json: { count: @user.followers.size, followers: { followers, each_serializer: UserSerializer, current_user: @current_user } },
-    serialized_followers = followers.map { |user| UserBasicSerializer.new(user).as_json(root: false) }
+    # serialized_followers = followers.map { |user| UserBasicSerializer.new(user).as_json(root: false) }
+    serialized_followers = followers.map { |user| FriendSerializer.new(Friend.new(user: user, other_user: @current_user)).as_json(root:false) }
     render json: {count: @user.followers.size, followers: serialized_followers},
       location: "/api/v1/users/#{@user.id}/followers",
       status: :ok
@@ -58,7 +55,8 @@ class Api::V1::UsersController < ApplicationController
   def following 
     @user = User.find(params[:id])
     following = @user.following.limit(params[:limit] || 20).offset(params[:offset] || 0)
-    serialized_following = following.map { |user| UserBasicSerializer.new(user).as_json(root: false) }
+    # serialized_following = following.map { |user| UserBasicSerializer.new(user).as_json(root: false) }
+    serialized_following = following.map { |user| FriendSerializer.new(Friend.new(user: user, other_user: @current_user)).as_json(root:false) }
     render json: {count: @user.following.size, following: serialized_following},
       location: "/api/v1/users/#{@user.id}/following",
       status: :ok
