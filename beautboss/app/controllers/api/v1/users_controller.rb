@@ -66,7 +66,8 @@ class Api::V1::UsersController < ApplicationController
 
   def notifications 
     @user = User.find(params[:id])
-    notifications = @user.notifications.limit(params[:limit] || 20).offset(params[:offset] || 0)
+    notifications = @user.notifications.unread.limit(params[:limit] || 20).offset(params[:offset] || 0)
+    notifications.update_all(read: true) if params[:mark_as_read] && params[:mark_as_read] == "true"
     serialized_notifications = notifications.map { |notification| ActivitySerializer.new(notification).as_json(root: false) }
     render json: {count: @user.notifications.size, notifications: serialized_notifications},
       location: "/api/v1/users/#{@user.id}/notifications",

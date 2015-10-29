@@ -6,6 +6,8 @@ class Activity < ActiveRecord::Base
 
   validates :owner, :actor, presence: true
 
+  scope :unread, -> { where(read: false) }
+
   def url
 
     case subject_type

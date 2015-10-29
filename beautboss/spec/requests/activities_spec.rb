@@ -27,7 +27,21 @@ RSpec.describe "Activities API v1", type: :request do
       expect(body["count"]).to eq 3
     end
 
-    it "returns only the last five notifications (limit)" do
+    it "returns all recent activities for the user and mark them as read" do 
+      user = FactoryGirl.create :user
+      3.times { 
+        FactoryGirl.create(:activity_wow, owner: user)
+        FactoryGirl.create(:activity_comment, owner: user)
+      }
+      expect(user.notifications.unread.size).to eq 6 # before reading
+      get "/api/v1/users/#{user.id}/notifications?mark_as_read=true", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 6
+      expect(user.notifications.unread.size).to eq 0 # after marked as read
+    end
+
+    it "returns only the last five unread notifications (limit)" do
       user = FactoryGirl.create(:user)
       10.times { 
         FactoryGirl.create(:activity_wow, owner: user)
