@@ -205,6 +205,7 @@ RSpec.describe "Users API v1", type: :request do
       friend1 = FactoryGirl.create :user, email: "one@example.com"
       friend2 = FactoryGirl.create :user, email: "two@example.com"
       friend3 = FactoryGirl.create :user, email: "three@example.com"
+      user.follow(friend2)
       emails = "two@example.com,three@example.com,four@example.com"
       request_headers = {
         "Accept" => "application/json",
@@ -216,6 +217,7 @@ RSpec.describe "Users API v1", type: :request do
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 2
       expect(body["friends"][0]["email"]).to eq "two@example.com"
+      expect(body["friends"][0]["is_following"]).to be true
     end
 
   end
