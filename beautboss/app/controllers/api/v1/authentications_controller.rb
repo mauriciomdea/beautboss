@@ -14,7 +14,11 @@ class Api::V1::AuthenticationsController < ApplicationController
   def create_from_facebook
     profile = FbGraph2::User.me(params[:access_token]).fetch
     profile.fetch
-    @user = User.where(facebook: profile.id).first || User.where(email: profile.email).first || User.new
+    if profile.email.nil?
+      @user = User.where(facebook: profile.id).first || User.new
+    else
+      @user = User.where(facebook: profile.id).first || User.where(email: profile.email).first || User.new
+    end
     @user.facebook = profile.id unless profile.id.nil?
     @user.email = profile.email unless profile.email.nil?
     @user.name = profile.name unless profile.name.nil?
