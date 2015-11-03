@@ -17,7 +17,6 @@ Rails.application.routes.draw do
         end
       end
 
-
       resources :authentications, only: [:create, :destroy]
       post 'authentications/facebook' => 'authentications#create_from_facebook', as: :authentications_facebook
       post 'authentications/password_reset' => 'authentications#password_reset', as: :password_reset
@@ -33,6 +32,8 @@ Rails.application.routes.draw do
           get 'posts'  => 'places#posts'
         end
       end
+
+      get 'newsfeed'  => 'newsfeed#show', only: :show
 
     end
   end
