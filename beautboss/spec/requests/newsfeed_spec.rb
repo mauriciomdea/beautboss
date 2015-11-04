@@ -23,7 +23,6 @@ RSpec.describe "Newsfeed API v1", type: :request do
       get "/api/v1/newsfeed?limit=5", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(current_user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      puts body.to_yaml
       expect(body["count"]).to eq 6
       expect(body["posts"].size).to eq 5
       expect(body["posts"][0]["user"]["id"]).to eq john.id
