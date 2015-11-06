@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
   # end
 
   def generate_username
-    username = name.parameterize.underscore
+    username = name.parameterize.underscore unless name.nil?
     i = 1
     while User.find_by(username: username) 
       username = "#{username}#{i}"
