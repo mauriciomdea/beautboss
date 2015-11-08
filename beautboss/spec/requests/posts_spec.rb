@@ -345,54 +345,6 @@ RSpec.describe "Posts API v1", type: :request do
 
   end
 
-  # Wows
-
-  describe "POST /api/v1/posts/:id/wows" do
-
-    it "wows a post" do 
-      user = FactoryGirl.create :user
-      post = FactoryGirl.create :post_private
-      wow = FactoryGirl.create :wow, post: post
-      post "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
-      expect(Post.find(post.id).wows.size).to eq 2
-      expect(Post.find(post.id).wows_count).to eq 2
-      expect(response.status).to eq 201 # created
-      body = JSON.parse(response.body)
-      expect(body["post"]["id"]).to eq post.id
-      expect(body["user"]["id"]).to eq user.id
-    end
-
-  end
-
-  describe "GET /api/v1/posts/:id/wows" do
-
-    it "returns all wows from a post" do 
-      post = FactoryGirl.create :post_private
-      for i in 0..2
-        FactoryGirl.create :wow, post: post
-      end
-      get "/api/v1/posts/#{post.id}/wows", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
-      expect(response.status).to eq 200 # ok
-      body = JSON.parse(response.body)
-      expect(body.size).to eq 3
-    end
-    
-  end
-
-  describe "DELETE /api/v1/posts/:id/wows/:id" do
-
-    it "de-wows a post" do
-      post = FactoryGirl.create :post_private
-      user = FactoryGirl.create :user
-      wow = FactoryGirl.create :wow, post: post, user: user
-      delete "/api/v1/posts/#{post.id}/wows/#{wow.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
-      expect(response.status).to eq 204 # ok, no content
-      expect(Post.find(post.id).wows.size).to eq 0
-      expect(Post.find(post.id).wows_count).to eq 0
-    end
-    
-  end
-
   # Comments
 
   describe "POST /api/v1/posts/:id/comments" do

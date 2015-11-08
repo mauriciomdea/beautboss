@@ -3,9 +3,9 @@ class Api::V1::WowsController < ApplicationController
 
   def index
     post = Post.find(params[:post_id])
-    wows = post.wows
+    wows = post.wows.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_wows = wows.map { |wow| WowSerializer.new(wow).as_json(root: false) }
-    render json: serialized_wows,
+    render json: {count: post.wows.size, wows: serialized_wows},
       location: "/api/v1/posts/#{post.id}/wows",
       status: :ok
   rescue ActiveRecord::RecordNotFound
