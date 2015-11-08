@@ -2,11 +2,15 @@ class Api::V1::AuthenticationsController < ApplicationController
 
   def create
 
-    if @user = User.authenticate(params[:email], params[:password])
-      @token = Token.get_token(@user)
-      render json: { user: UserSerializer.new(@user).as_json(root: false), token: @token }, status: :created
+    if @user = User.find_by(email: params[:email])
+      if @user.try(:authenticate, params[:password])
+        @token = Token.get_token(@user)
+        render json: { user: UserSerializer.new(@user).as_json(root: false), token: @token }, status: :created
+      else
+        _not_authorized
+      end
     else
-      head :not_found
+      _not_found
     end
 
   end

@@ -6,9 +6,9 @@ RSpec.describe "Authentications", type: :request do
   describe "POST /api/v1/authentications" do
 
     it "retrieves access token from user email and password" do
-      user = FactoryGirl.create :user
+      user = FactoryGirl.create :user, password: "1234"
       auth_params = {
-        "email" => "#{user.email}",
+        "email" => user.email,
         "password" => "1234"
       }.to_json
       request_headers = {
@@ -21,10 +21,10 @@ RSpec.describe "Authentications", type: :request do
       expect(body["token"]).not_to be_empty
     end
 
-    it "refuses authentication for wrong email and/or password" do
+    it "refuses authentication for wrong email" do
       auth_params = {
-        "email" => nil,
-        "password" => nil
+        "email" => "nobody@nowehere.com",
+        "password" => "1234"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -32,6 +32,20 @@ RSpec.describe "Authentications", type: :request do
       }
       post "/api/v1/authentications", auth_params, request_headers
       expect(response.status).to eq 404 # not found
+    end
+
+    it "refuses authentication for wrong password" do
+      user = FactoryGirl.create :user, password: "1234"
+      auth_params = {
+        "email" => user.email,
+        "password" => "abcd"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json"
+      }
+      post "/api/v1/authentications", auth_params, request_headers
+      expect(response.status).to eq 401 # not authorized
     end
 
   end

@@ -62,9 +62,9 @@ class User < ActiveRecord::Base
 
   # Authentication stuff
 
-  def self.authenticate(email, password)
-    user = User.find_by(email: email).try(:authenticate, password)
-  end
+  # def self.authenticate(email, password)
+  #   user = User.find_by(email: email).try(:authenticate, password)
+  # end
 
   def self.from_token(token)
     user_from_cache = Rails.cache.read(token) unless token.nil?
