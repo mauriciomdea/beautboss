@@ -22,7 +22,12 @@ Rails.application.routes.draw do
       post 'authentications/password_reset' => 'authentications#password_reset', as: :password_reset
 
       resources :posts, except: [:new, :edit] do 
-        resources :wows, only: [:index, :create, :destroy]
+        # resources :wows, only: [:index, :create, :destroy]
+        member do 
+          get 'wows'  => 'wows#index'  
+          post 'wows' => 'wows#create'
+          delete 'wows' => 'wows#destroy'
+        end
         resources :comments, only: [:index, :create, :destroy]
         resources :reports, only: [:create]
       end
