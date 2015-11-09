@@ -15,7 +15,7 @@ class Api::V1::CommentsController < ApplicationController
   def create
     user = @current_user
     post = Post.find_by(params[:post_id])
-    comment = Comment.new(post: post, user: user, comment: comment_params["comment"])
+    comment = Comment.new(post_id: post.id, user_id: user.id, comment: comment_params["comment"])
     if comment.save
       Activity.create(owner: post.user, actor: user, subject: comment)
       render json: CommentSerializer.new(comment).as_json(root: false),
@@ -24,6 +24,8 @@ class Api::V1::CommentsController < ApplicationController
     else
       render json: { errors: comment.errors.full_messages }, status: 422
     end
+  rescue ActiveRecord::RecordNotFound
+    _not_found
   end
 
   def destroy
