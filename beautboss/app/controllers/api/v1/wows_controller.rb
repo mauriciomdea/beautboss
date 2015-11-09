@@ -15,7 +15,8 @@ class Api::V1::WowsController < ApplicationController
   def create
     user = @current_user
     post = Post.find(params[:post_id])
-    wow = Wow.new(post: post, user: user)
+    # wow = Wow.new(post: post, user: user)
+    wow = Wow.where(post: post, user: user).first_or_create
     if wow.save
       Activity.create(owner: post.user, actor: user, subject: wow)
       render json: WowSerializer.new(wow).as_json(root: false),
