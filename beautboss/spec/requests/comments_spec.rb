@@ -28,6 +28,24 @@ RSpec.describe "Comments API v1", type: :request do
       expect(body["user"]["id"]).to eq user.id
     end
 
+    it "refuses an empty comment" do 
+      user = FactoryGirl.create :user
+      post = FactoryGirl.create :post_public
+      comment_params = {
+        "comment" => nil
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts/#{post.id}/comments", comment_params, request_headers
+      expect(post.comments.size).to eq 0
+      expect(response.status).to eq 422 # unprocessable entity
+      body = JSON.parse(response.body)
+      expect(body["errors"]).to eq ["Comment can't be blank"]
+    end
+
   end
 
   describe "GET /api/v1/posts/:id/comments" do
