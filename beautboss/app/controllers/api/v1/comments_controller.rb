@@ -3,7 +3,7 @@ class Api::V1::CommentsController < ApplicationController
 
   def index
     post = Post.find(params[:post_id])
-    comments = post.comments
+    comments = post.comments.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_comments = comments.map { |comment| CommentSerializer.new(comment).as_json(root: false) }
     render json: {count: comments.size, comments: serialized_comments},
       location: "/api/v1/posts/#{post.id}/comments",
