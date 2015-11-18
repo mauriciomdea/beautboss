@@ -191,18 +191,19 @@ RSpec.describe "Posts API v1", type: :request do
     it "returns all posts from an user" do
       user = FactoryGirl.create :user
       other_user = FactoryGirl.create :user
-      post1 = FactoryGirl.create :post_public, user: user, service: "Post one"
-      post2 = FactoryGirl.create :post_private, user: user, service: "Post two"
+      post1 = FactoryGirl.create :post_public, user: user, service: "Post one", created_at: 1.minutes.ago
+      post2 = FactoryGirl.create :post_private, user: user, service: "Post two", created_at: 1.seconds.ago
       wow = Wow.create(user: other_user, post: post2)
       get "/api/v1/users/#{user.id}/posts", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(other_user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 2
       expect(body["posts"][0]["user"]["id"]).to eq user.id
-      expect(body["posts"][0]["service"]).to eq "Post one"
-      expect(body["posts"][0]["wowed"]).to be false
-      expect(body["posts"][1]["service"]).to eq "Post two"
-      expect(body["posts"][1]["wowed"]).to be true
+      expect(body["posts"][0]["service"]).to eq "Post two"
+      expect(body["posts"][0]["wowed"]).to be true
+      expect(body["posts"][1]["user"]["id"]).to eq user.id
+      expect(body["posts"][1]["service"]).to eq "Post one"
+      expect(body["posts"][1]["wowed"]).to be false
     end
 
   end
