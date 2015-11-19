@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   before_validation :generate_username
 
   validates :name, presence: true
-  validates :email, uniqueness: true
+  validates :email, uniqueness: true, unless: 'email.nil?'
   validates :email, presence: true, if: 'facebook.nil?'
   validates :password, presence: true, if: 'facebook.nil? && password_digest.nil?'
   validates :facebook, presence: true, if: 'password.nil?'
