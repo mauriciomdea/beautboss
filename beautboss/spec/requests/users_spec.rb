@@ -10,8 +10,8 @@ RSpec.describe "Users API v1", type: :request do
 
     it "creates a new user" do
       user_params = {
-        "name" => "John Doe",
-        "email" => "john_doe@example.com",
+        "name" => "Johnny Test",
+        "email" => "johnny_test@example.com",
         "password" => "1234"
       }.to_json
       request_headers = {
@@ -20,10 +20,10 @@ RSpec.describe "Users API v1", type: :request do
       }
       post "/api/v1/users", user_params, request_headers
       expect(response.status).to eq 201 # created
-      expect(User.last.name).to eq "John Doe"
+      expect(User.last.name).to eq "Johnny Test"
       body = JSON.parse(response.body)
-      expect(body["user"]["name"]).to eq "John Doe"
-      expect(body["user"]["username"]).to eq "john_doe"
+      expect(body["user"]["name"]).to eq "Johnny Test"
+      expect(body["user"]["username"]).to eq "johnny_test"
       expect(body["token"]).not_to be_nil
     end
 
@@ -45,12 +45,12 @@ RSpec.describe "Users API v1", type: :request do
 
     it "returns requested user" do
       current_user = FactoryGirl.create :user
-      user = FactoryGirl.create :user, name: "John Doe"
+      user = FactoryGirl.create :user, name: "Johnny Test"
       get "/api/v1/users/#{user.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(current_user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body["name"]).to eq "John Doe"
-      expect(body["username"]).to eq "john_doe"
+      expect(body["name"]).to eq "Johnny Test"
+      expect(body["username"]).to eq "johnny_test"
       expect(body["followers"]).to eq 0
       expect(body["following"]).to eq 0
       expect(body["posts"]).to eq 0

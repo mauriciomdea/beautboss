@@ -71,16 +71,32 @@ class User < ActiveRecord::Base
     user_from_cache = Rails.cache.read(token) unless token.nil?
   end
 
-  # Find or create User
+  # Find or create User from Facebook
 
-  def self.update_or_create(attributes)
-    assign_or_new(attributes).save
-  end
-
-  def self.assign_or_new(attributes)
-    user = first || new
-    user.assign_attributes(attributes)
+  def self.from_facebook(profile)
+    if profile.email.nil?
+      user = User.where(facebook: profile.id).first || User.new
+    else
+      user = User.where(facebook: profile.id).first || User.where(email: profile.email).first || User.new
+    end
+    user.facebook = profile.id unless profile.id.nil?
+    user.email = profile.email unless profile.email.nil?
+    user.name = profile.name unless profile.name.nil?
+    user.bio = profile.bio unless profile.bio.nil?
+    user.avatar = profile.picture.url unless profile.picture.nil?
+    user.website = profile.website unless profile.website.nil?
+    user.location = profile.location.name unless profile.location.nil?
     user
   end
+
+  # def self.update_or_create(attributes)
+  #   assign_or_new(attributes).save
+  # end
+
+  # def self.assign_or_new(attributes)
+  #   user = first || new
+  #   user.assign_attributes(attributes)
+  #   user
+  # end
   
 end

@@ -34,8 +34,8 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :admin_users, :email,                unique: true
-    add_index :admin_users, :reset_password_token, unique: true
+    # add_index :admin_users, :email,                unique: true
+    # add_index :admin_users, :reset_password_token, unique: true
     # add_index :admin_users, :confirmation_token,   unique: true
     # add_index :admin_users, :unlock_token,         unique: true
   end

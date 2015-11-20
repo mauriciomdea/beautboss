@@ -1,6 +1,8 @@
 development:
   adapter: mysql2
-  encoding: utf8
+  # encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_bin
   database: beautboss
   pool: 5
   username: root
@@ -9,7 +11,9 @@ development:
 
 test:
   adapter: mysql2
-  encoding: utf8
+  # encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_bin
   database: beautboss_test
   pool: 5
   username: root
@@ -18,7 +22,9 @@ test:
 
 staging:
   adapter: mysql2
-  encoding: utf8
+  # encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_bin
   database: beautboss_staging
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>
@@ -27,7 +33,9 @@ staging:
 
 production:
   adapter: mysql2
-  encoding: utf8
+  # encoding: utf8
+  encoding: utf8mb4
+  collation: utf8mb4_bin
   database: beautboss
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>

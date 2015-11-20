@@ -51,27 +51,33 @@ RSpec.describe "Users" do
     end
 
     it "creates user from facebook without email" do 
-      user = User.new(name: "Test", facebook: "01010101")
+      profile = FbGraph2::User.new(10153500647048444, {name: "Johnny Test"})
+      user = User.from_facebook(profile)
       user.save
       expect(user.persisted?).to be true
+      expect(user.name).to eq "Johnny Test"
     end
 
     it "updates already registered user from facebook" do 
-      FactoryGirl.create :user, email: "test@example.com"
-      user = User.update_or_create(facebook: "01010101", name: "Johnny Test", email: "test@example.com")
-      # user.save
-      expect(user).to be true
+      user_before = FactoryGirl.create :user, email: "test@example.com", facebook: nil
+      profile = FbGraph2::User.new(10153500647048444, {name: "Johnny Test", email: "test@example.com"})
+      user_after = User.from_facebook(profile)
+      expect(user_after.save).to be true
+      expect(user_after.id).to eq user_before.id
+      expect(user_after.facebook).to eq "10153500647048444"
+      expect(user_after.name).to eq "Johnny Test"
+      expect(user_after.email).to eq "test@example.com"
     end
 
     it "generates unique username for new user" do
-      u1 = FactoryGirl.create :user, name: "John Doe"
-      u2 = FactoryGirl.create :user, name: "John Doe"
-      u3 = FactoryGirl.create :user, name: "John Doe"
-      u4 = FactoryGirl.create :user, name: "John Doe"
-      expect(User.find(u1.id).username).to eq "john_doe"
-      expect(User.find(u2.id).username).to eq "john_doe1"
-      expect(User.find(u3.id).username).to eq "john_doe12"
-      expect(User.find(u4.id).username).to eq "john_doe123"
+      u1 = FactoryGirl.create :user, name: "Johnny Test"
+      u2 = FactoryGirl.create :user, name: "Johnny Test"
+      u3 = FactoryGirl.create :user, name: "Johnny Test"
+      u4 = FactoryGirl.create :user, name: "Johnny Test"
+      expect(User.find(u1.id).username).to eq "johnny_test"
+      expect(User.find(u2.id).username).to eq "johnny_test1"
+      expect(User.find(u3.id).username).to eq "johnny_test12"
+      expect(User.find(u4.id).username).to eq "johnny_test123"
     end
 
   end

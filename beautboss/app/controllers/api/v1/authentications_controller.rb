@@ -17,19 +17,8 @@ class Api::V1::AuthenticationsController < ApplicationController
 
   def create_from_facebook
     profile = FbGraph2::User.me(params[:access_token]).fetch
-    profile.fetch
-    if profile.email.nil?
-      @user = User.where(facebook: profile.id).first || User.new
-    else
-      @user = User.where(facebook: profile.id).first || User.where(email: profile.email).first || User.new
-    end
-    @user.facebook = profile.id unless profile.id.nil?
-    @user.email = profile.email unless profile.email.nil?
-    @user.name = profile.name unless profile.name.nil?
-    @user.bio = profile.bio unless profile.bio.nil?
-    @user.avatar = profile.picture.url unless profile.picture.nil?
-    @user.website = profile.website unless profile.website.nil?
-    @user.location = profile.location.name unless profile.location.nil?
+    # puts profile.fetch
+    @user = User.from_facebook(profile.fetch)
     if @user.save
       @token = Token.get_token(@user)
       render json: { user: UserSerializer.new(@user).as_json(root: false), token: @token }, status: :created
