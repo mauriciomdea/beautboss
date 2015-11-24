@@ -9,7 +9,7 @@ AdminUser.create!(email: 'admin@example.com', password: 'password', password_con
 AdminUser.create!(email: 'mauriciomdea@gmail.com', password: 'abcd1234', password_confirmation: 'abcd1234')
 
 mma = User.create(name: 'Mauricio Almeida', email: 'mauriciomdea@gmail.com', password: '1234', avatar: 'https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p50x50/12038035_10153568053793444_3955325592428203406_n.jpg?oh=866157dbf59eb64cb6c746b2acfdc180&oe=56D3406B')
-roja = User.create(name: 'Rogério Shimizu', email: 'roja@bunker79.com', password: 'bunker79', avatar: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c0.0.50.50/p50x50/10419520_10205423376770262_1580150491982340967_n.jpg?oh=54910db481f6cb025b733c03d956e965&oe=56908CF2&__gda__=1452380670_91deb3645f9eeddf7e58114e371721c6')
+roja = User.create(name: 'Rogério Shimizu', email: 'roja@bunker79.com', password: 'bunker79', avatar: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/c0.0.50.50/p50x50/10419520_10205423376770262_1580150491982340967_n.jpg')
 jane = User.create(name: 'Jane Smith', email: 'jane@example.com', password: '1234')
 john = User.create(name: 'John Doe', email: 'john@example.com', password: '1234')
 

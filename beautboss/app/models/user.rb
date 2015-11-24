@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true, unless: 'email.nil?'
   validates :email, presence: true, if: 'facebook.nil?'
   validates :password, presence: true, if: 'facebook.nil? && password_digest.nil?'
-  validates :facebook, presence: true, if: 'password.nil?'
+  validates :facebook, presence: true, if: 'password.nil? && password_digest.nil?'
   validates :facebook, uniqueness: true, unless: 'facebook.nil?'
   validates :username, uniqueness: true, presence: true
 
