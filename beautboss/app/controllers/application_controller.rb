@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     _not_found
   end
 
+  rescue_from ActiveRecord::StatementInvalid do |exception|
+    _error exception.message
+  end
+
   rescue_from Exception do |exception|
     _error exception.message
   end

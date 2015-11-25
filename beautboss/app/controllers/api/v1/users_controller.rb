@@ -1,6 +1,14 @@
 class Api::V1::UsersController < ApplicationController
   before_action :authenticate_user, except: :create
 
+  def index 
+    users = User.where("lower(name) like ?", "%#{params[:name].downcase}%") unless params[:name].nil?
+    serialized_users = users.limit(params[:limit] || 20).offset(params[:offset] || 0).map { |user| FriendSerializer.new(Friend.new(user: user, other_user: @current_user)).as_json(root:false) }
+    render json: {count: users.size, users: serialized_users},
+      location: "/api/v1/users",
+      status: :ok
+  end
+
   def show
     user = User.find(params[:id])
     _render_user(user)

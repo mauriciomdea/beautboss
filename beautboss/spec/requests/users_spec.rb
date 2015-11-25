@@ -117,6 +117,22 @@ RSpec.describe "Users API v1", type: :request do
 
   end
 
+  describe "GET /api/v1/users" do
+
+    it "returns users by name" do
+      user1 = FactoryGirl.create :user, name: "Johnny Test"
+      user2 = FactoryGirl.create :user, name: "Jane Test"
+      get "/api/v1/users?name=test", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 2
+      expect(body["users"][0]["id"]).to eq user1.id
+      expect(body["users"][1]["id"]).to eq user2.id
+    end
+
+  end
+
   # Followers
 
   describe "POST /api/v1/users/:id/follow" do 
