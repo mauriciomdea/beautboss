@@ -5,4 +5,6 @@ class Comment < ActiveRecord::Base
 
   validates_presence_of :post, :user, :comment
 
+  validates :comment, length: { maximum: 767 }
+
 end

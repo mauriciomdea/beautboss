@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151119220220) do
+ActiveRecord::Schema.define(version: 20151125024229) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -62,11 +62,11 @@ ActiveRecord::Schema.define(version: 20151119220220) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.string   "comment",    limit: 191
+    t.text     "comment",    limit: 65535
     t.integer  "post_id",    limit: 4
     t.integer  "user_id",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "comments", ["post_id"], name: "index_comments_on_post_id", using: :btree
@@ -128,12 +128,12 @@ ActiveRecord::Schema.define(version: 20151119220220) do
     t.string   "name",                limit: 191
     t.string   "email",               limit: 191
     t.string   "password_digest",     limit: 191
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.string   "avatar",              limit: 191
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.text     "avatar",              limit: 65535
     t.string   "website",             limit: 191
     t.string   "location",            limit: 191
-    t.string   "bio",                 limit: 191
+    t.text     "bio",                 limit: 65535
     t.string   "instagram",           limit: 191
     t.string   "facebook",            limit: 191
     t.string   "swarm",               limit: 191
