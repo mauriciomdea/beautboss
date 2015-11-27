@@ -28,10 +28,12 @@ class Api::V1::WowsController < ApplicationController
 
   def destroy
     wow = Wow.find_by(post_id: params[:id], user_id: @current_user.id)
-    wow.destroy
-    head :no_content
-  rescue ActiveRecord::RecordNotFound
-    _not_found
+    if wow.nil?
+      _not_found
+    else
+      wow.destroy
+      head :no_content
+    end
   end
 
 end
