@@ -40,7 +40,8 @@ Rails.application.routes.draw do
         end
       end
 
-      get 'newsfeed'  => 'newsfeed#show', only: :show
+      get 'newsfeed/all'  => 'newsfeed#all'
+      get 'newsfeed/registers'  => 'newsfeed#registers'
 
     end
   end
