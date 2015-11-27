@@ -14,6 +14,8 @@ Rails.application.routes.draw do
           get :following, :followers
           get :notifications
           get 'friends'  => 'users#friends'
+          post 'devices' => 'devices#create'
+          delete 'devices' => 'devices#destroy'
         end
       end
 

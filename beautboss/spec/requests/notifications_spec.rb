@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Activities API v1", type: :request do
+RSpec.describe "Notifications API v1", type: :request do
 
   def valid_auth_token(user = FactoryGirl.create(:user))
     Token.get_token(user, 1)
@@ -33,7 +33,7 @@ RSpec.describe "Activities API v1", type: :request do
       expect(body["notifications"][2]["image"]).to eq followed.avatar
     end
 
-    it "returns all recent activities for the user and mark them as read" do 
+    it "returns all recent notifications for the user and mark them as read" do 
       user = FactoryGirl.create :user
       3.times { 
         FactoryGirl.create(:activity_wow, owner: user)

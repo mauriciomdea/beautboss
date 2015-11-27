@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :posts, dependent: :delete_all
   has_many :wows, dependent: :delete_all
   has_many :comments, dependent: :delete_all
+  has_many :devices, dependent: :delete_all
 
   has_many :outbound_relationships, class_name:  'Relationship',
                                     foreign_key: 'follower_id',
