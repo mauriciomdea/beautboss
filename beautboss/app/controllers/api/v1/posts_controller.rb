@@ -44,6 +44,7 @@ class Api::V1::PostsController < ApplicationController
     post.place = Place.create_from_foursquare(post_params[:foursquare_id]) unless post_params[:foursquare_id].nil?
     post.comments << Comment.new(user: @current_user, comment: post_params[:caption]) unless post_params[:caption].nil?
     if post.save
+      Activity.create(owner: @current_user, actor: @current_user, subject: post)
       render json: PostSerializer.new(post).as_json(root: false),
         location: "/api/v1/posts/#{post.id}",
         status: :created
