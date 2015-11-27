@@ -18,6 +18,8 @@ class ActivitySerializer < ActiveModel::Serializer
       :wow
     when 'Comment'  # Somebody said: "Comment"
       :comment
+    when 'Post'
+      :post
     else
       :unknow
     end
@@ -42,6 +44,8 @@ class ActivitySerializer < ActiveModel::Serializer
       object.subject.post.image
     when 'Comment'
       object.subject.post.image
+    when 'Post'
+      object.subject.image
     else
       nil
     end
