@@ -70,7 +70,8 @@ RSpec.describe "Comments API v1", type: :request do
       get "/api/v1/posts/#{post.id}/comments?limit=5", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body["count"]).to eq 5
+      expect(body["count"]).to eq 10
+      expect(body["comments"].size).to eq 5
     end
     
   end
