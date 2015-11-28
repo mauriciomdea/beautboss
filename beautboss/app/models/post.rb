@@ -13,6 +13,8 @@ class Post < ActiveRecord::Base
   enum category: [:haircut, :hairstyle, :colouring, :highlights, :nails, :makeup]
 
 	validates_presence_of :user, :category, :service, :image
+  validates :service, length: { maximum: 191 }
+  validates :image, length: { maximum: 767 }
 
   # Returns true if the current user has wowed this post
   def wowed?(user)

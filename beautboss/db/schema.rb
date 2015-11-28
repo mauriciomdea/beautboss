@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151127220558) do
+ActiveRecord::Schema.define(version: 20151128045111) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -97,16 +97,16 @@ ActiveRecord::Schema.define(version: 20151127220558) do
   add_index "places", ["foursquare_id"], name: "index_places_on_foursquare_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
-    t.string   "image",      limit: 191
+    t.text     "image",      limit: 65535
     t.string   "service",    limit: 191
     t.integer  "user_id",    limit: 4
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "place_id",   limit: 4
     t.integer  "category",   limit: 4
     t.float    "latitude",   limit: 24
     t.float    "longitude",  limit: 24
-    t.integer  "wows_count", limit: 4,   default: 0
+    t.integer  "wows_count", limit: 4,     default: 0
   end
 
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
