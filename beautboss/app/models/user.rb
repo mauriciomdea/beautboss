@@ -32,8 +32,8 @@ class User < ActiveRecord::Base
 
   has_many :activities, class_name: 'Activity',
                                     foreign_key: 'actor_id',
-                                    dependent:   :destroy
-  has_many :notifications,  -> { order(created_at: :desc) },
+                                    dependent: :delete_all
+  has_many :notifications,  -> { where("actor_id != user_id") },
                             class_name:  'Activity',
                             foreign_key: 'user_id'
 

@@ -17,7 +17,7 @@ class Api::V1::CommentsController < ApplicationController
     post = Post.find(params[:post_id])
     comment = Comment.new(post: post, user: user, comment: comment_params["comment"])
     if comment.save
-      Activity.create(owner: post.user, actor: user, subject: comment) unless post.user == @current_user
+      Activity.create(owner: post.user, actor: user, subject: comment)
       render json: CommentSerializer.new(comment).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/comments",
         status: :created
