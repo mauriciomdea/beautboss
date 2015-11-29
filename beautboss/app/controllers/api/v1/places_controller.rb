@@ -1,4 +1,4 @@
-class Api::V1::PlacesController < ApplicationController
+class Api::V1::PlacesController < Api::V1::ApiController
   before_action :authenticate_user
 
   def index

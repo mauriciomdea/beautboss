@@ -1,4 +1,4 @@
-class Api::V1::WowsController < ApplicationController
+class Api::V1::WowsController < Api::V1::ApiController
   before_action :authenticate_user
 
   def index

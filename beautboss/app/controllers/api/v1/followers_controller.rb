@@ -1,4 +1,4 @@
-class Api::V1::FollowersController < ApplicationController
+class Api::V1::FollowersController < Api::V1::ApiController
   before_action :authenticate_user
 
   def create 

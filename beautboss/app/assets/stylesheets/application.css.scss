@@ -1,0 +1,85 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_self
+ */
+
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+div {
+  z-index: 999;
+}
+
+#header {
+  background-color: #770749;
+  min-height: 264px;
+  height: 264px;
+  right: 0;
+  left: 0;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+}
+
+.content {
+  position: absolute;
+  top: 200px;
+  z-index:-1;
+  width: 540px;
+  min-width: 540px;
+  background-color: #a0a0a0;
+  margin-left: auto; 
+  margin-right: auto;
+  align-items: center;
+}
+
+.center {
+  margin-left: auto; 
+  margin-right: auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.pink-link {
+  color: #770749;
+  font-family: sans-serif;
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.bottom-links {
+  padding-top: 32px;
+}
+
+.grey-text {
+  color: #a0a0a0;
+  font-famile: sans-serif;
+  font-weight: light;
+  font-size: 18px;
+}
+
+.logo {
+  padding-top: 80px;
+}
+
+.app-store-button {
+  /*width: 135px;
+  height: 40px;*/
+  margin: 10px;
+}

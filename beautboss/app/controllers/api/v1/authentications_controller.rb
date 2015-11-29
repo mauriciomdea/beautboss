@@ -1,4 +1,4 @@
-class Api::V1::AuthenticationsController < ApplicationController
+class Api::V1::AuthenticationsController < Api::V1::ApiController
 
   def create
 

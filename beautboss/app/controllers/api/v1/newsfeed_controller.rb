@@ -1,4 +1,4 @@
-class Api::V1::NewsfeedController < ApplicationController
+class Api::V1::NewsfeedController < Api::V1::ApiController
   before_action :authenticate_user
 
   def all
