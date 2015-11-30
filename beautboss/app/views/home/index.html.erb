@@ -1,3 +1,19 @@
-<div class="content center" style="min-height: 400px;">
-  <%= image_tag "app-store-button.svg", size: "135x40", class: "app-store-button" %>  
+<div id="header">
+  <div style="width: 970px; min-width: 970px; max-width: 970px; margin-left: auto; margin-right: auto;">
+    <%= image_tag "iphone-shot.png", alt: "screenshot", class: "screenshot" %>
+    <%= image_tag "beautboss-logo.png", alt: "beautboss", class: "logo pull-left", style: "padding-left: 400px;" %>
+    <div class="content-home">
+      <div style="align-self: flex-start; padding: 24px 0 18px 0; margin-left: 40px; position: absolute;">
+        <h1 class="title">get started! be a beautboss!</h1>
+        <div style="width: 480px; margin-top: 24px; margin-bottom: 20px; text-align: justify;">
+          <p class="grey-text">Find the best places and beauty care services wherever you are with beautboss!</p>
+          <p class="grey-text">You can share your experiences, interact with your friends and check how the beauty salons are working all around the world.</p>
+          <p class="grey-text">Cut your hair, put some colour in your life, make your own new style, chase your crowns and be a beautboss right now!</p>
+        </div>
+        <%= image_tag "app-store-button.svg", alt: "Download on the App Store", class: "app-store-button", style: "margin-left: 0;" %>
+      </div>
+    </div>
+  </div>
 </div>
+
+<%= render "shared/footer" %>

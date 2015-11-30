@@ -18,7 +18,7 @@
 @import "bootstrap";
 
 div {
-  z-index: 999;
+  z-index: 1;
 }
 
 #header {
@@ -36,16 +36,77 @@ footer {
   height: 80px;
 }
 
+.input-lg {
+  width: 386px;
+  height: 50px;
+  border-radius: 0;
+  color: #c8c8c8;
+  font-family: sans-serif;
+  font-weight: lighter;
+  font-size: 22px;
+}
+
+.btn {
+  width: 388px;
+  height: 60px;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-weight: 100;
+  font-size: 30px;
+  border-radius: 10px;
+  border: 0;
+  margin: 10px;
+}
+
+.btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
+  background: #d55caa;
+}
+
+.btn:hover, .btn:focus, .btn.focus {
+  background: #d55caa;
+}
+
+.btn-primary {
+  background: #770749;
+}
+
+.btn-default {
+  background: #a0a0a0;
+}
+
 .content {
   position: absolute;
-  top: 200px;
-  z-index:-1;
-  width: 540px;
-  min-width: 540px;
-  background-color: #a0a0a0;
+  top: 165px;
+  left: 25%;
+  right: 25%;
+  z-index: 999;
+  width: 560px;
+  min-width: 560px;
+  min-height: 320px;
+  background-color: #ffffff;
+  background-image: url("/assets/content-background.png");
+  background-repeat: no-repeat;
+  background-position: top;
   margin-left: auto; 
   margin-right: auto;
-  align-items: center;
+  align-items: top;
+}
+
+.content-home {
+  position: relative;
+  top: 165px;
+  left: 200px;
+  z-index: 999;
+  width: 560px;
+  min-width: 560px;
+  min-height: 320px;
+  background-color: #ffffff;
+  background-image: url("/assets/content-background.png");
+  background-repeat: no-repeat;
+  background-position: top;
+  margin-left: auto; 
+  margin-right: auto;
+  align-items: top;
 }
 
 .center {
@@ -56,30 +117,55 @@ footer {
   justify-content: center;
 }
 
-.pink-link {
+.title {
   color: #770749;
   font-family: sans-serif;
-  font-weight: normal;
+  font-weight: 200;
+  font-size: 38px;
+}
+
+.pink-link {
+  color: #770749;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-weight: 300;
   font-size: 16px;
+}
+
+.pink-link:hover, .pink-link:active, .pink-link:focus {
+  text-decoration: none;
+  color: #d55caa;
 }
 
 .bottom-links {
   padding-top: 32px;
+  color: #770749;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-weight: 300;
+  font-size: 16px;
 }
 
 .grey-text {
   color: #a0a0a0;
   font-famile: sans-serif;
-  font-weight: light;
+  font-weight: 200;
   font-size: 18px;
 }
 
 .logo {
-  padding-top: 80px;
+  padding-top: 50px;
+}
+
+.screenshot {
+  position: absolute;
+  top: 37px;
+  z-index: 999;
+  align-self: baseline;
 }
 
 .app-store-button {
-  /*width: 135px;
-  height: 40px;*/
+  width: 135px;
+  height: 40px;
   margin: 10px;
 }
