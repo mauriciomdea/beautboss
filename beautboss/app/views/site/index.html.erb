@@ -2,6 +2,11 @@
   <div style="width: 970px; min-width: 970px; max-width: 970px; margin-left: auto; margin-right: auto;">
     <%= image_tag "iphone-shot.png", alt: "screenshot", class: "screenshot" %>
     <%= image_tag "beautboss-logo.png", alt: "beautboss", class: "logo pull-left", style: "padding-left: 400px;" %>
+    <div>
+      <%=  %>
+      <%= link_to image_tag("icon-home.png", alt: "sign in", class: "sign-in-icon pull-left"), sign_in_path %>
+      <%= link_to "sign in", sign_in_path, class: "sign-in-text pull-left" %>
+    </div>
     <div class="content-home">
       <div style="align-self: flex-start; padding: 24px 0 18px 0; margin-left: 40px; position: absolute;">
         <h1 class="title">get started! be a beautboss!</h1>

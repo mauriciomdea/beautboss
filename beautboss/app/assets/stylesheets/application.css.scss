@@ -29,6 +29,14 @@ div {
   left: 0;
 }
 
+#header-small {
+  background-color: #770749;
+  min-height: 90px;
+  height: 90px;
+  right: 0;
+  left: 0;
+}
+
 footer {
   position: absolute;
   bottom: 0;
@@ -153,8 +161,20 @@ footer {
   font-size: 18px;
 }
 
+.grey-title {
+  color: #a0a0a0;
+  font-famile: sans-serif;
+  font-weight: 200;
+  font-size: 30px;
+}
+
 .logo {
   padding-top: 50px;
+}
+
+.logo-small {
+  padding-top: 5px;
+  height: 85px;
 }
 
 .screenshot {
@@ -168,4 +188,18 @@ footer {
   width: 135px;
   height: 40px;
   margin: 10px;
+}
+
+.sign-in-icon {
+  padding-top: 74px; 
+  padding-left: 105px;
+}
+
+.sign-in-text, .sign-in-text:hover, .sign-in-text:active {
+  color: #ffffff;
+  font-weight: 100;
+  font-size: 22px;
+  text-decoration: none;
+  padding-top: 82px; 
+  padding-left: 10px;
 }

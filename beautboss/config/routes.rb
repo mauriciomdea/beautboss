@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
 
-  root 'home#index'
+  
+
+  root 'site#index'
+  get '/about' => 'site#about', as: :about
+  get '/support' => 'site#support', as: :support
+  get '/privacy' => 'site#privacy', as: :privacy
+  get '/sign-in' => 'authentications#index', as: :sign_in
+  get '/password_reset' => 'authentications#password_reset', as: :password_reset
+  get '/sign-out' => 'authentications#destroy', as: :sign_out
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
