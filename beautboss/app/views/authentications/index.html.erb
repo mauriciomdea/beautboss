@@ -1,0 +1,36 @@
+<div id="header">
+  <div class="container">
+    <%= link_to image_tag("beautboss-logo.png", alt: "beautboss", class: "center logo"), root_path %>
+  </div>  
+</div>
+
+<div class="container">
+  <div class="content">
+    <div class="center" style="align-self: baseline; padding: 24px 0 18px 0; margin: 0;">
+      <h1 class="title">welcome to beautboss</h1>
+    </div>
+    <% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, class: "notice center" %>
+    <% end %>
+    <div class="">
+      <button type="button" class="btn btn-facebook center">sign in with facebook</button>
+      <br>
+      <%= form_for @user, url: authentications_path  do |f| %>
+        <div class="form-group">
+          <%= f.email_field :email, class: "form-control input-lg center", placeholder: "email" %>
+          <%= f.password_field :password, class: "form-control input-lg center", placeholder: "password" %>
+        </div>
+        <br>
+        <%= submit_tag "sign in", class: "btn btn-primary center" %>
+        <button type="button" class="btn btn-default center">i forgot my password :(</button>
+      <% end %>
+      <br>
+      <p class="grey-title" style="text-align: center; font-weight: 100;">need an account?<br>download the app to sign up!</p>
+      <div class="center">
+        <%= image_tag "app-store-button.svg", alt: "Download on the App Store", class: "app-store-button" %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "shared/footer" %>

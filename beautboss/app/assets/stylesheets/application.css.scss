@@ -42,12 +42,11 @@ div {
 }
 
 footer {
-  /* position: relative; */
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 80px;
-  background-color: #f1f1f1;
+  /* background-color: #f1f1f1; */
 }
 
 .input-lg {
@@ -58,6 +57,7 @@ footer {
   font-family: sans-serif;
   font-weight: lighter;
   font-size: 22px;
+  margin-bottom: -1px;
 }
 
 .btn {
@@ -65,7 +65,7 @@ footer {
   height: 60px;
   color: #ffffff;
   font-family: sans-serif;
-  font-weight: 100;
+  font-weight: 100 !important;
   font-size: 30px;
   border-radius: 10px;
   border: 0;
@@ -80,11 +80,23 @@ footer {
   background: #d55caa;
 }
 
+.btn-default {
+  background: #a0a0a0;
+}
+
 .btn-primary {
   background: #770749;
 }
 
-.btn-default {
+.btn-facebook {
+  background: #5370c1;
+}
+
+.btn-facebook:focus, .btn-facebook.focus, .btn-facebook:active:focus, .btn-facebook:active.focus, .btn-facebook.active:focus, .btn-facebook.active.focus {
+  background: #a0a0a0;
+}
+
+.btn-facebook:hover, .btn-facebook:focus, .btn-facebook.focus {
   background: #a0a0a0;
 }
 
@@ -150,7 +162,7 @@ footer {
   text-decoration: none;
   font-family: sans-serif;
   font-weight: 300;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .pink-link:hover, .pink-link:active, .pink-link:focus {
@@ -164,7 +176,7 @@ footer {
   text-decoration: none;
   font-family: sans-serif;
   font-weight: 300;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .grey-text {
@@ -176,9 +188,17 @@ footer {
 
 .grey-title {
   color: #a0a0a0;
-  font-famile: sans-serif;
+  font-family: sans-serif;
   font-weight: 200;
   font-size: 30px;
+}
+
+.notice {
+  color: #d55caa;
+  font-family: sans-serif;
+  font-weight: 200;
+  font-size: 18px;
+  padding: 4px 2px 8px 2px;
 }
 
 .logo {

@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   get '/password_reset' => 'authentications#password_reset', as: :password_reset
   get '/sign-out' => 'authentications#destroy', as: :sign_out
 
+  resources :authentications, only: [:create, :destroy]
+
+  resources :newsfeeds
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   
