@@ -10,10 +10,10 @@
       <h1 class="title">welcome to beautboss</h1>
     </div>
     <% flash.each do |name, msg| %>
-      <%= content_tag :div, msg, class: "notice center" %>
+      <%= content_tag :div, msg, class: "notice center", style: "width: 388px; padding: 0 0 20px 0; text-align: center;" %>
     <% end %>
-    <div class="">
-      <button type="button" class="btn btn-facebook center">sign in with facebook</button>
+    <div style="margin-bottom: 40px;">
+      <button type="button" class="btn btn-facebook center" onclick="fbLogin();">sign in with facebook</button>
       <br>
       <%= form_for @user, url: authentications_path  do |f| %>
         <div class="form-group">
@@ -34,3 +34,38 @@
 </div>
 
 <%= render "shared/footer" %>
+
+<script type="text/javascript">
+
+  // Load Fb SDK
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1461652074141992',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+  function fbLogin() {
+    FB.login(function(response) {
+      if (response.status === 'connected') {
+        // alert("Logged into your app and Facebook. Facebook access token: " + response.authResponse.accessToken);
+        // document.getElementById("facebook_login").submit();
+        window.location.href = "<%= sign_in_facebook_url %>?access_token=" + response.authResponse.accessToken;
+      } else if (response.status === 'not_authorized') {
+        alert("The person is logged into Facebook, but not your app.");
+      } else {
+        alert("The person is not logged into Facebook, so we're not sure if they are logged into this app or not.");
+      }
+    }, {scope: 'public_profile,email'});
+  }
+
+</script>

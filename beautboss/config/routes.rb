@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/support' => 'site#support', as: :support
   get '/privacy' => 'site#privacy', as: :privacy
   get '/sign-in' => 'authentications#index', as: :sign_in
+  get '/sign-in/facebook' => 'authentications#facebook', as: :sign_in_facebook
   get '/sign-out' => 'authentications#destroy', as: :sign_out
 
   resources :authentications, only: [:create, :destroy]
