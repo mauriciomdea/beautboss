@@ -21,6 +21,10 @@ div {
   z-index: 1;
 }
 
+.container {
+  width: 970px;
+}
+
 #header {
   background-color: #770749;
   min-height: 264px;
@@ -38,10 +42,12 @@ div {
 }
 
 footer {
+  /* position: relative; */
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 80px;
+  background-color: #f1f1f1;
 }
 
 .input-lg {
@@ -132,6 +138,13 @@ footer {
   font-size: 38px;
 }
 
+.subtitle {
+  color: #770749;
+  font-family: sans-serif;
+  font-weight: 200;
+  font-size: 32px;
+}
+
 .pink-link {
   color: #770749;
   text-decoration: none;
@@ -191,8 +204,6 @@ footer {
 }
 
 .sign-in-icon {
-  padding-top: 74px; 
-  padding-left: 105px;
 }
 
 .sign-in-text, .sign-in-text:hover, .sign-in-text:active {
@@ -200,6 +211,4 @@ footer {
   font-weight: 100;
   font-size: 22px;
   text-decoration: none;
-  padding-top: 82px; 
-  padding-left: 10px;
 }
