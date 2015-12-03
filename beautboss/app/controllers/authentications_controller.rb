@@ -18,6 +18,10 @@ class AuthenticationsController < ApplicationController
     end
   end
 
+  def forgot_password
+    @user = User.new
+  end
+
   def password_reset
   end
 

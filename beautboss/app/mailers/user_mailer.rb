@@ -1,4 +1,5 @@
 class UserMailer < ActionMailer::Base
+
   # default from: ENV['FROM_EMAIL']
 
   # def signup_confirmation(user)
@@ -6,9 +7,9 @@ class UserMailer < ActionMailer::Base
   #   mail to: user.email, subject: "Sign Up Confirmation"
   # end
 
-  def password_reset(user, token)
+  def password_reset(user, pwd)
   	@user = user
-  	@token = token
+  	@password = pwd
   	mail  to: user.email, 
           subject: "Password reset for beautboss app",
           from: ENV['FROM_EMAIL']

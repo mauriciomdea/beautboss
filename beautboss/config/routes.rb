@@ -7,10 +7,13 @@ Rails.application.routes.draw do
   get '/support' => 'site#support', as: :support
   get '/privacy' => 'site#privacy', as: :privacy
   get '/sign-in' => 'authentications#index', as: :sign_in
-  get '/password_reset' => 'authentications#password_reset', as: :password_reset
   get '/sign-out' => 'authentications#destroy', as: :sign_out
 
   resources :authentications, only: [:create, :destroy]
+
+  get '/forgot_password' => 'passwords#new', as: :forgot_password
+  post '/forgot_password' => 'passwords#create', as: :new_password
+  # get '/password_reset' => 'authentications#password_reset', as: :password_reset
 
   resources :newsfeeds
 
