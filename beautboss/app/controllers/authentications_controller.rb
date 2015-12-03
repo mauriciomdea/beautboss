@@ -8,7 +8,7 @@ class AuthenticationsController < ApplicationController
     if @user = User.find_by(email: user_params[:email])
       if @user.try(:authenticate, user_params[:password])
         session[:user_id] = @user.id
-        redirect_to newsfeeds_path, notice: "Logged in!"
+        redirect_to newsfeed_path(@user), notice: "Signed in!"
       else
         _not_authorized "Email or password does not match"
       end
@@ -24,7 +24,7 @@ class AuthenticationsController < ApplicationController
       redirect_to sign_in_url, notice: "Can't find an user with this Facebook account :("
     else
       session[:user_id] = @user.id
-      redirect_to newsfeeds_path, notice: "Logged in!"
+      redirect_to newsfeed_path(@user), notice: "Signed in!"
     end
   rescue FbGraph2::Exception  => err
     # _not_authorized err.message

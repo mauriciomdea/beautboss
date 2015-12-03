@@ -16,7 +16,10 @@ Rails.application.routes.draw do
   post '/forgot_password' => 'passwords#create', as: :new_password
   # get '/password_reset' => 'authentications#password_reset', as: :password_reset
 
-  resources :newsfeeds
+  resources :users
+
+  # resources :newsfeeds
+  get '/:username/newsfeed' => 'newsfeed#index', as: :newsfeed
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)

@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
     self.username ||= username
   end
 
+  def to_param
+    username
+  end
+
   # Follows a user
   def follow(other_user)
     outbound_relationships.create(followed_id: other_user.id)
@@ -93,15 +97,5 @@ class User < ActiveRecord::Base
     user.location = profile.location.name unless profile.location.nil?
     user
   end
-
-  # def self.update_or_create(attributes)
-  #   assign_or_new(attributes).save
-  # end
-
-  # def self.assign_or_new(attributes)
-  #   user = first || new
-  #   user.assign_attributes(attributes)
-  #   user
-  # end
   
 end

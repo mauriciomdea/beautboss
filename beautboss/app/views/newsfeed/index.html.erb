@@ -1,0 +1,31 @@
+<%= render "shared/header_authenticated" %>
+
+<div class="container" style="width: 624px; margin-bottom: 40px;">
+
+  <% @newsfeed.each do |n| %>
+
+    <div style="margin-top: 40px;">
+    
+      <div class="clearfix" style="padding-left: 24px;">
+        <div class="pull-left">
+          <%= link_to image_tag(n.user.avatar, alt: n.user.username, size: '48x48', class: "img-circle", style: "margin-top: 10px;"), n.user %>
+        </div>
+        <div class="pull-left" style="padding-left: 24px;">
+          <p style="line-height: 40px; font-weight: bold; font-size: 18px;"><%= link_to n.user.username, n.user, style: "color: #770749; text-decoration: none;" %></p>
+          <p style="margin-top: -16px; font-size: 18px; font-weight: normal; color: #a0a0a0;"><%= time_ago_in_words(n.created_at) %> ago</p>
+        </div>
+      </div>
+
+      <div class="center">
+        <%= link_to image_tag(n.image, alt: n.service, size: '600x600', class: "", style: "margin: 10px;"), n.user %>
+      </div>
+
+    </div>
+
+  <% end %>
+
+</div>
+
+<div style="background-color: #f1f1f1;">
+  <%= render "shared/footer" %>
+</div>

@@ -28,3 +28,29 @@ en:
   time:
     formats:
       custom: '%d/%m/%Y %H:%M'
+  datetime:
+    distance_in_words:
+      x_seconds:
+        one: "1s"
+        other: "%{count}s"
+      x_minutes:
+        one: "1m"
+        other: "%{count}m"
+      x_hours:
+        one: "1h"
+        other: "%{count}h"
+      x_days:
+        one: "1d"
+        other: "%{count}d"
+      about_x_seconds:
+        # The defaults are "about 1 hour" and "about %{count} hours"
+        one: "1s"
+        other: "%{count}s"
+      about_x_minutes:
+        # The defaults are "about 1 hour" and "about %{count} hours"
+        one: "1m"
+        other: "%{count}m"
+      about_x_hours:
+        # The defaults are "about 1 hour" and "about %{count} hours"
+        one: "1h"
+        other: "%{count}h"

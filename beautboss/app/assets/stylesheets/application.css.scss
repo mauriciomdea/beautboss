@@ -41,8 +41,17 @@ div {
   left: 0;
 }
 
+#header-authenticated {
+  background-color: #770749;
+  min-height: 80px;
+  height: 80px;
+  right: 0;
+  left: 0;
+}
+
 footer {
-  position: absolute;
+  display: block;
+  position: relative;
   bottom: 0;
   width: 100%;
   height: 80px;
@@ -210,6 +219,11 @@ footer {
   height: 85px;
 }
 
+.logo-authenticated {
+  padding-top: 5px;
+  height: 70px;
+}
+
 .screenshot {
   position: absolute;
   top: 37px;
@@ -231,4 +245,13 @@ footer {
   font-weight: 100;
   font-size: 22px;
   text-decoration: none;
+}
+
+.username-text, .username-text:hover, .username-text:active {
+  color: #ffffff;
+  font-weight: 200;
+  font-size: 18px;
+  text-decoration: none;
+  padding-top: 28px; 
+  padding-right: 20px;
 }
