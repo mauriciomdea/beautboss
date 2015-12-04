@@ -17,6 +17,10 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+body {
+  font-family: sans-serif;
+}
+
 div {
   z-index: 1;
 }
@@ -164,6 +168,34 @@ footer {
   font-family: sans-serif;
   font-weight: 200;
   font-size: 32px;
+}
+
+.light {
+  font-weight: 100;
+}
+
+.regular {
+  font-weight: 300;
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.grey {
+  color: #a0a0a0;
+}
+
+.font-small {
+  font-size: 18px;
+}
+
+.font-medium {
+  font-size: 22px;
+}
+
+.font-large {
+  font-size: 30px;
 }
 
 .pink-link {

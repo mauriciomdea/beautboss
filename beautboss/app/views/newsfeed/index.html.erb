@@ -4,9 +4,9 @@
 
   <% @newsfeed.each do |n| %>
 
-    <div style="margin-top: 40px;">
+    <div id="register" class="clearfix" style="margin-top: 40px;">
     
-      <div class="clearfix" style="padding-left: 24px;">
+      <div id="owner" class="clearfix" style="padding-left: 24px; margin-bottom: 14px;">
         <div class="pull-left">
           <%= link_to image_tag(n.user.avatar, alt: n.user.username, size: '48x48', class: "img-circle", style: "margin-top: 10px;"), n.user %>
         </div>
@@ -16,8 +16,22 @@
         </div>
       </div>
 
-      <div class="center">
-        <%= link_to image_tag(n.image, alt: n.service, size: '600x600', class: "", style: "margin: 10px;"), n.user %>
+      <div id="image" class="center">
+        <%= link_to image_tag(n.image, alt: n.service, size: '600x600', class: "", style: ""), n.user %>
+      </div>
+
+      <div id="wows" class="clearfix">
+        <%= image_tag "ic_wow_notation.png", class: "pull-left", style: "margin-left: 24px; margin-top: 24px;" %>
+        <p class="pull-left" style="font-size: 22px; font-weight: normal; color: #770749; margin-top: 18px; padding-left: 12px;">
+          <%= n.wows_count %> wows!
+        </p>
+      </div>
+
+      <div id="service" class="clearfix" style="margin-left: 24px;">
+        <p class="font-small bold grey"><%= n.service %></p>
+        <p class="font-small regular grey">
+          <% unless n.place.nil? %>at <span class="bold"><%= n.place.name %></span><% unless n.place.address.nil? %> in <span class="bold"><%= n.place.address %></span><% end %><% end %>
+        </p>
       </div>
 
     </div>
