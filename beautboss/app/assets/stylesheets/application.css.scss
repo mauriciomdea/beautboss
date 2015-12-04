@@ -215,6 +215,19 @@ footer {
   color: #d55caa;
 }
 
+.pink-link-large {
+  color: #770749;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.pink-link-large:hover, .pink-link-large:active, .pink-link-large:focus {
+  text-decoration: none;
+  color: #d55caa;
+}
+
 .bottom-links {
   padding-top: 32px;
   color: #770749;

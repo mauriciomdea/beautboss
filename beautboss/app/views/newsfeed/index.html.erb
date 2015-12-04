@@ -21,13 +21,21 @@
       </div>
 
       <div id="wows" class="clearfix">
-        <%= image_tag "ic_wow_notation.png", class: "pull-left", style: "margin-left: 24px; margin-top: 24px;" %>
-        <p class="pull-left" style="font-size: 22px; font-weight: normal; color: #770749; margin-top: 18px; padding-left: 12px;">
-          <%= n.wows_count %> wows!
-        </p>
+        <% if n.wows_count > 0 %> 
+          <%= image_tag "ic_wow_notation.png", class: "pull-left", style: "margin-left: 24px; margin-top: 24px;" %>
+          <p class="pull-left" style="font-size: 22px; font-weight: normal; color: #770749; margin-top: 18px; padding-left: 12px;">
+            <% if n.wows_count == 1 %>
+              <%= link_to n.wows.first.user.username, n.wows.first.user, class: "pink-link-large" %> wowed this!
+            <% elsif n.wows_count == 2 %>
+              <%= link_to n.wows.first.user.username, n.wows.first.user, class: "pink-link-large" %> and <%= link_to n.wows.second.user.username, n.wows.second.user, class: "pink-link-large" %> wowed this!
+            <% else %>
+              <%= n.wows_count %> wows!
+            <% end %>
+          </p>
+        <% end %>
       </div>
 
-      <div id="service" class="clearfix" style="margin-left: 24px;">
+      <div id="service" class="clearfix" style="margin-left: 24px; margin-top: 24px;">
         <p class="font-small bold grey"><%= n.service %></p>
         <p class="font-small regular grey">
           <% unless n.place.nil? %>at <span class="bold"><%= n.place.name %></span><% unless n.place.address.nil? %> in <span class="bold"><%= n.place.address %></span><% end %><% end %>
