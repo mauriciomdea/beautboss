@@ -34,6 +34,18 @@
         </p>
       </div>
 
+      <div id="comments" class="clearfix" style="margin-left: 24px;">
+        
+        <% n.comments.each do |c| %>
+
+          <p class="font-small"><span class="purple bold"><%= c.user.username %></span>&nbsp;<span class="grey regular"><%= c.comment %></span></p>
+
+        <% end %>
+
+        <hr>
+
+      </div>
+
     </div>
 
   <% end %>
