@@ -1,1 +1,48 @@
-<h1><%= @user.name %></h1>
+<%= render "shared/header_authenticated" %>
+
+<div class="main" style="background-color: #f1f1f1;">
+
+  <div class="container" style="width: 940px; padding-top: 40px; padding-bottom: 40px;">
+
+    <div class="clearfix">
+      <div>
+        <div class="pull-left" style="margin-top: 4px;">
+          <%= link_to image_tag(@user.avatar, alt: @user.username, size: '128x128', class: "img-circle"), @user %>
+        </div>
+        <div class="pull-left" style="margin-top: 0; margin-left: 24px; width: 400px;">
+          <p class="font-large grey bold" style="line-height: 100%;"><%= @user.username %></p>
+          <p class="font-large grey bold" style="line-height: 100%;"><%= @user.name %></p>
+          <p class="grey regular" style="line-height: 120%; font-size: 20px;"><%= @user.bio %></p>
+        </div>
+      </div>
+      <div class="pull-right" style="width: 300px; margin-left: 24px; text-align: center;">
+        <div>
+          <div class="pull-right" style="width: 100px; min-width: 100px;">
+            <span class="font-large grey bold"><%= @user.posts.count %></span><br><span class="grey regular" style="line-height: 120%; font-size: 20px;">photos</span>
+          </div>
+          <div class="pull-right" style="width: 100px; min-width: 100px;">
+            <span class="font-large grey bold"><%= @user.followers.count %></span><br><span class="grey regular" style="line-height: 120%; font-size: 20px;">followers</span>
+          </div>
+          <div class="pull-right" style="width: 100px; min-width: 100px;">
+            <span class="font-large grey bold"><%= @user.following.count %></span><br><span class="grey regular" style="line-height: 120%; font-size: 20px;">following</span>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-default" style="width: 300px; margin-left: 0; margin-right: 0;">edit my profile</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="width: 910px; max-width: 910px; margin-top: 40px; margin-bottom: 40px;">
+      <% @user.posts.each do |p| %>
+        <%= link_to image_tag(p.image, alt: p.service, size: '190x190', class: "", style: "margin-left: 30px; margin-bottom: 30px;"), @user %>
+      <% end %>
+    </div>
+
+  </div>
+
+</div>
+
+<div style="background-color: #f1f1f1;">
+  <%= render "shared/footer" %>
+</div>

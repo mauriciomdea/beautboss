@@ -1,6 +1,7 @@
 class AuthenticationsController < ApplicationController
 
   def index
+    redirect_to newsfeed_path(@current_user) unless @current_user.nil?
     @user = User.new
   end
 
