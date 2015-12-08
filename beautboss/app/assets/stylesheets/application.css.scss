@@ -97,6 +97,15 @@ div {
   align-items: top;
 }
 
+.form-control {
+  box-shadow: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #d55caa;
+}
+
 .input-lg {
   width: 386px;
   height: 50px;

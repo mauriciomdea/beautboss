@@ -9,12 +9,25 @@ class UsersController < ApplicationController
   end
 
   def update
+
     if @current_user.update(user_params)
-      # render :edit
       redirect_to edit_user_path(@current_user)
     else
       render :edit
     end
+
+  end
+
+  def destroy
+
+    if @current_user.try(:authenticate, user_params[:password])
+      @current_user.destroy
+      redirect_to sign_in_path, notice: "Account successfully deleted :("
+    else
+      @current_user.errors.add(:password, 'is invalid')
+      render :edit
+    end
+
   end
 
   private 
