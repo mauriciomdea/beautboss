@@ -2,10 +2,24 @@
 
   <div class="container">
     <%= link_to image_tag("beautboss-logo.png", alt: "beautboss", class: "logo-authenticated pull-left", style: "margin-left: -20px;"), root_path %>
-    <div class="pull-right">
-      <%= link_to @current_user.username, @current_user, class: "username-text pull-left" %>
-      <%= link_to image_tag(@current_user.avatar, alt: @current_user.username, size: '48x48', class: "img-circle pull-left", style: "margin-top: 16px;"), @current_user %>
-    </div>
+
+    <% if @user == @current_user %>
+
+      <div class="pull-right">
+        <%= link_to image_tag("icon-home.png", alt: "sign out", class: "sign-in-icon pull-left", style: "padding-top: 20px;"), sign_out_path %>
+        <%= link_to "sign out", sign_out_path, class: "sign-in-text pull-left", style: "padding-top: 30px; padding-left: 10px;" %>
+      </div>
+
+    <% else %>
+
+      <div class="pull-right">
+        <%= link_to @current_user.username, @current_user, class: "username-text pull-left" %>
+        <%= link_to image_tag(@current_user.avatar, alt: @current_user.username, size: '48x48', class: "img-circle pull-left", style: "margin-top: 16px;"), @current_user %>
+      </div>
+
+    <% end %>
+
+
   </div>
 
 </div>

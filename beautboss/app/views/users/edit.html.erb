@@ -1,0 +1,169 @@
+<%= render "shared/header_authenticated" %>
+
+<div style="background-color: #f1f1f1;">
+
+  <div class="container" style="padding-top: 20px; padding-bottom: 40px;">
+
+    <div style="margin-bottom: 24px;">
+
+      <h1 class="font-large grey bold"><%= @current_user.name %>'s Profile</h1>
+
+      <h2 class="font-large grey regular">account settings</h2>
+
+    </div>
+
+    <div>
+
+      <%= form_for @current_user, method: :put, class: "form-horizontal" do |f| %>
+
+        <% if @current_user.errors.any? %>
+          <ul>
+            <% @current_user.errors.full_messages.each do |msg| %>
+              <li class="notice"><%= msg %></li>
+            <% end %>
+          </ul>
+        <% end %>
+
+        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+          <label for="user[name]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">name</label>
+          <div class="col-sm-9">
+            <%= f.text_field :name, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+          <label for="user[username]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">user name</label>
+          <div class="col-sm-9">
+            <%= f.text_field :username, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="user[email]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">email</label>
+          <div class="col-sm-9">
+            <%= f.email_field :email, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+          <label for="user[website]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">web</label>
+          <div class="col-sm-9">
+            <%= f.text_field :website, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+          <label for="user[location]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">location</label>
+          <div class="col-sm-9">
+            <%= f.text_field :location, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+          <label for="user[bio]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">bio</label>
+          <div class="col-sm-9">
+            <%= f.text_area :bio, rows: "3", class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <div class="col-sm-3">&nbsp;</div>
+          <div class="col-sm-9 pull-right">
+            <%= submit_tag "save new details", class: "btn btn-default", style: "margin-right: 0;" %>
+          </div>
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div> 
+
+</div>
+
+<div style="background-color: #ffffff; height: 100%;">
+
+  <div class="container" style="padding-top: 20px; padding-bottom: 40px;">
+
+    <div style="margin-bottom: 24px;">
+
+      <h2 class="font-large grey regular">reset your password</h2>
+
+      <p class="font-medium grey light">(make sure it's at least 6 characters long)</p>
+
+    </div>
+
+    <div>
+
+      <%= form_for @current_user, class: "form-horizontal" do |f| %>
+      
+        <div class="form-group">
+          <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">new password</label>
+          <div class="col-sm-9">
+            <%= f.password_field :password, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="user[password_confirmation]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">repeat password</label>
+          <div class="col-sm-9">
+            <%= f.password_field :password_confirmation, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <div class="col-sm-3">&nbsp;</div>
+          <div class="col-sm-9 pull-right">
+            <%= submit_tag "save new password", class: "btn btn-default", style: "margin-right: 0;" %>
+          </div>
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div style="background-color: #f1f1f1; height: 100%;">
+
+  <div class="container" style="padding-top: 20px; padding-bottom: 40px;">
+
+    <div style="margin-bottom: 24px;">
+
+      <h2 class="font-large grey regular">delete your account</h2>
+
+      <p class="font-medium grey light">confirm your password to delete your account and data</p>
+
+    </div>
+
+    <div>
+
+      <%= form_for @current_user, class: "form-horizontal" do |f| %>
+      
+        <div class="form-group">
+          <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">password</label>
+          <div class="col-sm-9">
+            <%= f.password_field :password, class: "form-control input-profile" %>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <div class="col-sm-3">&nbsp;</div>
+          <div class="col-sm-9 pull-right">
+            <%= submit_tag "delete my account", class: "btn btn-default", style: "margin-right: 0;" %>
+          </div>
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div style="background-color: #f1f1f1;">
+  <%= render "shared/footer" %>
+</div>

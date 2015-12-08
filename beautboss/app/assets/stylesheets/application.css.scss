@@ -87,6 +87,17 @@ footer {
   margin-bottom: -1px;
 }
 
+.input-profile {
+  width: 440px;
+  height: 44px; 
+  margin-bottom: 20px;
+  border-radius: 0;
+  color: #c8c8c8;
+  font-family: sans-serif;
+  font-weight: lighter;
+  font-size: 20px;
+}
+
 .btn {
   width: 388px;
   height: 60px;
@@ -303,14 +314,14 @@ footer {
 .sign-in-icon {
 }
 
-.sign-in-text, .sign-in-text:hover, .sign-in-text:active {
+.sign-in-text, .sign-in-text:hover, .sign-in-text:active, .sign-in-text:focus {
   color: #ffffff;
   font-weight: 100;
   font-size: 22px;
   text-decoration: none;
 }
 
-.username-text, .username-text:hover, .username-text:active {
+.username-text, .username-text:hover, .username-text:active, .username-text:focus {
   color: #ffffff;
   font-weight: 200;
   font-size: 18px;

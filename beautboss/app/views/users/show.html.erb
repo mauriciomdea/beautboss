@@ -28,7 +28,9 @@
           </div>
         </div>
         <div>
-          <button class="btn btn-default" style="width: 300px; margin-left: 0; margin-right: 0;">edit my profile</button>
+          <% if @user == @current_user %>
+            <%= link_to "edit my profile", edit_user_path(@current_user), class: "btn btn-default", style: "width: 300px; margin-left: 0; margin-right: 0;" %>
+          <% end %>
         </div>
       </div>
     </div>
