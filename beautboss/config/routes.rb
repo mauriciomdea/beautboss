@@ -1,40 +1,5 @@
 Rails.application.routes.draw do
 
-  root 'site#index'
-
-  get '/about' => 'site#about', as: :about
-  get '/support' => 'site#support', as: :support
-  get '/privacy' => 'site#privacy', as: :privacy
-  get '/sign-in' => 'authentications#index', as: :sign_in
-  get '/sign-in/facebook' => 'authentications#facebook', as: :sign_in_facebook
-  get '/sign-out' => 'authentications#destroy', as: :sign_out
-
-  resources :authentications, only: [:create, :destroy]
-
-  get '/forgot_password' => 'passwords#new', as: :forgot_password
-  post '/forgot_password' => 'passwords#create', as: :new_password
-  # get '/password_reset' => 'authentications#password_reset', as: :password_reset
-
-  # resources :users
-  #     users GET        /users(.:format)                                 users#index
-  #           POST       /users(.:format)                                 users#create
-  #  new_user GET        /users/new(.:format)                             users#new
-  # edit_user GET        /users/:id/edit(.:format)                        users#edit
-  #      user GET        /users/:id(.:format)                             users#show
-  #           PATCH      /users/:id(.:format)                             users#update
-  #           PUT        /users/:id(.:format)                             users#update
-  #           DELETE     /users/:id(.:format)                             users#destroy
-
-  get '/:username' => 'users#show', as: :user
-  get '/:username/edit' => 'users#edit', as: :edit_user
-  put '/:username' => 'users#update'
-  delete '/:username' => 'users#destroy'
-
-  # resources :newsfeeds
-  get '/:username/newsfeed' => 'newsfeed#index', as: :newsfeed
-
-  resources :posts
-
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   
@@ -80,6 +45,31 @@ Rails.application.routes.draw do
 
     end
   end
+
+  root 'site#index'
+
+  get '/about' => 'site#about', as: :about
+  get '/support' => 'site#support', as: :support
+  get '/privacy' => 'site#privacy', as: :privacy
+  get '/sign-in' => 'authentications#index', as: :sign_in
+  get '/sign-in/facebook' => 'authentications#facebook', as: :sign_in_facebook
+  get '/sign-out' => 'authentications#destroy', as: :sign_out
+
+  resources :authentications, only: [:create, :destroy]
+
+  get '/forgot_password' => 'passwords#new', as: :forgot_password
+  post '/forgot_password' => 'passwords#create', as: :new_password
+  # get '/password_reset' => 'authentications#password_reset', as: :password_reset
+
+  get '/:username' => 'users#show', as: :user
+  get '/:username/edit' => 'users#edit', as: :edit_user
+  put '/:username' => 'users#update'
+  delete '/:username' => 'users#destroy'
+
+  # resources :newsfeeds
+  get '/:username/newsfeed' => 'newsfeed#index', as: :newsfeed
+
+  resources :posts
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

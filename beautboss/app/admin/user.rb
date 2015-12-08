@@ -1,4 +1,7 @@
 ActiveAdmin.register User do
+  before_filter :only => [:show, :edit, :update, :destroy] do
+    @user = User.find_by_username(params[:id])
+  end
 
   permit_params :name, :email, :password, :avatar, :website, :location, :bio, :notify_new_follower, :notify_new_comment, :notify_new_wow
 
