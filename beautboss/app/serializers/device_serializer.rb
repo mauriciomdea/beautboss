@@ -1,7 +1,11 @@
 class DeviceSerializer < ActiveModel::Serializer
 
-  attributes :id, :device_type, :device_token
+  attributes :id, :type, :endpoint
 
   has_one :user, serializer: UserBasicSerializer
+
+  def type
+    object.platform
+  end
 
 end

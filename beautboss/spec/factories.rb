@@ -71,8 +71,8 @@ FactoryGirl.define do
 
   factory :device do
     association :user, factory: :user
-    device_type { ["ios_dev", "ios", "android"].sample }
-    device_token "ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890"
+    platform { ["ios_dev", "ios", "android"].sample }
+    endpoint "ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890"
   end
 
 end
