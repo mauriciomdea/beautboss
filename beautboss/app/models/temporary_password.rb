@@ -1,5 +1,5 @@
 class TemporaryPassword < ActiveRecord::Base
-  before_create :generate_password
+  before_validation :generate_password
 
   belongs_to :user
 

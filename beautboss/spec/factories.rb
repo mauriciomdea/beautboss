@@ -3,7 +3,7 @@ FactoryGirl.define do
   factory :user do
     sequence(:name)  { |n| "Robot #{n}" }
     sequence(:email) { |n| "robot#{n}@example.com"}
-    password "1234"
+    password "12345678"
     sequence(:facebook)  { |n| "#{n}" }
   end
 

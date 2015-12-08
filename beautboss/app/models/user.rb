@@ -13,7 +13,9 @@ class User < ActiveRecord::Base
 
   validates :name, :email, :username, length: { maximum: 191 }
   validates :avatar, :bio, length: { maximum: 767 }
-  validates :password, length: { in: 4..16 }, unless: 'password.nil?'
+  validates :password, length: { in: 6..20 }, unless: 'password.nil?'
+
+  validates :password, confirmation: true
 
   has_many :posts, dependent: :delete_all
   has_many :wows, dependent: :delete_all
@@ -51,9 +53,9 @@ class User < ActiveRecord::Base
     self.username ||= username
   end
 
-  def to_param
-    username
-  end
+  # def to_param
+  #   username
+  # end
 
   # Follows a user
   def follow(other_user)

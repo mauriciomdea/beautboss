@@ -31,14 +31,15 @@ class Api::V1::AuthenticationsController < Api::V1::ApiController
 
   def password_reset 
     if user = User.find_by_email(params[:email])
-      # token = Token.get_token(user, 2) # gets a token that expires after 2 days
       tmp = TemporaryPassword.create(user: user)
-      UserMailer.password_reset(user, tmp.password).deliver_now # sends token to user's email
-      render json: {message: "Token sent to #{user.email}!"}, status: :ok
+      mail = UserMailer.password_reset(user, tmp.password)
+      mail.deliver_now # sends token to user's email
+      render json: { message: "Token sent to #{user.email}!" }, status: :ok
     else
       head :not_found
     end
   rescue Exception => err
+    puts err.to_s
     render json: {error: err.message}, status: :unprocessable_entity
   end
 

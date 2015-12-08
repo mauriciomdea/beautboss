@@ -12,7 +12,7 @@ RSpec.describe "Users API v1", type: :request do
       user_params = {
         "name" => "Johnny Test",
         "email" => "johnny_test@example.com",
-        "password" => "1234"
+        "password" => "12345678"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -83,7 +83,7 @@ RSpec.describe "Users API v1", type: :request do
       user_params = {
         "name" => "Jane Smith",
         "email" => "jane_smith@example.com",
-        "password" => "4321",
+        "password" => "87654321",
         "avatar" => "http://some.cdn.com/some_image.jpg",
         "website" => "example.com",
         "location" => "Somewhere, NA",

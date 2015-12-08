@@ -34,6 +34,9 @@ class AuthenticationsController < ApplicationController
   end
 
   def destroy
+    reset_session
+    @current_user = nil
+    redirect_to sign_in_path, notice: "Signed out successfully."
   end
 
   private

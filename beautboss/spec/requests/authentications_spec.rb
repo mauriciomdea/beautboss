@@ -6,10 +6,10 @@ RSpec.describe "Authentications", type: :request do
   describe "POST /api/v1/authentications" do
 
     it "retrieves access token from user email and password" do
-      user = FactoryGirl.create :user, password: "1234"
+      user = FactoryGirl.create :user, password: "12345678"
       auth_params = {
         "email" => user.email,
-        "password" => "1234"
+        "password" => "12345678"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -24,7 +24,7 @@ RSpec.describe "Authentications", type: :request do
     it "refuses authentication for wrong email" do
       auth_params = {
         "email" => "nobody@nowehere.com",
-        "password" => "1234"
+        "password" => "12345678"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -35,7 +35,7 @@ RSpec.describe "Authentications", type: :request do
     end
 
     it "refuses authentication for wrong password" do
-      user = FactoryGirl.create :user, password: "1234"
+      user = FactoryGirl.create :user, password: "12345678"
       auth_params = {
         "email" => user.email,
         "password" => "abcd"
