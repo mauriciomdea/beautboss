@@ -8,6 +8,14 @@
 
       <h1 class="font-large grey bold"><%= @current_user.name %>'s Profile</h1>
 
+      <% if @current_user.errors.any? %>
+        <ul>
+          <% @current_user.errors.full_messages.each do |msg| %>
+            <li class="notice"><%= msg %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
       <h2 class="font-large grey regular">account settings</h2>
 
     </div>
@@ -15,14 +23,6 @@
     <div>
 
       <%= form_for @current_user, method: :put, class: "form-horizontal" do |f| %>
-
-        <% if @current_user.errors.any? %>
-          <ul>
-            <% @current_user.errors.full_messages.each do |msg| %>
-              <li class="notice"><%= msg %></li>
-            <% end %>
-          </ul>
-        <% end %>
 
         <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
           <label for="user[name]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">name</label>
@@ -95,7 +95,7 @@
 
     <div>
 
-      <%= form_for @current_user, class: "form-horizontal" do |f| %>
+      <%= form_for @current_user, method: :put, class: "form-horizontal" do |f| %>
       
         <div class="form-group">
           <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">new password</label>
@@ -140,7 +140,7 @@
 
     <div>
 
-      <%= form_for @current_user, class: "form-horizontal" do |f| %>
+      <%= form_for @current_user, method: :delete, class: "form-horizontal" do |f| %>
       
         <div class="form-group">
           <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">password</label>
@@ -164,6 +164,15 @@
 
 </div>
 
-<div style="background-color: #f1f1f1;">
-  <%= render "shared/footer" %>
+<div style="background-color: #f1f1f1; padding-top: 20px; padding-bottom: 40px;">
+  <div class="container">
+    <div class="center">
+      <p class="bottom-links">
+        | <%= link_to "about us", about_path, class: "pink-link" %> 
+        | <%= link_to "support", support_path, class: "pink-link" %> 
+        | <%= link_to "terms of privacy ", privacy_path, class: "pink-link" %>
+        | &copy; beautboss 2015&#8482; all rights reserved
+      </p>
+    </div>
+  </div>
 </div>

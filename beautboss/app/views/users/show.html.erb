@@ -30,14 +30,20 @@
         <div>
           <% if @user == @current_user %>
             <%= link_to "edit my profile", edit_user_path(@current_user), class: "btn btn-default", style: "width: 300px; margin-left: 0; margin-right: 0;" %>
+          <% else %>
+            <% if @current_user.following?(@user) %>
+              <button class="btn btn-success" style="width: 300px; margin-left: 0; margin-right: 0;">
+                <span aria-hidden="true" class="glyphicon glyphicon-ok-circle" style="padding-top: 8px;"></span> following
+              </button>
+            <% end %>
           <% end %>
         </div>
       </div>
     </div>
 
     <div style="width: 910px; max-width: 910px; margin-top: 40px; margin-bottom: 40px;">
-      <% @user.posts.each do |p| %>
-        <%= link_to image_tag(p.image, alt: p.service, size: '190x190', class: "", style: "margin-left: 30px; margin-bottom: 30px;"), @user %>
+      <% @user.posts.order(created_at: :desc).limit(20).each do |p| %>
+        <%= link_to image_tag(p.image, alt: p.service, size: '190x190', class: "", style: "margin-left: 30px; margin-bottom: 30px;"), p %>
       <% end %>
     </div>
 
@@ -45,6 +51,15 @@
 
 </div>
 
-<div style="background-color: #f1f1f1;">
-  <%= render "shared/footer" %>
+<div style="background-color: #f1f1f1; padding-top: 20px; padding-bottom: 40px;">
+  <div class="container">
+    <div class="center">
+      <p class="bottom-links">
+        | <%= link_to "about us", about_path, class: "pink-link" %> 
+        | <%= link_to "support", support_path, class: "pink-link" %> 
+        | <%= link_to "terms of privacy ", privacy_path, class: "pink-link" %>
+        | &copy; beautboss 2015&#8482; all rights reserved
+      </p>
+    </div>
+  </div>
 </div>

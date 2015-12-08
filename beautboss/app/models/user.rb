@@ -53,9 +53,9 @@ class User < ActiveRecord::Base
     self.username ||= username
   end
 
-  # def to_param
-  #   username
-  # end
+  def to_param
+    username
+  end
 
   # Follows a user
   def follow(other_user)
