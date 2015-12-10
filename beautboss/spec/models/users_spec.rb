@@ -80,6 +80,37 @@ RSpec.describe "Users" do
       expect(User.find(u4.id).username).to eq "johnny_test123"
     end
 
+    it "refuses username with special characters" do 
+
+      user = FactoryGirl.create :user, username: "this_is-4ll0w3d"
+      
+      user.username = "do not_allow-this" # spaces
+      expect(user.valid?).to be false
+      expect(user.save).to be false
+      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+
+      user.username = "do.not_allow-this" # points
+      expect(user.valid?).to be false
+      user.save
+      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+
+      user.username = "do_not_allow-this!" # exclamation marks
+      expect(user.valid?).to be false
+      user.save
+      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+
+      user.username = "do^not_allow-this" # accents
+      expect(user.valid?).to be false
+      user.save
+      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+
+      user.username = "do&not_allow-this" # special chars
+      expect(user.valid?).to be false
+      user.save
+      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+
+    end
+
   end
 
 end
