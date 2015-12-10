@@ -53,18 +53,20 @@ RSpec.describe "Newsfeed API v1", type: :request do
       jane = FactoryGirl.create :user, name: "Jane Smith"
       current_user.follow(john)
       current_user.follow(jane)
-      for i in 1..3
-        FactoryGirl.create :post_public, user: john, service: "Post #{i} from #{john.name}", created_at: (3-i).seconds.ago
-        FactoryGirl.create :post_public, user: jane, service: "Post #{i} from #{jane.name}", created_at: (3-i).seconds.ago
-        FactoryGirl.create :post_public, service: "Post #{i} from Someone Else", created_at: (3-i).seconds.ago
-      end
-      get "/api/v1/newsfeed/registers?limit=5", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(current_user) }
+      FactoryGirl.create :post_public, user: john, service: "Post from #{john.name}", created_at: 2.minutes.ago
+      FactoryGirl.create :post_public, user: jane, service: "Post from #{jane.name}", created_at: 1.minutes.ago
+      FactoryGirl.create :post_public, service: "Post from Someone Else", created_at: 1.minutes.ago
+      Wow.create(post: Post.first, user: current_user)
+      get "/api/v1/newsfeed/registers?limit=2", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(current_user) }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body["count"]).to eq 6
-      expect(body["posts"].size).to eq 5
-      expect(body["posts"][0]["user"]["id"]).to eq john.id
-      expect(body["posts"][0]["service"]).to eq "Post 3 from John Doe"
+      expect(body["count"]).to eq 2
+      expect(body["posts"].size).to eq 2
+      expect(body["posts"][0]["user"]["id"]).to eq jane.id
+      expect(body["posts"][0]["service"]).to eq "Post from Jane Smith"
+      expect(body["posts"][0]["wowed"]).to eq false
+      expect(body["posts"][1]["service"]).to eq "Post from John Doe"
+      expect(body["posts"][1]["wowed"]).to eq true
 
     end
 
