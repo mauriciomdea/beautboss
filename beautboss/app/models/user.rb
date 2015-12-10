@@ -33,11 +33,12 @@ class User < ActiveRecord::Base
   has_many :followers, through: :inbound_relationships, source: :follower
 
   has_many :activities, class_name: 'Activity',
-                                    foreign_key: 'actor_id',
-                                    dependent: :delete_all
+                        foreign_key: 'actor_id',
+                        dependent: :delete_all
   has_many :notifications,  -> { where("actor_id != user_id") },
                             class_name:  'Activity',
-                            foreign_key: 'user_id'
+                            foreign_key: 'user_id',
+                            dependent: :delete_all
 
   # def to_param
   #   username # or name.parameterize

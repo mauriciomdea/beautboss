@@ -3,7 +3,7 @@ class NewsfeedSerializer < ActiveModel::Serializer
   attributes :created_at, :subject, :user, :post
 
   def user
-    UserBasicSerializer.new(object.actor).as_json(root: false)
+    UserBasicSerializer.new(object.actor).as_json(root: false) unless object.actor.nil?
   end
 
   def subject
@@ -31,11 +31,11 @@ class NewsfeedSerializer < ActiveModel::Serializer
     when 'User'
       nil
     when 'Wow'
-      PostBasicSerializer.new(object.subject.post).as_json(root: false)
+      PostBasicSerializer.new(object.subject.post).as_json(root: false) unless object.subject.nil? || object.subject.post.nil?
     when 'Comment'
-      PostBasicSerializer.new(object.subject.post).as_json(root: false)
+      PostBasicSerializer.new(object.subject.post).as_json(root: false) unless object.subject.nil? || object.subject.post.nil?
     when 'Post'
-      PostBasicSerializer.new(object.subject).as_json(root: false)
+      PostBasicSerializer.new(object.subject).as_json(root: false) unless object.subject.nil?
     else
       nil
     end
