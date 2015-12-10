@@ -5,7 +5,7 @@ class Api::V1::NewsfeedController < Api::V1::ApiController
 
     newsfeed = Activity.where("actor_id IN (?)", @current_user.following.pluck(:id)).limit(params[:limit] || 20).offset(params[:offset] || 0).order(created_at: :desc)
     count = Activity.where("actor_id IN (?)", @current_user.following.pluck(:id)).count
-    serialized_newsfeed = newsfeed.map { |activity| NewsfeedSerializer.new(activity).as_json(root: false) }
+    serialized_newsfeed = newsfeed.map { |activity| NewsfeedSerializer.new(activity).as_json(root: false) unless activity.subject_type == "User" }
     render json: {count: count, news: serialized_newsfeed },
       location: "/api/v1/newsfeed/all",
       status: :ok
