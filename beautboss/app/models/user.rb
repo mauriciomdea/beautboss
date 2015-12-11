@@ -94,7 +94,7 @@ class User < ActiveRecord::Base
     user.email = profile.email unless profile.email.nil?
     user.name = profile.name unless profile.name.nil?
     user.bio = profile.bio unless profile.bio.nil?
-    user.avatar = profile.picture.url unless profile.picture.nil?
+    user.avatar = profile.picture(:large).url unless profile.picture(:large).nil?
     user.website = profile.website unless profile.website.nil?
     user.location = profile.location.name unless profile.location.nil?
     user
