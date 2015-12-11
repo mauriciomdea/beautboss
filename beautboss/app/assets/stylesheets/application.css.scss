@@ -106,6 +106,18 @@ div {
   min-height: 540px;
 }
 
+.content-sign-in {
+  background-image: image-url("content-background.png");
+  background-repeat: no-repeat;
+  background-position: top;
+  background-color: #ffffff;
+  z-index: 999;
+  width: 530px;
+  min-width: 530px;
+  min-height: 400px;
+  margin-top: 31px;
+}
+
 
 .form-control {
   box-shadow: none;
