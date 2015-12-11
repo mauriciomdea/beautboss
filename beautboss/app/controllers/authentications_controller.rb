@@ -7,7 +7,8 @@ class AuthenticationsController < ApplicationController
 
   def create
     if @user = User.find_by(email: user_params[:email])
-      if @user.try(:authenticate, user_params[:password])
+      if @user.try(:authenticate, user_params[:password]) || TemporaryPassword.find_by(user: @user, password: params[:password])
+        TemporaryPassword.where(user: @user).delete_all
         session[:user_id] = @user.id
         redirect_to newsfeed_path(@user), notice: "Signed in!"
       else
