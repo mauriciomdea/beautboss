@@ -20,7 +20,6 @@
 html,
 body {
   font-family: sans-serif;
-  /*margin-bottom: 60px;*/
 }
 
 div {
@@ -323,13 +322,6 @@ div {
   height: 70px;
 }
 
-/*.screenshot {
-  position: absolute;
-  top: 37px;
-  z-index: 999;
-  align-self: baseline;
-}*/
-
 .screenshot {
   margin-top: 48px;
   margin-left: 0;
@@ -371,4 +363,20 @@ div {
   text-decoration: none;
   padding-top: 28px; 
   padding-right: 20px;
+}
+
+.word-wrap {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
