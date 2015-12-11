@@ -44,10 +44,14 @@
 
       <div id="comments" class="clearfix" style="margin-left: 24px;">
         
-        <% n.comments.each do |c| %>
+        <% n.comments.limit(5).order(created_at: :asc).each do |c| %>
 
-          <p class="font-small"><span class="purple bold"><%= c.user.username %></span>&nbsp;<span class="grey regular"><%= c.comment %></span></p>
+          <p class="font-small"><span class="purple bold"><%= c.user.username %></span>&nbsp;<span class="grey regular word-wrap"><%= c.comment %></span></p>
 
+        <% end %>
+
+        <% if n.comments.size > 5 %>
+          <p class="font-small"><span class="grey regular word-wrap"><%= "#{(n.comments.size - 5)} more comment(s)." %></span></p>
         <% end %>
 
         <hr>
@@ -60,4 +64,6 @@
 
 </div>
 
-<%= render "shared/footer_internal" %>
+<div style="background-color: #f1f1f1; height: 40px;"></div>
+
+<%= render "shared/extended_footer" %>
