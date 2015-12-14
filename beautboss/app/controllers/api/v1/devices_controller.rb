@@ -3,9 +3,8 @@ class Api::V1::DevicesController < Api::V1::ApiController
 
   def create
     verify_user
-    device = Device.new(
-      user: @current_user,
-    )
+
+    device = Device.find_or_create_by(user: @current_user, platform: Device.platforms[device_params[:type]])
     device.platform = device_params[:type]
     sns = Aws::SNS::Client.new
     endpoint = sns.create_platform_endpoint(

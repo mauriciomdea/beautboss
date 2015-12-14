@@ -5,6 +5,7 @@ class Device < ActiveRecord::Base
   enum platform: [:ios_dev, :ios, :android]
 
   validates_presence_of :user, :platform, :endpoint
+  validates_uniqueness_of :endpoint
 
   def arn
     if self.platform == 'android'
@@ -20,6 +21,7 @@ class Device < ActiveRecord::Base
 
   def push_notification msg
     sns = Aws::SNS::Client.new
+    logger.info("Notification: #{self.user.username}: #{self.arn}: #{msg}")
     sns.publish(target_arn: self.endpoint, message: format_message(msg), message_structure: "json")
   end
 
