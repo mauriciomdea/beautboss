@@ -17,7 +17,12 @@ class Api::V1::CommentsController < Api::V1::ApiController
     post = Post.find(params[:post_id])
     comment = Comment.new(post: post, user: user, comment: comment_params["comment"])
     if comment.save
+      # saves activity
       Activity.create(owner: post.user, actor: user, subject: comment)
+      # sends notifications
+      Device.where(user: post.user).each do |device|
+        device.push_notification(I18n.t('notifications.comment', name: @current_user.name, comment: comment.comment))
+      end
       render json: CommentSerializer.new(comment).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/comments",
         status: :created

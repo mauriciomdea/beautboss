@@ -9,8 +9,12 @@ class Device < ActiveRecord::Base
   def arn
     if self.platform == 'android'
       ENV['AWS_SNS_GCM_ARN']
-    else
+    elsif self.platform == 'ios'
       ENV['AWS_SNS_IOS_ARN']
+    elsif self.platform == 'ios_dev'
+      ENV['AWS_SNS_DEV_ARN']
+    else
+      nil
     end
   end
 

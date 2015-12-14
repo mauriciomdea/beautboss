@@ -14,8 +14,6 @@ class Api::V1::DevicesController < Api::V1::ApiController
     device.endpoint = endpoint[:endpoint_arn]
     if device.save
       # test endpoint
-      # message = device.message "Device successfully registered!"
-      # sns.publish(target_arn: device.endpoint, message: message, message_structure: "json")
       device.push_notification("Device successfully registered!")
       render json: DeviceSerializer.new(device).as_json(root: false), location: "/api/v1/users/#{@current_user.id}/devices", status: 201
     else
