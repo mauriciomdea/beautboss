@@ -1,4 +1,5 @@
 class NewsfeedController < ApplicationController
+  # before_action :authenticate_user, except: [:show]
   before_action :authenticate_user
 
   def index 
@@ -6,6 +7,7 @@ class NewsfeedController < ApplicationController
   end
 
   def show 
+    @post = Post.find(params[:id])
   end
 
 end

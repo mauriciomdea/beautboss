@@ -13,7 +13,7 @@
         <%= content_tag :div, msg, class: "notice center", style: "width: 388px; padding: 0 0 20px 0; text-align: center;" %>
       <% end %>
       <div style="margin-bottom: 40px;">
-        <button type="button" class="btn btn-facebook center" onclick="fbLogin();">sign in with facebook</button>
+        <a class="btn btn-facebook center" onclick="fbLogin();">sign in with facebook</a>
         <br>
         <%= form_for @user, url: authentications_path  do |f| %>
           <div class="form-group">

@@ -61,15 +61,19 @@ Rails.application.routes.draw do
   post '/forgot_password' => 'passwords#create', as: :new_password
   # get '/password_reset' => 'authentications#password_reset', as: :password_reset
 
+  resources :wows, only: [:create, :destroy]
+
+  resources :comments, only: [:create]
+
+  # resources :newsfeeds
+  get '/registers/:id' => 'newsfeed#show', as: :register
+  get '/:username/newsfeed' => 'newsfeed#index', as: :newsfeed
+
   get '/:username' => 'users#show', as: :user
   get '/:username/edit' => 'users#edit', as: :edit_user
   put '/:username' => 'users#update'
   delete '/:username' => 'users#destroy'
 
-  # resources :newsfeeds
-  get '/:username/newsfeed' => 'newsfeed#index', as: :newsfeed
-
-  resources :posts
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

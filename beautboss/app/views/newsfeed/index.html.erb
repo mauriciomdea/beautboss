@@ -17,7 +17,7 @@
       </div>
 
       <div id="image" class="center">
-        <%= link_to image_tag(n.image, alt: n.service, size: '600x600', class: "", style: ""), n.user %>
+        <%= link_to image_tag(n.image, alt: n.service, size: '600x600', class: "", style: ""), register_path(n) %>
       </div>
 
       <div id="wows" class="clearfix">
@@ -51,7 +51,9 @@
         <% end %>
 
         <% if n.comments.size > 5 %>
-          <p class="font-small"><span class="grey regular word-wrap"><%= "#{(n.comments.size - 5)} more comment(s)." %></span></p>
+          <p class="font-small"><span class="grey regular word-wrap">
+            <%= link_to "View all #{n.comments.size} comments", register_path(n), class: "pink-link" %>
+          </span></p>
         <% end %>
 
         <hr>
