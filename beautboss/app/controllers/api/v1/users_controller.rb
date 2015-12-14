@@ -73,7 +73,9 @@ class Api::V1::UsersController < Api::V1::ApiController
   end
 
   def notifications 
-    @user = User.find(params[:id])
+    # @user = User.find(params[:id])
+    verify_user
+    @user = @current_user
     notifications = @user.notifications.limit(params[:limit] || 20).offset(params[:offset] || 0).order(created_at: :desc)
     notifications.update_all(read: true) if params[:mark_as_read] && params[:mark_as_read] == "true"
     serialized_notifications = notifications.map { |notification| ActivitySerializer.new(notification).as_json(root: false) }

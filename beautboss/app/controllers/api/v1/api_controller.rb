@@ -15,6 +15,7 @@ class Api::V1::ApiController < ActionController::Base
 
   rescue_from Aws::SNS::Errors::ServiceError do |exception|
     logger.error "AWS SNS Error: #{exception.message}"
+    _error exception.message
   end
 
   rescue_from Exception do |exception|
