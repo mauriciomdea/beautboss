@@ -6,10 +6,11 @@ class Api::V1::FollowersController < Api::V1::ApiController
     followed = User.find(params[:id])
     if follower.follow(followed)
       # saves activity
-      Activity.create(owner: followed, actor: follower, subject: followed)
+      activity = Activity.create(owner: followed, actor: follower, subject: followed)
       # sends notifications
       Device.where(user: followed).each do |device|
-        device.push_notification(I18n.t('notifications.follow', name: follower.name))
+        # device.push_notification(I18n.t('notifications.follow', name: follower.name))
+        device.push_notification(ActivitySerializer.new(activity).as_json(root: false))
       end
       render json: follower, serializer: UserSerializer, current_user: @current_user,
       # render json: UserSerializer.new(follower, current_user: @current_user).as_json(root: false),
