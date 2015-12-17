@@ -21,8 +21,8 @@ class Api::V1::CommentsController < Api::V1::ApiController
       activity = Activity.create(owner: post.user, actor: user, subject: comment)
       # sends notifications
       Device.where(user: post.user).each do |device|
-        # device.push_notification(I18n.t('notifications.comment', name: @current_user.name, comment: comment.comment))
-        device.push_notification(ActivitySerializer.new(activity).as_json(root: false))
+        msg = I18n.t('notifications.comment', name: @current_user.name, comment: comment.comment)
+        device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false))
       end
       render json: CommentSerializer.new(comment).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/comments",

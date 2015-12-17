@@ -19,21 +19,22 @@ class Device < ActiveRecord::Base
     end
   end
 
-  def push_notification msg
+  def push_notification msg, data
     sns = Aws::SNS::Client.new
     logger.info("Notification: #{self.user.username}: #{self.arn}: #{msg}")
-    sns.publish(target_arn: self.endpoint, message: format_message(msg), message_structure: "json")
+    sns.publish(target_arn: self.endpoint, message: format_notification(msg, data), message_structure: "json")
   end
 
   private
 
-    def format_message msg 
+    def format_notification msg, data 
+      badges = self.user.notifications.where(read: false).count
       if self.platform == 'android'
-        { default: { message: msg }.to_json, GCM: { data: { message: msg } }.to_json }.to_json
+        { default: { message: msg }.to_json, GCM: { data: { message: data } }.to_json }.to_json
         # { default: { message: msg }.to_json, GCM: { notification: { title: msg } }.to_json }.to_json
         # { GCM: { data: { message: msg } } }
       else
-        { default: msg, APNS_SANDBOX: { aps: { alert: msg, sound: "default", badge: 1 } }.to_json, APNS: { aps: { alert: msg, sound: "default", badge: 1 } }.to_json }.to_json
+        { default: data, APNS_SANDBOX: { aps: { alert: msg, sound: "default", badge: badges } }.to_json, APNS: { aps: { alert: msg, sound: "default", badge: badges } }.to_json }.to_json
       end
     end
 

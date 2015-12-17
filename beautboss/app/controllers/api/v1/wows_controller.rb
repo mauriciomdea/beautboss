@@ -21,8 +21,8 @@ class Api::V1::WowsController < Api::V1::ApiController
       activity = Activity.create(owner: post.user, actor: user, subject: wow)
       # sends notifications
       Device.where(user: post.user).each do |device|
-        # device.push_notification(I18n.t('notifications.wow', name: @current_user.name))
-        device.push_notification(ActivitySerializer.new(activity).as_json(root: false))
+        msg = I18n.t('notifications.wow', name: @current_user.name)
+        device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false))
       end
       render json: WowSerializer.new(wow).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/wows",
