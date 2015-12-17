@@ -34,7 +34,7 @@ class Device < ActiveRecord::Base
         # { default: { message: msg }.to_json, GCM: { notification: { title: msg } }.to_json }.to_json
         # { GCM: { data: { message: msg } } }
       else
-        { default: data, APNS_SANDBOX: { aps: { alert: msg, sound: "default", badge: badges } }.to_json, APNS: { aps: { alert: msg, sound: "default", badge: badges } }.to_json }.to_json
+        { default: msg, APNS_SANDBOX: { aps: { alert: msg, sound: "default", badge: badges }, data: data }.to_json, APNS: { aps: { alert: msg, sound: "default", badge: badges }, data: data }.to_json }.to_json
       end
     end
 
