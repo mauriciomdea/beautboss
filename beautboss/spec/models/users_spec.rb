@@ -111,6 +111,33 @@ RSpec.describe "Users" do
 
     end
 
+    it "deletes all user related data when user is deleted" do 
+
+      user = FactoryGirl.create :user 
+      post = FactoryGirl.create :post_public, user: user
+      wow1 = FactoryGirl.create :wow, post: post
+      act1 = FactoryGirl.create :activity_wow, owner: user, actor: wow1.user, subject: post
+      wow2 = FactoryGirl.create :wow, post: post
+      act2 = FactoryGirl.create :activity_wow, owner: user, actor: wow2.user, subject: post
+      cmt1 = FactoryGirl.create :comment, post: post
+      act3 = FactoryGirl.create :activity_comment, owner: user, actor: cmt1.user, subject: post
+      cmt2 = FactoryGirl.create :comment, post: post
+      act4 = FactoryGirl.create :activity_comment, owner: user, actor: cmt2.user, subject: post
+
+      user.destroy
+
+      expect(User.find_by(id: user.id)).to be nil
+      expect(Post.find_by(id: post.id)).to be nil
+      expect(Wow.find_by(id: wow1.id)).to be nil
+      expect(Wow.find_by(id: wow2.id)).to be nil
+      expect(Comment.find_by(id: cmt1.id)).to be nil
+      expect(Comment.find_by(id: cmt2.id)).to be nil
+      expect(Activity.where(user_id: user.id).count).to be 0
+      expect(Activity.where(actor_id: user.id).count).to be 0
+      expect(Activity.where(subject: post).count).to be 0
+
+    end
+
   end
 
 end

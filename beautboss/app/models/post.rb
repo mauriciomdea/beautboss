@@ -5,10 +5,10 @@ class Post < ActiveRecord::Base
 
 	belongs_to :user
 	belongs_to :place
-  has_many :wows, dependent: :delete_all
-  has_many :comments, dependent: :delete_all
-  has_many :reports, dependent: :delete_all
-  has_many :activities, as: :subject, dependent: :delete_all
+  has_many :wows, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :reports, dependent: :destroy
+  has_many :activities, as: :subject, dependent: :destroy
 
   enum category: [:haircut, :hairstyle, :colouring, :highlights, :nails, :makeup]
 

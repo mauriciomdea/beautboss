@@ -16,10 +16,10 @@ class User < ActiveRecord::Base
   validates :password, length: { in: 6..20 }, unless: 'password.nil?'
   validates :password, confirmation: true
 
-  has_many :posts, dependent: :delete_all
-  has_many :wows, dependent: :delete_all
-  has_many :comments, dependent: :delete_all
-  has_many :devices, dependent: :delete_all
+  has_many :posts, dependent: :destroy
+  has_many :wows, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :devices, dependent: :destroy
 
   has_many :outbound_relationships, class_name:  'Relationship',
                                     foreign_key: 'follower_id',
@@ -33,11 +33,11 @@ class User < ActiveRecord::Base
 
   has_many :activities, class_name: 'Activity',
                         foreign_key: 'actor_id',
-                        dependent: :delete_all
+                        dependent: :destroy
   has_many :notifications,  -> { where("actor_id != user_id") },
                             class_name:  'Activity',
                             foreign_key: 'user_id',
-                            dependent: :delete_all
+                            dependent: :destroy
 
   # def to_param
   #   username # or name.parameterize
