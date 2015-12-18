@@ -33,7 +33,7 @@
           <% else %>
             <% if @current_user.following?(@user) %>
               <button class="btn btn-success" style="width: 300px; margin-left: 0; margin-right: 0;">
-                <span aria-hidden="true" class="glyphicon glyphicon-ok-circle" style="padding-top: 8px;"></span> following
+                <span class="glyphicon glyphicon-ok-circle" style="position: relative; top: 5px;"></span><span> following</span>
               </button>
             <% end %>
           <% end %>
