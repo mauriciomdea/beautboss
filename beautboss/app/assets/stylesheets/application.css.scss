@@ -96,7 +96,7 @@ div {
   min-width: 530px;
   min-height: 320px;
   margin-top: 38px;
-  margin-left: 10px;
+  margin-left: 0;
 }
 
 .content-pages {
@@ -335,6 +335,7 @@ div {
 }
 
 .screenshot {
+  width: 424px;
   margin-top: 48px;
   margin-left: 0;
   margin-right: 0;
