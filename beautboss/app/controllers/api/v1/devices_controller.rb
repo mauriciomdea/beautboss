@@ -3,7 +3,6 @@ class Api::V1::DevicesController < Api::V1::ApiController
 
   def create
     verify_user
-
     device = Device.find_or_create_by(user: @current_user, platform: Device.platforms[device_params[:type]])
     device.platform = device_params[:type]
     sns = Aws::SNS::Client.new
@@ -13,7 +12,7 @@ class Api::V1::DevicesController < Api::V1::ApiController
     device.endpoint = endpoint[:endpoint_arn]
     if device.save
       # test endpoint
-      device.push_notification("Device successfully registered!")
+      device.push_notification("Device successfully registered!", nil)
       render json: DeviceSerializer.new(device).as_json(root: false), location: "/api/v1/users/#{@current_user.id}/devices", status: 201
     else
       render json: { errors: device.errors.full_messages }, status: 422
@@ -26,7 +25,6 @@ class Api::V1::DevicesController < Api::V1::ApiController
   def destroy
     verify_user
     devices = Device.where(platform: device_params[:type], user: @current_user)
-    puts devices.to_yaml
     devices.destroy_all
     head :no_content
   rescue ActiveRecord::RecordNotFound

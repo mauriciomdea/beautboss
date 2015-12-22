@@ -20,10 +20,13 @@ class Api::V1::WowsController < Api::V1::ApiController
       # saves activity
       activity = Activity.create(owner: post.user, actor: user, subject: wow)
       # sends notifications
-      Device.where(user: post.user).each do |device|
-        msg = I18n.t('notifications.wow', name: @current_user.name)
-        device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false))
-      end
+      # Device.where(user: post.user).each do |device|
+      #   msg = I18n.t('notifications.wow', name: @current_user.name)
+      #   device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false))
+      # end
+      msg = I18n.t('notifications.wow', name: @current_user.name)
+      device = Device.where(user: post.user).last
+      device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false)) unless device.nil?
       render json: WowSerializer.new(wow).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/wows",
         status: :created
