@@ -24,9 +24,11 @@ class Api::V1::WowsController < Api::V1::ApiController
       #   msg = I18n.t('notifications.wow', name: @current_user.name)
       #   device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false))
       # end
-      msg = I18n.t('notifications.wow', name: @current_user.name)
-      device = Device.where(user: post.user).last
-      device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false)) unless device.nil?
+      unless @current_user == post.user
+        msg = I18n.t('notifications.wow', name: @current_user.name)
+        device = Device.where(user: post.user).last
+        device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false)) unless device.nil?
+      end
       render json: WowSerializer.new(wow).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/wows",
         status: :created

@@ -24,9 +24,11 @@ class Api::V1::CommentsController < Api::V1::ApiController
       #   msg = I18n.t('notifications.comment', name: @current_user.name, comment: comment.comment)
       #   device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false))
       # end
-      msg = I18n.t('notifications.comment', name: @current_user.name, comment: comment.comment)
-      device = Device.where(user: post.user).last
-      device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false)) unless device.nil?
+      unless @current_user == post.user
+        msg = I18n.t('notifications.comment', name: @current_user.name, comment: comment.comment)
+        device = Device.where(user: post.user).last
+        device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false)) unless device.nil?
+      end
       render json: CommentSerializer.new(comment).as_json(root: false),
         location: "/api/v1/posts/#{post.id}/comments",
         status: :created
