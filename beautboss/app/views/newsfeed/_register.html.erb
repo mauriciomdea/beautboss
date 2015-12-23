@@ -7,27 +7,28 @@
 
   <div class="pull-left" style="width: 320px; height: 600px; padding-left: 24px; padding-top: 12px; padding-right: 24px; background-color: #ffffff;">
 
-    <!-- user -->
-    <div>
-      <div class="pull-left">
-        <%= link_to image_tag(@post.user.avatar, alt: @post.user.username, size: '48x48', class: "img-circle", style: "margin-top: 10px;"), @post.user %>
+    <!-- user  and service -->
+    <div style="overflow-y: scroll; height: 170px;">
+      <div>
+        <div class="pull-left">
+          <%= link_to image_tag(@post.user.avatar, alt: @post.user.username, size: '48x48', class: "img-circle", style: "margin-top: 10px;"), @post.user %>
+        </div>
+        <div class="pull-left" style="padding-left: 24px;">
+          <p style="line-height: 40px; font-weight: bold; font-size: 18px;"><%= link_to @post.user.username, @post.user, style: "color: #770749; text-decoration: none;" %></p>
+          <p style="margin-top: -16px; font-size: 18px; font-weight: normal; color: #a0a0a0;"><%= time_ago_in_words(@post.created_at) %> ago</p>
+        </div>
       </div>
-      <div class="pull-left" style="padding-left: 24px;">
-        <p style="line-height: 40px; font-weight: bold; font-size: 18px;"><%= link_to @post.user.username, @post.user, style: "color: #770749; text-decoration: none;" %></p>
-        <p style="margin-top: -16px; font-size: 18px; font-weight: normal; color: #a0a0a0;"><%= time_ago_in_words(@post.created_at) %> ago</p>
-      </div>
-    </div>
 
-    <!-- service -->
-    <div id="service" class="" style="padding-top: 80px;">
-      <p class="font-small bold grey"><%= @post.service %></p>
-      <p class="font-small regular grey">
-        <% unless @post.place.nil? %>at <span class="bold"><%= @post.place.name %></span><% unless @post.place.address.nil? %> in <span class="bold"><%= @post.place.address %></span><% end %><% end %>
-      </p>
+      <div id="service" class="" style="padding-top: 80px;">
+        <p class="font-small bold grey"><%= @post.service %></p>
+        <p class="font-small regular grey">
+          <% unless @post.place.nil? %>at <span class="bold"><%= @post.place.name %></span><% unless @post.place.address.nil? %> in <span class="bold"><%= @post.place.address %></span><% end %><% end %>
+        </p>
+      </div>
     </div>
 
     <!-- comments -->
-    <div id="comments" class="clearfix" style="overflow-y: scroll; height: 338px;">
+    <div id="comments" class="clearfix" style="overflow-y: scroll; height: 322px;">
       
       <% @post.comments.order(created_at: :asc).each do |c| %>
 
@@ -37,10 +38,9 @@
 
     </div>
 
-    <hr>
-
     <!-- actions -->
-    <div class="clearfix" style="height: 42px;">
+    <div class="clearfix" style="min-height: 108px;">
+      <hr>
       <% if @post.wows.any? { |w| w.user == @current_user } %>
         <%= link_to image_tag("ic_wow_notation.png", alt: "Undo wow...", size: '37x30', class: "pull-left", style: "margin-top: 2px;"), 
             Wow.find_by(post: @post, user: @current_user), method: :delete, remote: true %>
