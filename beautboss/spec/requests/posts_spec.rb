@@ -373,6 +373,26 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["explanation"]).to eq "Report this test!"
     end
 
+    it "alerts post is already reported by user" do
+      user = FactoryGirl.create :user
+      post = FactoryGirl.create :post_public
+      report = FactoryGirl.create :report, post: post, user: user
+      report_params = {
+        "flag" => "other",
+        "explanation" => "Report this test, again!"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts/#{post.id}/reports", report_params, request_headers
+      expect(post.reports.size).to eq 1
+      expect(response.status).to eq 422 # nope
+      body = JSON.parse(response.body)
+      expect(body["error"]).to eq "Post already reported!"
+    end
+
   end
 
   # describe "GET /api/v1/posts/:id/reports" do
