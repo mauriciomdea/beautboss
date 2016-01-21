@@ -7,22 +7,27 @@ ActiveAdmin.register Report, as: "Report" do
 
   permit_params :post, :user, :flag
 
+  # scope :innapropriate, where(flag: 0)
+
   filter :user_name_cont, label: 'User'
-  filter :flag
+  filter :flag, as: :select, collection: Report.flags
   filter :created_at
   filter :updated_at
 
   index do
-    column :image do |register|
-      link_to image_tag(register.image, size: '64x64'), admin_register_path(register)
+    column :image do |report|
+      link_to image_tag(report.post.image, size: '64x64'), admin_register_path(report.post)
     end
     column :flag
-    column :user
-    column :created_at do |register| 
-      l register.created_at, format: :custom
+    column :explanation
+    column :reporter do |report|
+      link_to report.user.name, admin_user_path(report.user)
     end
-    column :updated_at do |register| 
-      l register.updated_at, format: :custom
+    column :created_at do |report| 
+      l report.created_at, format: :custom
+    end
+    column :updated_at do |report| 
+      l report.updated_at, format: :custom
     end
   end
 
