@@ -25,7 +25,7 @@ ActiveAdmin.register_page "Dashboard" do
             
         end
 
-        panel 'Latest reports' do
+        panel link_to 'Latest reports', admin_reports_path do
 
           Report.order("created_at desc").limit(5).map do |report|
             span link_to image_tag(report.post.image, size: '150x150', alt: report.user.name), admin_register_path(report.post)
