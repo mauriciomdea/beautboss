@@ -48,6 +48,7 @@ FactoryGirl.define do
   factory :report do
     association :user, factory: :user
     association :post, factory: :post_public
+    flag { [:innapropriate, :wrong_location, :closed_or_private, :copyright_infringement, :other].sample }
   end
 
   factory :activity do
