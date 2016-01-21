@@ -3,6 +3,9 @@ ActiveAdmin.register User do
     @user = User.find_by_username(params[:id])
   end
 
+  config.paginate = true
+  config.per_page = 25
+
   permit_params :name, :email, :password, :avatar, :website, :location, :bio, :notify_new_follower, :notify_new_comment, :notify_new_wow
 
   filter :name

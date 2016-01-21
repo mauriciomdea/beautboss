@@ -2,6 +2,9 @@ ActiveAdmin.register Post, as: "Register" do
   # actions :index, :show, :new, :create, :update, :edit
   actions :index, :show, :destroy
 
+  config.paginate = true
+  config.per_page = 25
+
   permit_params :service, :image, :user_id, :place_id, :service_id, :category_id
 
   filter :user_name_cont, label: 'User'

@@ -1,6 +1,9 @@
 ActiveAdmin.register Place do
 
-permit_params :place_id, :name
+  config.paginate = true
+  config.per_page = 25
+
+  permit_params :place_id, :name
 
   filter :name
   filter :foursquare_id
