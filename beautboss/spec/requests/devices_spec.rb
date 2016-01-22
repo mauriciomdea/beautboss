@@ -8,7 +8,7 @@ RSpec.describe "Devices API v1", type: :request do
 
   describe "POST /api/v1/users/:id/devices" do
 
-    xit "receives ios_dev device token for a user" do 
+    it "receives ios_dev device token for a user" do 
       user = FactoryGirl.create :user
       device_params = {
         "token" => "94ce58e6130f8465c324442c546212b93dc5e3556dd28047a115f9e1e3540231",
@@ -27,7 +27,7 @@ RSpec.describe "Devices API v1", type: :request do
       # expect(body["endpoint"]).to eq "ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890"
     end
 
-    xit "receives ios device token for a user" do 
+    it "receives ios device token for a user" do 
       user = FactoryGirl.create :user
       device_params = {
         "token" => "94ce58e6130f8465c324442c546212b93dc5e3556dd28047a115f9e1e3540231",
@@ -46,7 +46,7 @@ RSpec.describe "Devices API v1", type: :request do
       # expect(body["endpoint"]).to eq "ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890"
     end
 
-    xit "receives android device token for a user" do 
+    it "receives android device token for a user" do 
       user = FactoryGirl.create :user
       device_params = {
         "token" => "94ce58e6130f8465c324442c546212b93dc5e3556dd28047a115f9e1e3540231",
@@ -65,7 +65,7 @@ RSpec.describe "Devices API v1", type: :request do
       # expect(body["endpoint"]).to eq "ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890"
     end
 
-    xit "refuses invalid device platform" do 
+    it "refuses invalid device platform" do 
       user = FactoryGirl.create :user
       device_params = {
         "token" => "94ce58e6130f8465c324442c546212b93dc5e3556dd28047a115f9e1e3540231",

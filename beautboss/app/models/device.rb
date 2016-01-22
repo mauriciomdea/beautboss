@@ -5,6 +5,7 @@ class Device < ActiveRecord::Base
   enum platform: [:ios_dev, :ios, :android]
 
   validates_presence_of :user, :platform, :endpoint
+  # validates_inclusion_of :platform, in: Device.platforms.keys
   validates_uniqueness_of :endpoint
 
   def arn
@@ -23,6 +24,9 @@ class Device < ActiveRecord::Base
     sns = Aws::SNS::Client.new
     logger.info("Notification: #{self.user.username}: #{self.arn}: #{msg}")
     sns.publish(target_arn: self.endpoint, message: format_notification(msg, data), message_structure: "json")
+  rescue Aws::SNS::Errors::ServiceError => exception
+    logger.error "AWS SNS Error for User #{self.user.id}: #{exception.message}"
+    self.destroy
   end
 
   private
