@@ -1,7 +1,11 @@
 <div id="header-small">
 
   <div class="container">
-    <%= link_to image_tag("beautboss-logo.png", alt: "beautboss", class: "logo-small pull-left", style: "margin-left: -20px;"), root_path %>
+    <% if @current_user %>
+      <%= link_to image_tag("beautboss-logo.png", alt: "beautboss", class: "logo-small pull-left", style: "margin-left: -20px;"), newsfeed_path(@current_user) %>  
+    <% else %>
+      <%= link_to image_tag("beautboss-logo.png", alt: "beautboss", class: "logo-small pull-left", style: "margin-left: -20px;"), root_path %>  
+    <% end %>
     <div class="pull-right">
       <% unless @current_user.nil? %>
         <%= link_to @current_user.username, @current_user, class: "username-text pull-left" %>
