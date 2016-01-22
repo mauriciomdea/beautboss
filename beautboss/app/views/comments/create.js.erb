@@ -2,3 +2,4 @@ var comments_list = $('#comments');
 comments_list.append('<%= escape_javascript(render partial: @comment) %>');
 // comments_list.find('div:last-child').addClass('last-comment');
 comments_list.scrollTop(comments_list[0].scrollHeight);
+$('#comment_comment').val('');
