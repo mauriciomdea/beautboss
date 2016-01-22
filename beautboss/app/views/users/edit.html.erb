@@ -6,11 +6,11 @@
 
     <div style="margin-bottom: 24px;">
 
-      <h1 class="font-large grey bold"><%= @current_user.name %>'s Profile</h1>
+      <h1 class="font-large grey bold"><%= @user.name %>'s Profile</h1>
 
-      <% if @current_user.errors.any? %>
+      <% if @user.errors.any? %>
         <ul>
-          <% @current_user.errors.full_messages.each do |msg| %>
+          <% @user.errors.full_messages.each do |msg| %>
             <li class="notice"><%= msg %></li>
           <% end %>
         </ul>
@@ -22,7 +22,7 @@
 
     <div>
 
-      <%= form_for @current_user, method: :put, class: "form-horizontal" do |f| %>
+      <%= form_for @user, method: :put, class: "form-horizontal" do |f| %>
 
         <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
           <label for="user[name]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">name</label>
@@ -95,7 +95,7 @@
 
     <div>
 
-      <%= form_for @current_user, method: :put, class: "form-horizontal" do |f| %>
+      <%= form_for @user, method: :put, class: "form-horizontal" do |f| %>
       
         <div class="form-group">
           <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">new password</label>
@@ -140,7 +140,7 @@
 
     <div>
 
-      <%= form_for @current_user, method: :delete, class: "form-horizontal" do |f| %>
+      <%= form_for @user, method: :delete, class: "form-horizontal" do |f| %>
       
         <div class="form-group">
           <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">password</label>

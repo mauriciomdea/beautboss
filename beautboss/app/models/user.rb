@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   validates :facebook, presence: true, if: 'password.nil? && password_digest.nil?'
   validates :facebook, uniqueness: true, unless: 'facebook.nil?'
   validates :username, uniqueness: true, presence: true
-  validates :username, format: { with: /\A[a-zA-Z]+([a-zA-Z_-]|\d)*\Z/, message: 'No special characters, only letters, numbers and underscores' }
+  validates :username, format: { with: /\A[a-zA-Z]+([a-zA-Z_-]|\d)*\Z/, message: "can't contain special characters, only letters, numbers and underscores allowed" }
   validates :name, :email, :username, length: { maximum: 191 }
   validates :avatar, :bio, length: { maximum: 767 }
   validates :password, length: { in: 6..20 }, unless: 'password.nil?'
