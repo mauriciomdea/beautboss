@@ -38,10 +38,11 @@
 
     </div>
 
-    <!-- actions -->
+    <!-- Actions -->
     <% unless @current_user.nil? %>
       <div class="clearfix" style="min-height: 108px;">
         <hr>
+        <!-- Wows -->
         <% if @post.wows.any? { |w| w.user == @current_user } %>
           <%= link_to image_tag("ic_wow_notation.png", alt: "Undo wow...", size: '37x30', class: "pull-left", style: "margin-top: 2px;"), 
               Wow.find_by(post: @post, user: @current_user), method: :delete, remote: true %>
@@ -49,7 +50,9 @@
           <%= link_to image_tag("ic_wow.png", alt: "Wow!", size: '37x30', class: "pull-left", style: "margin: 2px;"), 
               Wow.new, method: :post, remote: true %>
         <% end %>
-        <%= form_for Comment.new, html: { class: "", id: "comment_post_#{@post.id}" }, remote: true do |f| %>
+        <!-- Comments -->
+        <%= form_for Comment.new(post_id: @post.id), html: { class: "", id: "comment_post_#{@post.id}" }, remote: true do |f| %>
+          <%= hidden_field :comment, :post_id, value: @post.id %>
           <%= f.text_field :comment, class: "form-control input-comment", placeholder: "leave a comment :)" %>
         <% end %>
       </div>
