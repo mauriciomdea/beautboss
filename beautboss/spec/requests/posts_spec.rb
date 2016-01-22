@@ -11,8 +11,10 @@ RSpec.describe "Posts API v1", type: :request do
     @public_nails = FactoryGirl.create :post_public, category: :nails, service: "Nails at Someplace", latitude: '-23.538104', longitude: '-46.219104'
     @private_haircut = FactoryGirl.create :post_private, category: :haircut, service: "My Haircut", latitude: '-23.538101', longitude: '-46.219101'
     @private_nails = FactoryGirl.create :post_private, category: :nails, service: "My Nails", latitude: '-23.538102', longitude: '-46.219102'
-    far_away_place = place = FactoryGirl.create :place, latitude: "99.9999", longitude: "99.9999"
-    @far_away_register = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at another town", place: far_away_place, latitude: "99.9999", longitude: "99.9999"
+    mid_way_place = FactoryGirl.create :place, name: "Midway Place", latitude: "-23.6381", longitude: "-46.3191"
+    @mid_way_haircut = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at another neighborhood", place: mid_way_place, latitude: "-23.6381", longitude: "-46.3191"
+    far_away_place = FactoryGirl.create :place, latitude: "99.9999", longitude: "99.9999"
+    @far_away_haircut = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at another town", place: far_away_place, latitude: "99.9999", longitude: "99.9999"
   end
 
   describe "POST /api/v1/posts" do
@@ -33,7 +35,7 @@ RSpec.describe "Posts API v1", type: :request do
         "Content-Type" => "application/json",
         "HTTP_TOKEN" => valid_auth_token(user)
       }
-      post "/api/v1/posts", post_params, request_headers
+      post "/api/v1/posts?order=closest", post_params, request_headers
       expect(response.status).to eq 201 # created
       expect(Post.last.service).to eq "My beautiful new haircut!"	# did it save post to DB?
       body = JSON.parse(response.body)
@@ -239,7 +241,7 @@ RSpec.describe "Posts API v1", type: :request do
         "latitude" => -23.5381,
         "longitude" => -46.2191
       }
-      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      get "/api/v1/posts?distance=10", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 2
@@ -253,7 +255,7 @@ RSpec.describe "Posts API v1", type: :request do
         "latitude" => -23.5381,
         "longitude" => -46.2191
       }
-      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      get "/api/v1/posts?distance=10", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 1
@@ -269,7 +271,7 @@ RSpec.describe "Posts API v1", type: :request do
         "latitude" => -23.5381,
         "longitude" => -46.2191
       }
-      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      get "/api/v1/posts?distance=10", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
       expect(body["count"]).to eq 1
@@ -315,12 +317,11 @@ RSpec.describe "Posts API v1", type: :request do
         "longitude" => -46.219100,
         "order" => "closest"
       }
-      get "/api/v1/posts", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      get "/api/v1/posts?distance=20", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body["count"]).to eq 2
-      expect(body["posts"][0]["id"]).to eq @private_haircut.id
-      expect(body["posts"][1]["id"]).to eq @public_haircut.id
+      expect(body["count"]).to eq 3
+      expect(body["posts"][2]["id"]).to eq @mid_way_haircut.id
     end
 
     it "returns all nearby Posts ordered by most wows" do 
@@ -342,6 +343,19 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["count"]).to eq 5
       expect(body["posts"][0]["wows"]).to eq 5
       expect(body["posts"][4]["wows"]).to eq 1
+    end
+
+    it "returns most wowed posts if there are no nearby posts" do 
+      create_example_posts
+      post_params = {
+        "category" => 0,
+        "latitude" => 50.00,
+        "longitude" => 50.00
+      }
+      get "/api/v1/posts?distance=1", post_params, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 4
     end
 
   end
@@ -373,12 +387,12 @@ RSpec.describe "Posts API v1", type: :request do
       expect(body["explanation"]).to eq "Report this test!"
     end
 
-    it "alerts post is already reported by user" do
+    it "updates report for same user and post" do
       user = FactoryGirl.create :user
       post = FactoryGirl.create :post_public
-      report = FactoryGirl.create :report, post: post, user: user
+      report = FactoryGirl.create :report, post: post, user: user, flag: :other, explanation: nil
       report_params = {
-        "flag" => "other",
+        "flag" => "innapropriate",
         "explanation" => "Report this test, again!"
       }.to_json
       request_headers = {
@@ -388,9 +402,10 @@ RSpec.describe "Posts API v1", type: :request do
       }
       post "/api/v1/posts/#{post.id}/reports", report_params, request_headers
       expect(post.reports.size).to eq 1
-      expect(response.status).to eq 422 # nope
+      expect(response.status).to eq 201 # nope
       body = JSON.parse(response.body)
-      expect(body["error"]).to eq "Post already reported!"
+      expect(body["flag"]).to eq "Innapropriate"
+      expect(body["explanation"]).to eq "Report this test, again!"
     end
 
   end

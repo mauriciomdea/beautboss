@@ -9,11 +9,17 @@ class Api::V1::PostsController < Api::V1::ApiController
     # have_place = true for public places, false for private, null for both
     posts = posts.where.not(place: nil) if params[:have_place] && params[:have_place] == "true"
     posts = posts.where(place: nil) if params[:have_place] && params[:have_place] == "false"
-    posts = posts.within(10, origin: "#{params[:latitude]},#{params[:longitude]}")
+    posts = posts.within(params[:distance] || 10, origin: "#{params[:latitude]},#{params[:longitude]}", order: "distance asc").limit(params[:limit] || 20).offset(params[:offset] || 0)
     # ordering
+    posts.sort_by{|p| p.distance_to("#{params[:latitude]},#{params[:longitude]}")} if (params[:order] && params[:order] == "closest")
     posts = posts.order(created_at: :desc) if (params[:order] && params[:order] == "latest") || (!params[:order] || params[:order] == nil)
-    posts = posts.reverse_order if (params[:order] && params[:order] == "closest")
     posts = posts.order('wows_count DESC') if (params[:order] && params[:order] == "best")
+    # list all posts without distance for remote locations without posts nearby
+    if posts.empty?
+      posts = Post.where(category: params[:category]).where("service LIKE :service", service: "%#{post_params[:service]}%").order('wows_count DESC')
+      posts = posts.where.not(place: nil) if params[:have_place] && params[:have_place] == "true"
+      posts = posts.where(place: nil) if params[:have_place] && params[:have_place] == "false"
+    end
     # response 
     serialized_posts = posts.map { |post| RegisterSerializer.new(Register.new(post: post, observer: @current_user)).as_json(root:false) }
     render json: {count: posts.size, posts: serialized_posts},
