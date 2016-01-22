@@ -25,10 +25,18 @@ ActiveAdmin.register_page "Dashboard" do
             
         end
 
-        panel link_to 'Latest reports', admin_reports_path do
+        panel link_to 'Most reported posts', admin_reports_path do
 
-          Report.order("created_at desc").limit(5).map do |report|
-            span link_to image_tag(report.post.image, size: '150x150', alt: report.user.name), admin_register_path(report.post)
+          table do
+            Report.all.group(:post_id).limit(5).count.map do |p, c|
+              post = Post.find(p)
+              tr do
+                td link_to image_tag(post.image, size: '32x32'), admin_register_path(post)
+                td link_to post.service, admin_register_path(post)
+                td link_to post.user.name, admin_user_path(post.user)
+                td "#{c} total reports"
+              end
+            end
           end
             
         end

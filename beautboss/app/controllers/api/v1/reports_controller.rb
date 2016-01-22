@@ -4,11 +4,7 @@ class Api::V1::ReportsController < Api::V1::ApiController
   def create
     user = @current_user
     post = Post.find(params[:post_id])
-    if Report.find_by(post: post, user: user)
-      raise "Post already reported!"
-    end
-    report = Report.new(post: post, user: user, explanation: report_params[:explanation])
-    # report = Report.where(post: post, user: user).first_or_create
+    report = Report.where(post: post, user: user).first_or_create
     report.flag = report_params[:flag]
     report.explanation = report_params[:explanation]
     if report.save
