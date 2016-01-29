@@ -1,0 +1,8 @@
+<%= link_to image_tag("ic_wow_notation.png", 
+                      alt: "Undo wow...", 
+                      size: '37x30', 
+                      class: "pull-left", 
+                      style: "margin-top: 2px;"), 
+            wow_path(@wow.id), 
+            method: :delete, 
+            remote: true %>

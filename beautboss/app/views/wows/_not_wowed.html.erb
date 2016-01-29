@@ -1,0 +1,8 @@
+<%= link_to image_tag("ic_wow.png", 
+                      alt: "Wow!", 
+                      size: '37x30', 
+                      class: "pull-left", 
+                      style: "margin: 2px;"), 
+            wows_path(post_id: @post.id), 
+            method: :post, 
+            remote: true %>
