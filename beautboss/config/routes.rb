@@ -50,7 +50,8 @@ Rails.application.routes.draw do
 
   get '/about' => 'site#about', as: :about
   get '/support' => 'site#support', as: :support
-  get '/privacy' => 'site#privacy', as: :privacy
+  get '/privacy_policies' => 'site#privacy', as: :privacy
+  get '/terms_of_use' => 'site#terms', as: :terms
   get '/sign-in' => 'authentications#index', as: :sign_in
   get '/sign-in/facebook' => 'authentications#facebook', as: :sign_in_facebook
   get '/sign-out' => 'authentications#destroy', as: :sign_out
