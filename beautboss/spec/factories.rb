@@ -21,7 +21,7 @@ FactoryGirl.define do
     sequence(:image)  { |n| "http://elasticbeanstalk-us-west-2-868619448283/BeautBoss/registers/#{n}.png" }
     sequence(:latitude) { |n| "0.000#{n}" }
     sequence(:longitude) { |n| "0.000#{n}" }
-    category { ["haircut", "hairstyle", "colouring", "highlights", "nails", "makeup"].sample }
+    category { ["haircut", "hairstyle", "colouring", "highlights", "nails", "makeup", "barber"].sample }
 
     factory :post_public do 
       service "A Haircut"

@@ -9,6 +9,7 @@ RSpec.describe "Posts API v1", type: :request do
   def create_example_posts 
     @public_haircut = FactoryGirl.create :post_public, category: :haircut, service: "Haircut at Someplace", latitude: '-23.538103', longitude: '-46.219103'
     @public_nails = FactoryGirl.create :post_public, category: :nails, service: "Nails at Someplace", latitude: '-23.538104', longitude: '-46.219104'
+    @public_barber = FactoryGirl.create :post_public, category: :barber, service: "Beard at Someplace", latitude: '-23.538103', longitude: '-46.219103'
     @private_haircut = FactoryGirl.create :post_private, category: :haircut, service: "My Haircut", latitude: '-23.538101', longitude: '-46.219101'
     @private_nails = FactoryGirl.create :post_private, category: :nails, service: "My Nails", latitude: '-23.538102', longitude: '-46.219102'
     mid_way_place = FactoryGirl.create :place, name: "Midway Place", latitude: "-23.6381", longitude: "-46.3191"
@@ -120,6 +121,29 @@ RSpec.describe "Posts API v1", type: :request do
       post "/api/v1/posts", post_params, request_headers
       expect(response.status).to eq 201 # created
       expect(Post.last.comments.first.comment).to eq "Look how beautiful it is!" # did it save post to DB?
+    end
+
+    it "creates a new post for a barber service" do
+      user = FactoryGirl.create :user
+      place = FactoryGirl.create :place
+      post_params = {
+        "category" => "barber",
+        "service" => "My beautiful beard!",
+        "image" => "http://cdn2.loxabeauty.com/media/thelayer/feature/220x220/2015/03/Grooming-Tips-From-a-Beard-Master-Featured.jpg",
+        "latitude" => "00.01",
+        "longitude" => "00.02"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(user)
+      }
+      post "/api/v1/posts", post_params, request_headers
+      expect(response.status).to eq 201 # created
+      expect(Post.last.service).to eq "My beautiful beard!"  # did it save post to DB?
+      body = JSON.parse(response.body)
+      expect(body["id"]).to eq Post.last.id     # did it return the post id?
+      expect(body["category"]).to eq "barber"   # did it return the correct category?
     end
 
     it "returns an error for an invalid post" do 

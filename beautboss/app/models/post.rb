@@ -10,7 +10,7 @@ class Post < ActiveRecord::Base
   has_many :reports, dependent: :destroy
   has_many :activities, as: :subject, dependent: :destroy
 
-  enum category: [:haircut, :hairstyle, :colouring, :highlights, :nails, :makeup]
+  enum category: [:haircut, :hairstyle, :colouring, :highlights, :nails, :makeup, :barber]
 
 	validates_presence_of :user, :category, :service, :image
   validates :service, length: { maximum: 191 }

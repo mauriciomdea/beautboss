@@ -9,7 +9,7 @@ ActiveAdmin.register Post, as: "Register" do
 
   filter :user_name_cont, label: 'User'
   filter :place_name_cont, label: 'Place'
-  filter :category
+  filter :category, as: :select, collection: Post.categories
   filter :service
   filter :created_at
   filter :updated_at
