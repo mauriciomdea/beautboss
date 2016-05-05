@@ -9,24 +9,22 @@
     <div class="content-sign-in">
 
     <div class="center" style="padding-top: 24px; padding-bottom: 24px;">
-      <h1 class="title">i forgot my password :(</h1>
+      <h1 class="title"><%= t("website.forgot_password.title").html_safe %></h1>
     </div>
     <% flash.each do |name, msg| %>
         <%= content_tag :div, msg, class: "notice center" %>
       <% end %>
     <div class="">
       <p class="grey-text center" style="width: 388px; padding: 0 0 20px 0; text-align: center;">
-        Please inform your email address. <br>We'll send you a new password to 
-        log in, and then you can set a new one of your preference by editing 
-        your profile settings ;)
+        <%= t("website.forgot_password.text").html_safe %>
       </p>
       <%= form_for @user, url: new_password_path do |f| %>
         <div class="form-group">
           <%= f.email_field :email, class: "form-control input-lg center", placeholder: "email" %>
         </div>
         <br/>
-        <%= submit_tag "send me a new password", class: "btn btn-primary center" %>
-        <%= link_to "cancel", root_path, class: "btn btn-default center" %>
+        <%= submit_tag t("website.forgot_password.button_send"), class: "btn btn-primary center" %>
+        <%= link_to t("website.forgot_password.button_cancel"), root_path, class: "btn btn-default center" %>
       <% end %>
     </div>
 

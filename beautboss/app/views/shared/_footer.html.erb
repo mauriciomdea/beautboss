@@ -6,11 +6,11 @@
         <!-- <span style="padding-left: 12px; padding-right: 12px;">|</span> -->
         <% #link_to "support", support_path, class: "pink-link" %> 
         <span style="padding-left: 12px; padding-right: 12px;">|</span>
-        <%= link_to "terms of use ", terms_path, class: "pink-link" %>
+        <%= link_to t("website.shared_footer.link_terms"), terms_path, class: "pink-link" %>
         <span style="padding-left: 12px; padding-right: 12px;">|</span>
-        <%= link_to "privacy policies ", privacy_path, class: "pink-link" %>
+        <%= link_to t("website.shared_footer.link_policies"), privacy_path, class: "pink-link" %>
         <span style="padding-left: 12px; padding-right: 12px;">|</span>
-        &copy; beautboss 2015&#8482; all rights reserved
+        <%= t("website.shared_footer.copyright") %>
       </p>
   </div>
 </div>

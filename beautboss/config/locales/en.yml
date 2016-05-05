@@ -20,6 +20,73 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  website:
+    homepage:
+      title: "get started! be a beautboss!"
+      paragraph_one: "Find the best places and beauty care services wherever you are with beautboss!"
+      paragraph_two: "You can share your experiences, interact with your friends and check how the beauty salons are working all around the world."
+      paragraph_three: "Cut your hair, put some colour in your life, make your own new style, chase your crowns and be a beautboss right now!"
+      button_sign_in: "sign in"
+    sign-in:
+      title: "welcome to beautboss!"
+      button_facebook: "sign in with facebook"
+      button_sign_in: "sign in"
+      button_forgot_password: "i forgot my password :("
+      label_email: "email"
+      label_password: "password"
+      message_wrong_credentials: "Email or password does not match"
+      message_sign_out: "Signed out successfully."
+      call_to_action: "need an account?<br>download the app to sign up!"
+    forgot_password:
+      title: "i forgot my password :("
+      text: "Please inform your email address.<br>We'll send you a new password to log in, and then you can set a new one of your preference by editing your profile settings ;)"
+      sent_message: "We have just sent you an email with a temporary password :)"
+      button_send: "send me a new password"
+      button_cancel: "cancel"
+      button_back: "thank you :)"
+    terms_of_use:
+      title: "terms of use"
+    privacy_policies:
+      title: "privacy policies"
+    newsfeed:
+      label_ago: "ago"
+      label_at: "at"
+      label_in: "in"
+    profile:
+      following: "following"
+      followers: "followers"
+      photos: "photos"
+      button_edit: "edit my profile"
+      button_sign_out: "sign out"
+      edit:
+        account_settings: 
+          title: "account settings"
+          label_name: "name"
+          label_username: "user name"
+          label_email: "email"
+          label_web: "web"
+          label_location: "location"
+          label_bio: "bio"
+          button_save: "save new details"
+        reset_password: 
+          title: "reset your password"
+          subtitle: "(make sure it's at least 6 characters long)"
+          label_new: "new password"
+          label_confirm: "repeat password"
+          button_save: "save new password"
+        delete_account: 
+          title: "delete your account"
+          subtitle: "confirm your password to delete your account and data"
+          label_password: "password"
+          button_delete: "delete my account"
+    shared_banner:
+      title: "find, share and experience it. be a beautboss!"
+      paragraph_one: "Find the best places and beauty care services wherever you are with beautboss! You can share your experiences, interact with your friends and check how the beauty salons are working all around the world."
+      paragraph_two: "Cut your hair, put some colour in your life, make your own new style, chase your crowns and be a beautboss right now!"
+    shared_footer:
+      link_terms: "terms of use"
+      link_policies: "privacy policies"
+      copyright: "© beautboss 2015™ all rights reserved"
   notifications: 
     follow: "%{name} started following you"
     wow: "%{name} wowed your register"
