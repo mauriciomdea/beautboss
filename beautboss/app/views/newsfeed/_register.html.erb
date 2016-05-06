@@ -15,14 +15,14 @@
         </div>
         <div class="pull-left" style="padding-left: 24px;">
           <p style="line-height: 40px; font-weight: bold; font-size: 18px;"><%= link_to @post.user.username, @post.user, style: "color: #770749; text-decoration: none;" %></p>
-          <p style="margin-top: -16px; font-size: 18px; font-weight: normal; color: #a0a0a0;"><%= time_ago_in_words(@post.created_at) %> ago</p>
+          <p style="margin-top: -16px; font-size: 18px; font-weight: normal; color: #a0a0a0;"><%= time_ago_in_words(@post.created_at) %> <%= t("website.newsfeed.label_ago") %></p>
         </div>
       </div>
 
       <div id="service" class="" style="padding-top: 80px;">
         <p class="font-small bold grey"><%= @post.service %></p>
         <p class="font-small regular grey">
-          <% unless @post.place.nil? %>at <span class="bold"><%= @post.place.name %></span><% unless @post.place.address.nil? %> in <span class="bold"><%= @post.place.address %></span><% end %><% end %>
+          <% unless @post.place.nil? %><%= t("website.newsfeed.label_at") %> <span class="bold"><%= @post.place.name %></span><% unless @post.place.address.nil? %> <%= t("website.newsfeed.label_in") %> <span class="bold"><%= @post.place.address %></span><% end %><% end %>
         </p>
       </div>
     </div>
@@ -53,7 +53,7 @@
         <!-- Comments -->
         <%= form_for Comment.new(post_id: @post.id), html: { class: "", id: "comment_post_#{@post.id}" }, remote: true do |f| %>
           <%= hidden_field :comment, :post_id, value: @post.id %>
-          <%= f.text_field :comment, class: "form-control input-comment", placeholder: "leave a comment :)" %>
+          <%= f.text_field :comment, class: "form-control input-comment", placeholder: t("website.newsfeed.label_leave_comment") %>
         <% end %>
       </div>
     <% end %>

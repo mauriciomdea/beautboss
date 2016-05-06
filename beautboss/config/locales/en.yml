@@ -49,6 +49,11 @@ en:
     privacy_policies:
       title: "privacy policies"
     newsfeed:
+      label_wowed: "wowed this!"
+      label_wows: "wows!"
+      label_total_comments: "View all %{total} comments"
+      label_leave_comment: "leave a comment :)"
+      label_and: "and"
       label_ago: "ago"
       label_at: "at"
       label_in: "in"

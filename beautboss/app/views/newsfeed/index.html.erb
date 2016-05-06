@@ -16,7 +16,7 @@
             </div>
             <div class="pull-left" style="padding-left: 24px;">
               <p style="line-height: 40px; font-weight: bold; font-size: 18px;"><%= link_to n.user.username, n.user, style: "color: #770749; text-decoration: none;" %></p>
-              <p style="margin-top: -16px; font-size: 18px; font-weight: normal; color: #a0a0a0;"><%= time_ago_in_words(n.created_at) %> ago</p>
+              <p style="margin-top: -16px; font-size: 18px; font-weight: normal; color: #a0a0a0;"><%= time_ago_in_words(n.created_at) %> <%= t("website.newsfeed.label_ago") %></p>
             </div>
           </div>
 
@@ -29,11 +29,11 @@
               <%= image_tag "ic_wow_notation.png", class: "pull-left", style: "margin-left: 24px; margin-top: 24px;" %>
               <p class="pull-left" style="font-size: 22px; font-weight: normal; color: #770749; margin-top: 18px; padding-left: 12px;">
                 <% if n.wows_count == 1 %>
-                  <%= link_to n.wows.first.user.username, n.wows.first.user, class: "pink-link-large" %> wowed this!
+                  <%= link_to n.wows.first.user.username, n.wows.first.user, class: "pink-link-large" %> <%= t("website.newsfeed.label_wowed") %>
                 <% elsif n.wows_count == 2 %>
-                  <%= link_to n.wows.first.user.username, n.wows.first.user, class: "pink-link-large" %> and <%= link_to n.wows.second.user.username, n.wows.second.user, class: "pink-link-large" %> wowed this!
+                  <%= link_to n.wows.first.user.username, n.wows.first.user, class: "pink-link-large" %> <%= t("website.newsfeed.label_and") %> <%= link_to n.wows.second.user.username, n.wows.second.user, class: "pink-link-large" %> <%= t("website.newsfeed.label_wowed") %>
                 <% else %>
-                  <%= n.wows_count %> wows!
+                  <%= n.wows_count %> <%= t("website.newsfeed.label_wows") %>
                 <% end %>
               </p>
             <% end %>
@@ -42,7 +42,7 @@
           <div id="service" class="clearfix" style="margin-left: 24px; margin-top: 24px;">
             <p class="font-small bold grey"><%= n.service %></p>
             <p class="font-small regular grey">
-              <% unless n.place.nil? %>at <span class="bold"><%= n.place.name %></span><% unless n.place.address.nil? %> in <span class="bold"><%= n.place.address %></span><% end %><% end %>
+              <% unless n.place.nil? %><%= t("website.newsfeed.label_at") %> <span class="bold"><%= n.place.name %></span><% unless n.place.address.nil? %> <%= t("website.newsfeed.label_in") %> <span class="bold"><%= n.place.address %></span><% end %><% end %>
             </p>
           </div>
 
@@ -56,7 +56,7 @@
 
             <% if n.comments.size > 5 %>
               <p class="font-small"><span class="grey regular word-wrap">
-                <%= link_to "View all #{n.comments.size} comments", register_path(n), class: "pink-link" %>
+                <%= link_to t("website.newsfeed.label_total_comments", total: n.comments.size), register_path(n), class: "pink-link" %>
               </span></p>
             <% end %>
 
