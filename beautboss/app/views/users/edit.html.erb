@@ -6,7 +6,7 @@
 
     <div style="margin-bottom: 24px;">
 
-      <h1 class="font-large grey bold"><%= @user.name %>'s Profile</h1>
+      <h1 class="font-large grey bold"><%= t("website.profile.edit.label_profile", name: @user.name) %></h1>
 
       <% if @user.errors.any? %>
         <ul>
@@ -16,7 +16,7 @@
         </ul>
       <% end %>
 
-      <h2 class="font-large grey regular">account settings</h2>
+      <h2 class="font-large grey regular"><%= t("website.profile.edit.account_settings.title") %></h2>
 
     </div>
 
@@ -25,42 +25,42 @@
       <%= form_for @user, method: :put, class: "form-horizontal" do |f| %>
 
         <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-          <label for="user[name]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">name</label>
+          <label for="user[name]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.account_settings.label_name") %></label>
           <div class="col-sm-9">
             <%= f.text_field :name, class: "form-control input-profile" %>
           </div>
         </div>
 
         <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-          <label for="user[username]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">user name</label>
+          <label for="user[username]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.account_settings.label_username") %></label>
           <div class="col-sm-9">
             <%= f.text_field :username, class: "form-control input-profile" %>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="user[email]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">email</label>
+          <label for="user[email]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.account_settings.label_email") %></label>
           <div class="col-sm-9">
             <%= f.email_field :email, class: "form-control input-profile" %>
           </div>
         </div>
 
         <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-          <label for="user[website]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">web</label>
+          <label for="user[website]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.account_settings.label_web") %></label>
           <div class="col-sm-9">
             <%= f.text_field :website, class: "form-control input-profile" %>
           </div>
         </div>
 
         <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-          <label for="user[location]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">location</label>
+          <label for="user[location]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.account_settings.label_location") %></label>
           <div class="col-sm-9">
             <%= f.text_field :location, class: "form-control input-profile" %>
           </div>
         </div>
 
         <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
-          <label for="user[bio]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">bio</label>
+          <label for="user[bio]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.account_settings.label_bio") %></label>
           <div class="col-sm-9">
             <%= f.text_area :bio, rows: "3", class: "form-control input-profile" %>
           </div>
@@ -69,7 +69,7 @@
         <div style="margin-bottom: 24px;">
           <div class="col-sm-3">&nbsp;</div>
           <div class="col-sm-9 pull-right">
-            <%= submit_tag "save new details", class: "btn btn-default", style: "margin-right: 0;" %>
+            <%= submit_tag t("website.profile.edit.account_settings.button_save"), class: "btn btn-default", style: "margin-right: 0;" %>
           </div>
         </div>
 
@@ -87,9 +87,9 @@
 
     <div style="margin-bottom: 24px;">
 
-      <h2 class="font-large grey regular">reset your password</h2>
+      <h2 class="font-large grey regular"><%= t("website.profile.edit.reset_password.title") %></h2>
 
-      <p class="font-medium grey light">(make sure it's at least 6 characters long)</p>
+      <p class="font-medium grey light"><%= t("website.profile.edit.reset_password.subtitle") %></p>
 
     </div>
 
@@ -98,14 +98,14 @@
       <%= form_for @user, method: :put, class: "form-horizontal" do |f| %>
       
         <div class="form-group">
-          <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">new password</label>
+          <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.reset_password.label_new") %></label>
           <div class="col-sm-9">
             <%= f.password_field :password, class: "form-control input-profile" %>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="user[password_confirmation]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">repeat password</label>
+          <label for="user[password_confirmation]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.reset_password.label_confirm") %></label>
           <div class="col-sm-9">
             <%= f.password_field :password_confirmation, class: "form-control input-profile" %>
           </div>
@@ -114,7 +114,7 @@
         <div style="margin-bottom: 24px;">
           <div class="col-sm-3">&nbsp;</div>
           <div class="col-sm-9 pull-right">
-            <%= submit_tag "save new password", class: "btn btn-default", style: "margin-right: 0;" %>
+            <%= submit_tag t("website.profile.edit.reset_password.button_save"), class: "btn btn-default", style: "margin-right: 0;" %>
           </div>
         </div>
 
@@ -132,9 +132,9 @@
 
     <div style="margin-bottom: 24px;">
 
-      <h2 class="font-large grey regular">delete your account</h2>
+      <h2 class="font-large grey regular"><%= t("website.profile.edit.delete_account.title") %></h2>
 
-      <p class="font-medium grey light">confirm your password to delete your account and data</p>
+      <p class="font-medium grey light"><%= t("website.profile.edit.delete_account.subtitle") %></p>
 
     </div>
 
@@ -143,7 +143,7 @@
       <%= form_for @user, method: :delete, class: "form-horizontal" do |f| %>
       
         <div class="form-group">
-          <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;">password</label>
+          <label for="user[password]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.delete_account.label_password") %></label>
           <div class="col-sm-9">
             <%= f.password_field :password, class: "form-control input-profile" %>
           </div>
@@ -152,7 +152,7 @@
         <div style="margin-bottom: 24px;">
           <div class="col-sm-3">&nbsp;</div>
           <div class="col-sm-9 pull-right">
-            <%= submit_tag "delete my account", class: "btn btn-default", style: "margin-right: 0;" %>
+            <%= submit_tag t("website.profile.edit.delete_account.button_delete"), class: "btn btn-default", style: "margin-right: 0;" %>
           </div>
         </div>
 

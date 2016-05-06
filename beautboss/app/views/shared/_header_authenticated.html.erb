@@ -13,7 +13,7 @@
       <% if @user == @current_user %>
 
           <%= link_to image_tag("icon-sign-out.png", alt: "sign out", class: "sign-out-icon pull-left", style: "padding-top: 20px;"), sign_out_path %>
-          <%= link_to "sign out", sign_out_path, class: "sign-in-text pull-left", style: "padding-top: 30px; padding-left: 10px;" %>
+          <%= link_to t("website.profile.button_sign_out"), sign_out_path, class: "sign-in-text pull-left", style: "padding-top: 30px; padding-left: 10px;" %>
 
       <% else %>
 
@@ -25,7 +25,7 @@
     <% else %>
 
       <%= link_to image_tag("icon-home.png", alt: "sign in", class: "sign-in-icon pull-left", style: "padding-top: 20px;"), sign_in_path %>
-      <%= link_to "sign in", sign_in_path, class: "sign-in-text pull-left", style: "padding-top: 30px; padding-left: 10px; margin-right: 10px;" %>
+      <%= link_to t("website.homepage.button_sign_in"), sign_in_path, class: "sign-in-text pull-left", style: "padding-top: 30px; padding-left: 10px; margin-right: 10px;" %>
 
     <% end %>
     </div>

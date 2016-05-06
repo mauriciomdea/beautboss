@@ -64,6 +64,7 @@ en:
       button_edit: "edit my profile"
       button_sign_out: "sign out"
       edit:
+        label_profile: "%{name}'s Profile"
         account_settings: 
           title: "account settings"
           label_name: "name"
