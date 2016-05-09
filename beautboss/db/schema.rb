@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151208060526) do
+ActiveRecord::Schema.define(version: 20160509214639) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -148,8 +148,8 @@ ActiveRecord::Schema.define(version: 20151208060526) do
     t.string   "name",                limit: 191
     t.string   "email",               limit: 191
     t.string   "password_digest",     limit: 191
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.text     "avatar",              limit: 65535
     t.string   "website",             limit: 191
     t.string   "location",            limit: 191
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(version: 20151208060526) do
     t.boolean  "notify_new_comment"
     t.boolean  "notify_new_wow"
     t.string   "username",            limit: 191
+    t.string   "language",            limit: 191,   default: "en-US"
   end
 
   add_index "users", ["username"], name: "index_users_on_username", using: :btree

@@ -6,7 +6,7 @@ ActiveAdmin.register User do
   config.paginate = true
   config.per_page = 25
 
-  permit_params :name, :email, :password, :avatar, :website, :location, :bio, :notify_new_follower, :notify_new_comment, :notify_new_wow
+  permit_params :name, :email, :password, :avatar, :website, :location, :language, :bio, :notify_new_follower, :notify_new_comment, :notify_new_wow
 
   filter :name
   filter :email
@@ -48,6 +48,7 @@ ActiveAdmin.register User do
       row :email
       row :website
       row :location
+      row :language
       row :bio
       row :created_at do |register| 
         l register.created_at, format: :custom

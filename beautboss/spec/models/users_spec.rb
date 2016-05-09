@@ -9,6 +9,18 @@ RSpec.describe "Users" do
       user.save
       # puts user.errors.to_yaml
       expect(user.persisted?).to be true
+      user_after = User.find(user.id)
+      expect(user_after.name).to eq "Test"
+      expect(user_after.email).to eq "test@example.com"
+      expect(user_after.language).to eq "en-US"
+    end
+
+    it "creates user from email/password and a supported language" do 
+      user = User.new(name: "Test", email: "test@example.com", password: "12345678", language: "pt-BR")
+      user.save
+      expect(user.persisted?).to be true
+      user_after = User.find(user.id)
+      expect(user_after.language).to eq "pt-BR"
     end
 
     it "refuses user without name" do 
@@ -42,6 +54,13 @@ RSpec.describe "Users" do
       user.save
       expect(user.persisted?).to be false
       expect(user.errors.messages[:email][0]).to eq "has already been taken"
+    end
+
+    it "refuses user with unsupported language" do 
+      user = User.new(name: "Test", email: "test@example.com", password: "12345678", language: "xx-XX")
+      user.save
+      expect(user.persisted?).to be false
+      expect(user.errors.messages[:language][0]).to eq "is not included in the list"
     end
 
     it "creates user from facebook with email" do 
@@ -87,27 +106,27 @@ RSpec.describe "Users" do
       user.username = "do not_allow-this" # spaces
       expect(user.valid?).to be false
       expect(user.save).to be false
-      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+      expect(user.errors.messages[:username].first).to eq I18n.t "activerecord.errors.messages.invalid_characters"
 
       user.username = "do.not_allow-this" # points
       expect(user.valid?).to be false
       user.save
-      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+      expect(user.errors.messages[:username].first).to eq I18n.t "activerecord.errors.messages.invalid_characters"
 
       user.username = "do_not_allow-this!" # exclamation marks
       expect(user.valid?).to be false
       user.save
-      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+      expect(user.errors.messages[:username].first).to eq I18n.t "activerecord.errors.messages.invalid_characters"
 
       user.username = "do^not_allow-this" # accents
       expect(user.valid?).to be false
       user.save
-      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+      expect(user.errors.messages[:username].first).to eq I18n.t "activerecord.errors.messages.invalid_characters"
 
       user.username = "do&not_allow-this" # special chars
       expect(user.valid?).to be false
       user.save
-      expect(user.errors.messages[:username].first).to eq "No special characters, only letters, numbers and underscores"
+      expect(user.errors.messages[:username].first).to eq I18n.t "activerecord.errors.messages.invalid_characters"
 
     end
 

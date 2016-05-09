@@ -20,7 +20,8 @@ class Api::V1::UsersController < Api::V1::ApiController
     user = User.new(
       name: user_params[:name],
       email: user_params[:email],
-      password: user_params[:password]
+      password: user_params[:password],
+      language: user_params[:language]
     )
     if user.save
       @token = Token.get_token(user)
@@ -123,7 +124,7 @@ class Api::V1::UsersController < Api::V1::ApiController
   private
 
     def user_params
-      params.permit(:name, :username, :email, :password, :avatar, :website, :location, :bio, :access_token, :emails)
+      params.permit(:name, :username, :email, :password, :avatar, :website, :location, :bio, :language, :access_token, :emails)
     end
 
     def _render_user(user, status = :ok)

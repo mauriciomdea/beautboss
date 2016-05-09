@@ -1,6 +1,6 @@
 class UserFullSerializer < ActiveModel::Serializer
   
-  attributes :id, :name, :username, :email, :facebook, :avatar, :website, :location, :bio, :followers, :following, :posts, :is_following, :created_at
+  attributes :id, :name, :username, :email, :facebook, :avatar, :website, :location, :language, :bio, :followers, :following, :posts, :is_following, :created_at
 
   def followers
     object.followers.size

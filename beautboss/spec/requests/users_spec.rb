@@ -24,6 +24,7 @@ RSpec.describe "Users API v1", type: :request do
       body = JSON.parse(response.body)
       expect(body["user"]["name"]).to eq "Johnny Test"
       expect(body["user"]["username"]).to eq "johnny_test"
+      expect(body["user"]["language"]).to eq "en-US"
       expect(body["token"]).not_to be_nil
     end
 
@@ -51,6 +52,7 @@ RSpec.describe "Users API v1", type: :request do
       body = JSON.parse(response.body)
       expect(body["name"]).to eq "Johnny Test"
       expect(body["username"]).to eq "johnny_test"
+      expect(body["language"]).to eq "en-US"
       expect(body["followers"]).to eq 0
       expect(body["following"]).to eq 0
       expect(body["posts"]).to eq 0
@@ -88,7 +90,8 @@ RSpec.describe "Users API v1", type: :request do
         "website" => "example.com",
         "location" => "Somewhere, NA",
         "bio" => "Blablabla.",
-        "username" => "janexxx"
+        "username" => "janexxx",
+        "language" => "pt-BR"
       }.to_json
       request_headers = {
         "Accept" => "application/json",
@@ -100,6 +103,7 @@ RSpec.describe "Users API v1", type: :request do
       expect(User.find(user.id).name).to eq "Jane Smith"
       expect(User.find(user.id).username).to eq "janexxx"
       expect(User.find(user.id).website).to eq "example.com"
+      expect(User.find(user.id).language).to eq "pt-BR"
     end
 
   end

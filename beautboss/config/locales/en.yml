@@ -98,6 +98,10 @@ en:
     wow: "%{name} wowed your register"
     comment: "%{name} said: '%{comment}'"
     unknow: "Unknow activity"
+  activerecord:
+    errors:
+      messages:
+        invalid_characters: "can't contain special characters, only letters, numbers and underscores allowed"
   time:
     formats:
       custom: '%d/%m/%Y %H:%M'

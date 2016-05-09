@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_secure_password validations: false
 
-  before_validation :generate_username
+  before_validation :generate_username, :default_values
 
   validates :name, presence: true
   validates :email, uniqueness: true, unless: 'email.nil?'
@@ -10,11 +10,12 @@ class User < ActiveRecord::Base
   validates :facebook, presence: true, if: 'password.nil? && password_digest.nil?'
   validates :facebook, uniqueness: true, unless: 'facebook.nil?'
   validates :username, uniqueness: true, presence: true
-  validates :username, format: { with: /\A[a-zA-Z]+([a-zA-Z_-]|\d)*\Z/, message: "can't contain special characters, only letters, numbers and underscores allowed" }
+  validates :username, format: { with: /\A[a-zA-Z]+([a-zA-Z_-]|\d)*\Z/, message: I18n.t("activerecord.errors.messages.invalid_characters") }
   validates :name, :email, :username, length: { maximum: 191 }
   validates :avatar, :bio, length: { maximum: 767 }
   validates :password, length: { in: 6..20 }, unless: 'password.nil?'
   validates :password, confirmation: true
+  validates :language, :inclusion=> { :in => ["en-US", "pt-BR"] }
 
   has_many :posts, dependent: :destroy
   has_many :wows, dependent: :destroy
@@ -97,7 +98,14 @@ class User < ActiveRecord::Base
     user.avatar = profile.picture(:large).url unless profile.picture(:large).nil?
     user.website = profile.website unless profile.website.nil?
     user.location = profile.location.name unless profile.location.nil?
+    # user.language = profile.languages[0] unless profile.languages.nil?
     user
   end
+
+  private
+
+    def default_values
+      self.language ||= "en-US"
+    end
   
 end
