@@ -1,10 +1,81 @@
 pt-BR:
   website:
+    homepage:
+      title: "comece já! seja um beautboss!"
+      paragraph_one: "Encontre os melhores lugares e serviços de beleza onde você estiver com beautboss!"
+      paragraph_two: "Você pode compartilhar suas experiências, interagir com seus amigos  e conferir outros serviços dos melhores salões ao redor do mundo."
+      paragraph_three: "Corte seu cabelo, coloque um pouco de cor na sua vida, adote um novo visual, conquiste coroas e seja um beautboss já!"
+      button_sign_in: "entrar"
+    sign-in:
+      title: "bem-vindo ao beautboss!"
+      button_facebook: "entrar com facebook"
+      button_sign_in: "entrar"
+      button_forgot_password: "esqueci minha senha :("
+      label_email: "e-mail"
+      label_password: "senha"
+      message_wrong_credentials: "e-mail ou senha incorretos"
+      message_sign_out: "você saiu com sucesso"
+      call-to-action: "não é cadastrado?<br>faça download do app para entrar"
+    forgot_password:
+      title: "esqueci minha senha :("
+      text: ""
+      sent_message: ""
+      button_send: ""
+      button_cancel: ""
+      button_back: ""
+    terms_of_use:
+      title: "termos de uso"
+    privacy_policies:
+      title: "política de privacidade"
+    newsfeed:
+      label_wowed: ""
+      label_wows: ""
+      label_total_comments: ""
+      label_leave_comment: ""
+      label_and: ""
+      label_ago: "atrás"
+      label_at: "em"
+      label_in: "em"
+    profile:
+      following: "seguindo"
+      followers: "seguidores"
+      photos: "fotos"
+      button_edit: "editar meu perfil"
+      button_sign_out: "sair"
+      edit:
+        account_settings: 
+          title: "configurações"
+          label_name: "nome"
+          label_username: "usuário"
+          label_email: "e-mail"
+          label_web: "web"
+          label_location: "locatlização"
+          label_bio: "bio"
+          button_save: "salvar alterações"
+        reset_password: 
+          title: "recuperar minha senha"
+          subtitle: "(certifique que tenha no mínimo 6 caracteres)"
+          label_new: "nova senha"
+          label_confirm: "repetir senha"
+          button_save: "salvar nova senha"
+        delete_account: 
+          title: "excluir perfil"
+          subtitle: "confirme sua senha para deletar seu perfil e seus dados"
+          label_password: "senha"
+          button_delete: "excluir perfil"
+    shared_banner:
+      title: "encontre, compartilhe e seja um beautboss!"
+      paragraph_one: "Encontre os melhores lugares e serviços de beleza onde você estiver com beautboss! Você pode compartilhar suas experiências, interagir com seus amigos  e conferir outros serviços dos melhores salões ao redor do mundo."
+      paragraph_two: "Corte seu cabelo, coloque um pouco de cor na sua vida, adote um novo visual, conquiste coroas e seja um beautboss já!"
+    shared_footer:
+      link_terms: "termos de uso"
+      link_policies: "política de privacidade"
+      copyright: ""
   notifications: 
-    follow: "%{name} started following you"
-    wow: "%{name} wowed your register"
-    comment: "%{name} said: '%{comment}'"
-    unknow: "Unknow activity"
+    follow: "%{name} está te seguindo"
+    wow: "%{name} deram wow!"
+    comment: "%{name} disse: '%{comment}'"
+    unknow: "atividade desconhecida"
   activerecord:
     errors:
       messages:
