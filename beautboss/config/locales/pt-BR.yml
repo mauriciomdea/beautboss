@@ -51,6 +51,7 @@ pt-BR:
           label_web: "web"
           label_location: "locatlização"
           label_bio: "bio"
+          label_language: "língua"
           button_save: "salvar alterações"
         reset_password: 
           title: "recuperar minha senha"

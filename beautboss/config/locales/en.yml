@@ -73,6 +73,7 @@ en:
           label_web: "web"
           label_location: "location"
           label_bio: "bio"
+          label_language: "language"
           button_save: "save new details"
         reset_password: 
           title: "reset your password"
