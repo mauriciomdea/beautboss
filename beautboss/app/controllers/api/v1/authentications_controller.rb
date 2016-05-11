@@ -19,6 +19,7 @@ class Api::V1::AuthenticationsController < Api::V1::ApiController
     profile = FbGraph2::User.me(params[:access_token]).fetch
     # puts profile.fetch
     @user = User.from_facebook(profile.fetch)
+    @user.language = params[:language] unless params[:language].nil?
     if @user.save
       @token = Token.get_token(@user)
       render json: { user: UserSerializer.new(@user).as_json(root: false), token: @token }, status: :created
