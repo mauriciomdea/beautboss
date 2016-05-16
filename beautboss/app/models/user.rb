@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   before_validation :generate_username, :default_values
 
+  LANGUAGES = {"en-US" => "English", "pt-BR" => "Português" }
+
   validates :name, presence: true
   validates :email, uniqueness: true, unless: 'email.nil?'
   validates :email, presence: true, if: 'facebook.nil?'
@@ -43,6 +45,18 @@ class User < ActiveRecord::Base
   # def to_param
   #   username # or name.parameterize
   # end
+
+  def locale
+    # self.language.gsub(/::/, '/').
+    # gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    # gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    # tr("-", "_")
+    if self.language == "pt-BR"
+      "pt_BR"
+    else
+      "en"
+    end
+  end
 
   def generate_username
     username = name.parameterize.underscore unless name.nil?

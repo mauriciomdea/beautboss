@@ -66,6 +66,13 @@
           </div>
         </div>
 
+        <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
+          <label for="user[language]" class="col-sm-3 control-label font-medium grey regular" style="text-align: right; line-height: 200%;"><%= t("website.profile.edit.account_settings.label_language") %></label>
+          <div class="col-sm-9">
+            <%= f.select :language, User::LANGUAGES.map{ |language| [ language[1], language[0] ] }, {}, { class: "form-control input-profile", style: "-webkit-appearance: none; -webkit-border-radius: 0px;" } %>
+          </div>
+        </div>
+
         <div style="margin-bottom: 24px;">
           <div class="col-sm-3">&nbsp;</div>
           <div class="col-sm-9 pull-right">

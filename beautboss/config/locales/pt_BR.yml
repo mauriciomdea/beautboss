@@ -1,4 +1,4 @@
-pt-BR:
+pt_BR:
   website:
     homepage:
       title: "comece já! seja um beautboss!"
@@ -15,24 +15,24 @@ pt-BR:
       label_password: "senha"
       message_wrong_credentials: "e-mail ou senha incorretos"
       message_sign_out: "você saiu com sucesso"
-      call-to-action: "não é cadastrado?<br>faça download do app para entrar"
+      call_to_action: "não é cadastrado?<br>faça download do app para entrar"
     forgot_password:
       title: "esqueci minha senha :("
-      text: ""
-      sent_message: ""
-      button_send: ""
-      button_cancel: ""
-      button_back: ""
+      text: "Por favor, informe seu endereço de e-mail.<br> Nós enviaremos uma senha temporária para que você possa fazer seu login. Depois você poderá substituí-la nas suas configurações de perfil ;)"
+      sent_message: "Um e-mail com a sua senha temporária acaba de ser enviado :)"
+      button_send: "enviar uma nova senha"
+      button_cancel: "cancelar"
+      button_back: "obrigada :)"
     terms_of_use:
       title: "termos de uso"
     privacy_policies:
       title: "política de privacidade"
     newsfeed:
-      label_wowed: ""
-      label_wows: ""
-      label_total_comments: ""
-      label_leave_comment: ""
-      label_and: ""
+      label_wowed: "deixaram seu wow neste post!"
+      label_wows: "wows!"
+      label_total_comments: "Veja todos os %{total} comentários"
+      label_leave_comment: "deixe seu comentário :)"
+      label_and: "e"
       label_ago: "atrás"
       label_at: "em"
       label_in: "em"
@@ -43,13 +43,14 @@ pt-BR:
       button_edit: "editar meu perfil"
       button_sign_out: "sair"
       edit:
+        label_profile: "Perfil de %{name}"
         account_settings: 
           title: "configurações"
           label_name: "nome"
           label_username: "usuário"
           label_email: "e-mail"
           label_web: "web"
-          label_location: "locatlização"
+          label_location: "localização"
           label_bio: "bio"
           label_language: "língua"
           button_save: "salvar alterações"
@@ -71,7 +72,7 @@ pt-BR:
     shared_footer:
       link_terms: "termos de uso"
       link_policies: "política de privacidade"
-      copyright: ""
+      copyright: "© beautboss 2015™ todos os direitos reservados"
   notifications: 
     follow: "%{name} está te seguindo"
     wow: "%{name} deram wow!"
@@ -140,40 +141,30 @@ pt-BR:
     - :year
   datetime:
     distance_in_words:
-      about_x_hours:
-        one: aproximadamente 1 hora
-        other: aproximadamente %{count} horas
-      about_x_months:
-        one: aproximadamente 1 mês
-        other: aproximadamente %{count} meses
-      about_x_years:
-        one: aproximadamente 1 ano
-        other: aproximadamente %{count} anos
-      almost_x_years:
-        one: quase 1 ano
-        other: quase %{count} anos
-      half_a_minute: meio minuto
-      less_than_x_minutes:
-        one: menos de um minuto
-        other: menos de %{count} minutos
-      less_than_x_seconds:
-        one: menos de 1 segundo
-        other: menos de %{count} segundos
-      over_x_years:
-        one: mais de 1 ano
-        other: mais de %{count} anos
-      x_days:
-        one: 1 dia
-        other: "%{count} dias"
-      x_minutes:
-        one: 1 minuto
-        other: "%{count} minutos"
-      x_months:
-        one: 1 mês
-        other: "%{count} meses"
       x_seconds:
-        one: 1 segundo
-        other: "%{count} segundos"
+        one: "1s"
+        other: "%{count}s"
+      x_minutes:
+        one: "1m"
+        other: "%{count}m"
+      x_hours:
+        one: "1h"
+        other: "%{count}h"
+      x_days:
+        one: "1d"
+        other: "%{count}d"
+      about_x_seconds:
+        # The defaults are "about 1 hour" and "about %{count} hours"
+        one: "1s"
+        other: "%{count}s"
+      about_x_minutes:
+        # The defaults are "about 1 hour" and "about %{count} hours"
+        one: "1m"
+        other: "%{count}m"
+      about_x_hours:
+        # The defaults are "about 1 hour" and "about %{count} hours"
+        one: "1h"
+        other: "%{count}h"
     prompts:
       day: Dia
       hour: Hora

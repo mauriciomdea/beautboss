@@ -12,7 +12,7 @@
         <%= link_to image_tag(@current_user.avatar, alt: @current_user.username, size: '48x48', class: "img-circle pull-left", style: "margin-top: 16px;"), @current_user %>
       <% else %>
         <%= link_to image_tag("icon-home.png", alt: "sign in", class: "sign-in-icon pull-left", style: "padding-top: 20px;"), sign_in_path %>
-        <%= link_to "sign in", sign_in_path, class: "sign-in-text pull-left", style: "padding-top: 30px; padding-left: 10px;" %>
+        <%= link_to t("website.homepage.button_sign_in"), sign_in_path, class: "sign-in-text pull-left", style: "padding-top: 30px; padding-left: 10px;" %>
       <% end %>
     </div>
   </div>
