@@ -50,7 +50,7 @@
             
             <% n.comments.limit(5).order(created_at: :asc).each do |c| %>
 
-              <p class="font-small"><span class="purple bold"><%= c.user.username %></span>&nbsp;<span class="grey regular word-wrap"><%= c.comment %></span></p>
+              <p class="font-small"><span class="purple bold"><%= link_to c.user.username, c.user, class: "pink-link bold" %></span>&nbsp;<span class="grey regular word-wrap"><%= c.comment %></span></p>
 
             <% end %>
 

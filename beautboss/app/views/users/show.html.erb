@@ -10,8 +10,8 @@
           <%= link_to image_tag(@user.avatar, alt: @user.username, size: '128x128', class: "img-circle"), @user %>
         </div>
         <div class="pull-left" style="margin-top: 0; margin-left: 24px; width: 400px;">
-          <p class="font-large grey bold" style="line-height: 100%;"><%= @user.username %></p>
           <p class="font-large grey bold" style="line-height: 100%;"><%= @user.name %></p>
+          <p class="font-large grey bold" style="line-height: 100%;"><%= @user.username %></p>
           <p class="grey regular" style="line-height: 120%; font-size: 20px;"><%= @user.bio %></p>
         </div>
       </div>
