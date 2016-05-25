@@ -153,6 +153,9 @@ pt_BR:
       x_days:
         one: "1d"
         other: "%{count}d"
+      x_months:
+        one: "1m"
+        other: "%{count}m"
       about_x_seconds:
         # The defaults are "about 1 hour" and "about %{count} hours"
         one: "1s"
@@ -165,6 +168,12 @@ pt_BR:
         # The defaults are "about 1 hour" and "about %{count} hours"
         one: "1h"
         other: "%{count}h"
+      about_x_months:
+        one: "1m"
+        other: "%{count}m"
+      over_x_years:
+        one: "1a"
+        other: "%{count}a"
     prompts:
       day: Dia
       hour: Hora
