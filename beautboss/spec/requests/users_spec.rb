@@ -201,6 +201,56 @@ RSpec.describe "Users API v1", type: :request do
 
   end
 
+  # Blacklist
+
+  describe "POST /api/v1/users/:id/block" do 
+
+    it "blocks an user" do 
+      user = FactoryGirl.create :user
+      troll = FactoryGirl.create :user, name: "Internet Troll"
+      post "/api/v1/users/#{troll.id}/block", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(user.blocked.size).to eq 1
+      expect(user.blocked.last.id).to eq troll.id
+      expect(response.status).to eq 201 # created
+      body = JSON.parse(response.body)
+      # puts body.to_yaml
+      expect(body["count"]).to eq 1
+      expect(body["blocked"][0]["name"]).to eq "Internet Troll"
+    end
+
+  end
+
+  describe "DELETE /api/v1/users/:id/block" do 
+
+    xit "unblocks an user" do 
+      user1 = FactoryGirl.create :user, name: "The Followed"
+      user2 = FactoryGirl.create :user, name: "A Follower"
+      user2.follow(user1)
+      delete "/api/v1/users/#{user1.id}/follow", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user2) }
+      expect(user1.followers.size).to eq 0
+      expect(response.status).to eq 204 # ok, no content
+    end
+
+  end
+
+  describe "GET /api/v1/users/:id/blacklist" do 
+
+    xit "lists an user's blacklist" do 
+      user = FactoryGirl.create :user
+      john = FactoryGirl.create :user, name: "John Doe"
+      jane = FactoryGirl.create :user, name: "Jane Smith"
+      john.follow(user)
+      jane.follow(user)
+      user.block(john)
+      get "/api/v1/users/#{user.id}/blacklist", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      expect(response.status).to eq 200 # ok
+      body = JSON.parse(response.body)
+      expect(body["count"]).to eq 1
+      expect(body["blacklist"][0]["name"]).to eq "John Doe"
+    end
+
+  end
+
   # Friends
 
   describe "GET /api/v1/users/:id/friends" do

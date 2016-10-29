@@ -34,9 +34,17 @@ class User < ActiveRecord::Base
   has_many :following, through: :outbound_relationships,  source: :followed
   has_many :followers, through: :inbound_relationships, source: :follower
 
+  # has_many :blacklist,  class_name: 'Block', 
+  #                       foreign_key: 'user_id', 
+  #                       dependent: :destroy
+
+  has_many :blocks
+  has_many :blocked, through: :blocks, source: :troll
+
   has_many :activities, class_name: 'Activity',
                         foreign_key: 'actor_id',
                         dependent: :destroy
+
   has_many :notifications,  -> { where("actor_id != user_id") },
                             class_name:  'Activity',
                             foreign_key: 'user_id',
@@ -80,6 +88,11 @@ class User < ActiveRecord::Base
   # Unfollows a user
   def unfollow(other_user)
     outbound_relationships.find_by(followed_id: other_user.id).destroy
+  end
+
+  # Blocks an user
+  def block(other_user)
+    Block.create(user_id: self.id, troll_id: other_user.id)
   end
 
   # Returns true if the current user is following the other user

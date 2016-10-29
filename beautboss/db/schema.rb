@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160509214639) do
+ActiveRecord::Schema.define(version: 20161029015419) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -54,6 +54,17 @@ ActiveRecord::Schema.define(version: 20160509214639) do
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
   end
+
+  create_table "blocks", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "troll_id",   limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "blocks", ["troll_id"], name: "index_blocks_on_troll_id", using: :btree
+  add_index "blocks", ["user_id", "troll_id"], name: "index_blocks_on_user_id_and_troll_id", unique: true, using: :btree
+  add_index "blocks", ["user_id"], name: "index_blocks_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 191
