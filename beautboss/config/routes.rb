@@ -16,7 +16,9 @@ Rails.application.routes.draw do
           get 'friends'  => 'users#friends'
           post 'devices' => 'devices#create'
           delete 'devices' => 'devices#destroy'
+          get 'blocked' => 'blocked#index'
           post 'block' => 'blocked#create'
+          delete 'block' => 'blocked#destroy'
         end
       end
 

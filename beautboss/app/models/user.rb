@@ -95,6 +95,11 @@ class User < ActiveRecord::Base
     Block.create(user_id: self.id, troll_id: other_user.id)
   end
 
+  # Blocks an user
+  def unblock(other_user)
+    Block.find_by(user_id: self.id, troll_id: other_user.id).destroy
+  end
+
   # Returns true if the current user is following the other user
   def following?(other_user)
     following.include?(other_user)
