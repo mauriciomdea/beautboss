@@ -1112,7 +1112,7 @@ Create user with specifed user params. Returns saved user and authorization toke
 
     + Headers
 
-            Location: /newsfeed
+            Location: /users/{user_id}/messages
 
     + Body
 
