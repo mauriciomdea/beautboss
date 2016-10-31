@@ -842,6 +842,56 @@ Create user with specifed user params. Returns saved user and authorization toke
 
     + Body
     
+## Blocking [/users/{user_id}/block]
+
++ Parameters
+
+    + user_id (number) - The ID of the User.
+
+### Block an User [POST]
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 201
+
+### Unblock an User [DELETE]
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+            
++ Response 204
+
+### Blocked users [GET /users/{user_id}/blocked]
+
++ Parameters
+
+    + user_id (number) - The ID of the User.
+    + limit (number, optional) - Maximum number of records to be retrieved.
+        + Default: `20`
+    + offset (number, optional) - Number of records to skip before starting to return the records.
+        + Default: `0`
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /users/{user_id}/blocked
+
+    + Body
+
 
 ## Friends [/users/{user_id}/friends]
 
@@ -1041,3 +1091,48 @@ Create user with specifed user params. Returns saved user and authorization toke
                 }
             ]
  
+## Messages [/users/{user_id}/messages]
+
++ Parameters
+    
+    + limit (number, optional) - Maximum number of records to be retrieved.
+        + Default: `20`
+    + offset (number, optional) - Number of records to skip before starting to return the records.
+        + Default: `0`
+
+### Messages [GET]
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /newsfeed
+
+    + Body
+
+            [
+                {
+                  "id": 1,
+                  "sender": {
+                    "id": 2,
+                    "name": "John Doe",
+                    "avatar": "https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p50x50/12038035_10153568053793444_3955325592428203406_n.jpg"
+                  },
+                  "message": "Hello World!"
+                },
+                {
+                  "id": 2,
+                  "sender": {
+                    "id": 1,
+                    "name": "Jane Smith",
+                    "avatar": "https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p50x50/12038035_10153568053793444_3955325592428203406_n.jpg"
+                  },
+                  "message": "Hi World!"
+                }
+            ]
