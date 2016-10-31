@@ -8,7 +8,25 @@ RSpec.describe "Messages API v1", type: :request do
 
   describe "POST /api/v1/users/:id/messages" do
 
-    xit "sends a message to an user" do 
+    it "sends a message to an user" do 
+      sender = FactoryGirl.create :user, name: "Sender"
+      receiver = FactoryGirl.create :user, name: "Receiver"
+      message_params = {
+        "message" => "Hello World!"
+      }.to_json
+      request_headers = {
+        "Accept" => "application/json",
+        "Content-Type" => "application/json",
+        "HTTP_TOKEN" => valid_auth_token(sender)
+      }
+      post "/api/v1/users/#{receiver.id}/messages", message_params, request_headers
+      expect(receiver.messages.size).to eq 1
+      expect(response.status).to eq 201 # created
+      body = JSON.parse(response.body)
+      expect(body["message"]).to eq "Hello World!"
+      expect(body["user"]["id"]).to eq receiver.id
+      expect(body["sender"]["id"]).to eq sender.id
+      # expect(body["read"]).to eq 0
     end
 
     xit "does not send a message to an user who blocked sender" do 

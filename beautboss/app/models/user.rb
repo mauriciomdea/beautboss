@@ -41,6 +41,9 @@ class User < ActiveRecord::Base
   has_many :blocks
   has_many :blocked, through: :blocks, source: :troll
 
+  has_many :messages
+  has_many :sent, through: :messages, source: :sender
+
   has_many :activities, class_name: 'Activity',
                         foreign_key: 'actor_id',
                         dependent: :destroy
