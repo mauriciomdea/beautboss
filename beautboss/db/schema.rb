@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161031035822) do
+ActiveRecord::Schema.define(version: 20161101004140) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 191
@@ -97,8 +97,10 @@ ActiveRecord::Schema.define(version: 20161031035822) do
     t.integer  "user_id",    limit: 4
     t.integer  "sender_id",  limit: 4
     t.text     "message",    limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.boolean  "read",                     default: false
+    t.boolean  "blocked",                  default: false
   end
 
   add_index "messages", ["sender_id"], name: "index_messages_on_sender_id", using: :btree

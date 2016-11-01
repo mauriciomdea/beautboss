@@ -34,15 +34,11 @@ class User < ActiveRecord::Base
   has_many :following, through: :outbound_relationships,  source: :followed
   has_many :followers, through: :inbound_relationships, source: :follower
 
-  # has_many :blacklist,  class_name: 'Block', 
-  #                       foreign_key: 'user_id', 
-  #                       dependent: :destroy
-
   has_many :blocks
   has_many :blocked, through: :blocks, source: :troll
 
-  has_many :messages
-  has_many :sent, through: :messages, source: :sender
+  has_many :messages, -> { where(blocked: false) }
+  has_many :sent, class_name: 'Message', foreign_key: 'sender_id'
 
   has_many :activities, class_name: 'Activity',
                         foreign_key: 'actor_id',
