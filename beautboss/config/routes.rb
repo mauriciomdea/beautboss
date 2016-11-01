@@ -20,6 +20,7 @@ Rails.application.routes.draw do
           post 'block' => 'blocked#create'
           delete 'block' => 'blocked#destroy'
         end
+        resources :messages #, only: [:index, :create, :update, :destroy]
       end
 
       resources :authentications, only: [:create, :destroy]

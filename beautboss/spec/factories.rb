@@ -45,6 +45,12 @@ FactoryGirl.define do
     association :post, factory: :post_public
   end
 
+  factory :message do
+    message "Some trivial message"
+    association :user, factory: :user
+    association :sender, factory: :user
+  end
+
   factory :report do
     association :user, factory: :user
     association :post, factory: :post_public
