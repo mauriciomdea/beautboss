@@ -3,7 +3,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
   def index 
     user = @current_user
-    messages = user.messages.group(:sender_id).limit(params[:limit] || 20).offset(params[:offset] || 0)
+    messages = user.messages.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_messages = messages.map { |msg| MessageSerializer.new(msg).as_json(root: false) }
     render json: {count: user.messages.size, messages: serialized_messages},
       location: "/api/v1/users/#{user.id}/messages",
