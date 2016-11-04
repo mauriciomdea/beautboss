@@ -1089,14 +1089,14 @@ Create user with specifed user params. Returns saved user and authorization toke
  
 ## Messages [/users/{user_id}/messages]
 
+### List unread Messages [GET]
+
 + Parameters
     
     + limit (number, optional) - Maximum number of records to be retrieved.
         + Default: `20`
     + offset (number, optional) - Number of records to skip before starting to return the records.
         + Default: `0`
-
-### List unread Messages [GET]
 
 + Request
 
@@ -1122,14 +1122,14 @@ Create user with specifed user params. Returns saved user and authorization toke
                     "id": 1,
                     "name": "Rogerio Shimizu",
                     "username": "roja",
-                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "avatar": "somecdn.com/images/user.png",
                     "location": "São Paulo, Brazil"
                   },
                   "sender": {
                     "id": 2,
                     "name": "John Doe",
                     "username": "john",
-                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "avatar": "somecdn.com/images/user.png",
                     "location": "São Paulo, Brazil"
                   }
                 },
@@ -1142,14 +1142,14 @@ Create user with specifed user params. Returns saved user and authorization toke
                     "id": 1,
                     "name": "Rogerio Shimizu",
                     "username": "roja",
-                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "avatar": "somecdn.com/images/user.png",
                     "location": "São Paulo, Brazil"
                   },
                   "sender": {
                     "id": 3,
                     "name": "Jane Smith",
                     "username": "jane",
-                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "avatar": "somecdn.com/images/user.png",
                     "location": "São Paulo, Brazil"
                   }
                 }
@@ -1185,14 +1185,14 @@ Create user with specifed user params. Returns saved user and authorization toke
                 "id": 1,
                 "name": "Rogerio Shimizu",
                 "username": "roja",
-                "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                "avatar": "somecdn.com/images/user.png",
                 "location": "São Paulo, Brazil"
               },
               "sender": {
                 "id": 3,
                 "name": "Jane Smith",
                 "username": "jane",
-                "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                "avatar": "somecdn.com/images/user.png",
                 "location": "São Paulo, Brazil"
               }
             }
@@ -1209,8 +1209,8 @@ Create user with specifed user params. Returns saved user and authorization toke
     + Headers
     
             TOKEN: {authentication}
-            
-+ Response 204
+
+    + Response 204
 
 ### Mark a Message as read [PUT/PATCH /users/{user_id}/messages/{message_id}]
 
@@ -1224,5 +1224,5 @@ Create user with specifed user params. Returns saved user and authorization toke
     + Headers
     
             TOKEN: {authentication}
-            
-+ Response 200
+
+    + Response 200
