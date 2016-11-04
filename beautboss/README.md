@@ -1212,6 +1212,8 @@ Create user with specifed user params. Returns saved user and authorization toke
 
 + Response 200
 
+    + Body
+
             {
               "id": 1,
               "message": "Hello World!",
