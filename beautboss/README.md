@@ -1197,6 +1197,42 @@ Create user with specifed user params. Returns saved user and authorization toke
               }
             }
 
+### Get a Message [GET /users/{user_id}/messages/{message_id}]
+
++ Parameters 
+
+    + user_id (number) - The ID of the User who received the message.
+    + message_id (number) - The ID of the Message.
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 200
+
+            {
+              "id": 1,
+              "message": "Hello World!",
+              "read": false,
+              "created_at": "2016-11-04T17:08:09.000Z",
+              "user": {
+                "id": 1,
+                "name": "Rogerio Shimizu",
+                "username": "roja",
+                "avatar": "somecdn.com/images/user.png",
+                "location": "São Paulo, Brazil"
+              },
+              "sender": {
+                "id": 3,
+                "name": "Jane Smith",
+                "username": "jane",
+                "avatar": "somecdn.com/images/user.png",
+                "location": "São Paulo, Brazil"
+              }
+            }
+
 ### Delete a Message [DELETE /users/{user_id}/messages/{message_id}]
 
 + Parameters 
@@ -1210,13 +1246,13 @@ Create user with specifed user params. Returns saved user and authorization toke
     
             TOKEN: {authentication}
 
-    + Response 204
++ Response 204
 
 ### Mark a Message as read [PUT/PATCH /users/{user_id}/messages/{message_id}]
 
 + Parameters 
 
-    + user_id (number) - The ID of the User who received the message. Can only delete messages sent to the current logged user.
+    + user_id (number) - The ID of the User who received the message. Can only update messages sent to the current logged user.
     + message_id (number) - The ID of the Message.
 
 + Request
@@ -1225,4 +1261,4 @@ Create user with specifed user params. Returns saved user and authorization toke
     
             TOKEN: {authentication}
 
-    + Response 200
++ Response 200
