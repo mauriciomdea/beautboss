@@ -751,10 +751,6 @@ Create user with specifed user params. Returns saved user and authorization toke
                 }
               }
             ]
-            
-
-
-
 
 ### De-wow a Post [DELETE]
 
@@ -1100,7 +1096,7 @@ Create user with specifed user params. Returns saved user and authorization toke
     + offset (number, optional) - Number of records to skip before starting to return the records.
         + Default: `0`
 
-### Messages [GET]
+### List unread Messages [GET]
 
 + Request
 
@@ -1119,20 +1115,114 @@ Create user with specifed user params. Returns saved user and authorization toke
             [
                 {
                   "id": 1,
+                  "message": "Hello World!",
+                  "read": false,
+                  "created_at": "2016-11-04T17:08:09.000Z",
+                  "user": {
+                    "id": 1,
+                    "name": "Rogerio Shimizu",
+                    "username": "roja",
+                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "location": "São Paulo, Brazil"
+                  },
                   "sender": {
                     "id": 2,
                     "name": "John Doe",
-                    "avatar": "https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p50x50/12038035_10153568053793444_3955325592428203406_n.jpg"
-                  },
-                  "message": "Hello World!"
+                    "username": "john",
+                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "location": "São Paulo, Brazil"
+                  }
                 },
                 {
                   "id": 2,
-                  "sender": {
+                  "message": "Hi World!",
+                  "read": false,
+                  "created_at": "2016-11-04T17:08:09.000Z",
+                  "user": {
                     "id": 1,
-                    "name": "Jane Smith",
-                    "avatar": "https://scontent.xx.fbcdn.net/hprofile-xtp1/v/t1.0-1/p50x50/12038035_10153568053793444_3955325592428203406_n.jpg"
+                    "name": "Rogerio Shimizu",
+                    "username": "roja",
+                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "location": "São Paulo, Brazil"
                   },
-                  "message": "Hi World!"
+                  "sender": {
+                    "id": 3,
+                    "name": "Jane Smith",
+                    "username": "jane",
+                    "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                    "location": "São Paulo, Brazil"
+                  }
                 }
             ]
+
+### Post a new Message [POST]
+
++ Parameters
+
+    + user_id (number) - The ID of the User who will receive the message.
+    + message (string) - The message.
+    
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /users/{user_id}/messages/{message_id}
+
+    + Body
+
+            {
+              "id": 1,
+              "message": "Hello World!",
+              "read": false,
+              "created_at": "2016-11-04T17:08:09.000Z",
+              "user": {
+                "id": 1,
+                "name": "Rogerio Shimizu",
+                "username": "roja",
+                "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                "location": "São Paulo, Brazil"
+              },
+              "sender": {
+                "id": 3,
+                "name": "Jane Smith",
+                "username": "jane",
+                "avatar": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p200x200/179776_10151622903013444_1956758313_n.jpg",
+                "location": "São Paulo, Brazil"
+              }
+            }
+
+### Delete a Message [DELETE /users/{user_id}/messages/{message_id}]
+
++ Parameters 
+
+    + user_id (number) - The ID of the User who received the message. Can only delete messages sent to the current logged user.
+    + message_id (number) - The ID of the Message.
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+            
++ Response 204
+
+### Mark a Message as read [PUT/PATCH /users/{user_id}/messages/{message_id}]
+
++ Parameters 
+
+    + user_id (number) - The ID of the User who received the message. Can only delete messages sent to the current logged user.
+    + message_id (number) - The ID of the Message.
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+            
++ Response 200
