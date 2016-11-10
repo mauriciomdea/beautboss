@@ -1092,11 +1092,6 @@ Create user with specifed user params. Returns saved user and authorization toke
 ### List unread Messages [GET]
 
 + Parameters
-    
-    + limit (number, optional) - Maximum number of records to be retrieved.
-        + Default: `20`
-    + offset (number, optional) - Number of records to skip before starting to return the records.
-        + Default: `0`
 
 + Request
 
@@ -1113,18 +1108,8 @@ Create user with specifed user params. Returns saved user and authorization toke
     + Body
 
             [
+              [
                 {
-                  "id": 1,
-                  "message": "Hello World!",
-                  "read": false,
-                  "created_at": "2016-11-04T17:08:09.000Z",
-                  "user": {
-                    "id": 1,
-                    "name": "Rogerio Shimizu",
-                    "username": "roja",
-                    "avatar": "somecdn.com/images/user.png",
-                    "location": "São Paulo, Brazil"
-                  },
                   "sender": {
                     "id": 2,
                     "name": "John Doe",
@@ -1134,17 +1119,19 @@ Create user with specifed user params. Returns saved user and authorization toke
                   }
                 },
                 {
-                  "id": 2,
-                  "message": "Hi World!",
-                  "read": false,
-                  "created_at": "2016-11-04T17:08:09.000Z",
-                  "user": {
-                    "id": 1,
-                    "name": "Rogerio Shimizu",
-                    "username": "roja",
-                    "avatar": "somecdn.com/images/user.png",
-                    "location": "São Paulo, Brazil"
-                  },
+                  "last_message": {
+                    "id": 1001,
+                    "message": "Hi!",
+                    "read": false,
+                    "created_at": "2016-11-10T00:24:45.000Z"
+                  }
+                },
+                {
+                  "unread": 9
+                }
+              ],
+              [
+                {
                   "sender": {
                     "id": 3,
                     "name": "Jane Smith",
@@ -1152,7 +1139,19 @@ Create user with specifed user params. Returns saved user and authorization toke
                     "avatar": "somecdn.com/images/user.png",
                     "location": "São Paulo, Brazil"
                   }
+                },
+                {
+                  "last_message": {
+                    "id": 1002,
+                    "message": "Hello World!",
+                    "read": false,
+                    "created_at": "2016-11-04T17:08:09.000Z"
+                  }
+                },
+                {
+                  "unread": 1
                 }
+              ]
             ]
 
 ### Post a new Message [POST]

@@ -62,9 +62,12 @@ RSpec.describe "Messages API v1", type: :request do
       expect(user.messages.size).to eq 2
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      expect(body["count"]).to eq 2
-      expect(body["messages"][0]["sender_id"]).not_to eq troll.id
-      expect(body["messages"][1]["sender_id"]).not_to eq troll.id
+      expect(body[0][0]["sender"]["id"]).to eq message1.sender_id
+      expect(body[0][1]["last_message"]["id"]).to eq message1.id
+      expect(body[0][2]["unread"]).to eq 1
+      expect(body[1][0]["sender"]["id"]).to eq message2.sender_id
+      expect(body[1][1]["last_message"]["id"]).to eq message2.id
+      expect(body[1][2]["unread"]).to eq 1
     end
 
     xit "gets messages from an user" do 
