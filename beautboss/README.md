@@ -1089,7 +1089,7 @@ Create user with specifed user params. Returns saved user and authorization toke
  
 ## Messages [/users/{user_id}/messages]
 
-### List unread Messages [GET]
+### List latest Messages [GET]
 
 + Parameters
 
@@ -1107,52 +1107,70 @@ Create user with specifed user params. Returns saved user and authorization toke
 
     + Body
 
-            [
-              [
+            {
+              "latest_messages": [
                 {
-                  "sender": {
+                  "id": 3,
+                  "message": "Hello back!",
+                  "read": false,
+                  "created_at": "2016-11-13T23:07:12.000Z",
+                  "user": {
                     "id": 2,
                     "name": "John Doe",
                     "username": "john",
-                    "avatar": "somecdn.com/images/user.png",
-                    "location": "São Paulo, Brazil"
+                    "avatar": "somecdn.com/images/john.png",
+                    "location": null
+                  },
+                  "sender": {
+                    "id": 1,
+                    "name": "Rogério Shimizu",
+                    "username": "rogerio_shimizu",
+                    "avatar": "somecdn.com/images/roja.png",
+                    "location": null
                   }
                 },
                 {
-                  "last_message": {
-                    "id": 1001,
-                    "message": "Hi!",
-                    "read": false,
-                    "created_at": "2016-11-10T00:24:45.000Z"
-                  }
-                },
-                {
-                  "unread": 9
-                }
-              ],
-              [
-                {
+                  "id": 2,
+                  "message": "Hello world!",
+                  "read": false,
+                  "created_at": "2016-11-01T03:00:36.000Z",
+                  "user": {
+                    "id": 1,
+                    "name": "Rogério Shimizu",
+                    "username": "rogerio_shimizu",
+                    "avatar": "somecdn.com/images/roja.png",
+                    "location": null
+                  },
                   "sender": {
                     "id": 3,
                     "name": "Jane Smith",
                     "username": "jane",
-                    "avatar": "somecdn.com/images/user.png",
-                    "location": "São Paulo, Brazil"
+                    "avatar": "somecdn.com/images/jane.png",
+                    "location": null
                   }
                 },
                 {
-                  "last_message": {
-                    "id": 1002,
-                    "message": "Hello World!",
-                    "read": false,
-                    "created_at": "2016-11-04T17:08:09.000Z"
+                  "id": 1,
+                  "message": "Hello!",
+                  "read": false,
+                  "created_at": "2016-10-31T04:11:44.000Z",
+                  "user": {
+                    "id": 1,
+                    "name": "Rogério Shimizu",
+                    "username": "rogerio_shimizu",
+                    "avatar": "somecdn.com/images/roja.png",
+                    "location": null
+                  },
+                  "sender": {
+                    "id": 2,
+                    "name": "John Doe",
+                    "username": "john",
+                    "avatar": "somecdn.com/images/john.png",
+                    "location": null
                   }
-                },
-                {
-                  "unread": 1
                 }
               ]
-            ]
+            }
 
 ### Post a new Message [POST]
 

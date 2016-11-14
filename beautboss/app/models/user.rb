@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
   has_many :blocks
   has_many :blocked, through: :blocks, source: :troll
 
-  has_many :messages, -> { where(blocked: false) }
-  has_many :sent, class_name: 'Message', foreign_key: 'sender_id'
+  has_many :messages_received, -> { where(blocked: false) }, class_name: 'Message', foreign_key: 'user_id'
+  has_many :messages_sent, class_name: 'Message', foreign_key: 'sender_id'
 
   has_many :activities, class_name: 'Activity',
                         foreign_key: 'actor_id',
@@ -89,6 +89,11 @@ class User < ActiveRecord::Base
     outbound_relationships.find_by(followed_id: other_user.id).destroy
   end
 
+  # Returns true if the current user is following the other user
+  def following?(other_user)
+    following.include?(other_user)
+  end
+
   # Blocks an user
   def block(other_user)
     Block.create(user_id: self.id, troll_id: other_user.id)
@@ -99,9 +104,15 @@ class User < ActiveRecord::Base
     Block.find_by(user_id: self.id, troll_id: other_user.id).destroy
   end
 
-  # Returns true if the current user is following the other user
-  def following?(other_user)
-    following.include?(other_user)
+  # Get all conversations
+  def messages
+    sent_sql = self.messages_sent.to_sql
+    received_sql = self.messages_received.to_sql
+    # Get a real message_id instead of "$1" in the generated SQL
+    sql = Message.connection.unprepared_statement {
+      "((#{sent_sql}) UNION (#{received_sql})) AS messages"
+    }
+    Message.from(sql)
   end
 
   # Authentication stuff
