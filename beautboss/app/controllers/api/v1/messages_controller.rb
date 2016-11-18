@@ -3,8 +3,9 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
   def index 
     @user = @current_user
-    # messages = user.messages.limit(params[:limit] || 20).offset(params[:offset] || 0)
-    latest_messages = @user.messages.where(read: false).order(created_at: :desc).group(:sender_id)
+    latest_messages = @user.messages.where(read: false).order(created_at: :desc).group(:sender_id, :user_id)
+    latest_messages = latest_messages.where("created_at >= ?", params[:date].to_time) unless params[:date].nil?
+    latest_messages = latest_messages.limit(params[:limit] || 20).offset(params[:offset] || 0)
     serialized_messages = latest_messages.map { |msg| MessageSerializer.new(msg).as_json(root: false) }
     render json: {latest_messages: serialized_messages},
       location: "/api/v1/users/#{@user.id}/messages",
