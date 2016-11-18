@@ -1095,7 +1095,7 @@ Create user with specifed user params. Returns saved user and authorization toke
 
     + date (date, optional) - The last date from which you want to retrieve messages in the format **YYYYMMDD**
     + limit (number, optional) - Maximum number of records to be retrieved.
-        + Default: `20`
+        + Default: `100`
     + offset (number, optional) - Number of records to skip before starting to return the records.
         + Default: `0`
 

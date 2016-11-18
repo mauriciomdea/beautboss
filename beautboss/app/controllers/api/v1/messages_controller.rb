@@ -3,17 +3,32 @@ class Api::V1::MessagesController < Api::V1::ApiController
 
   def index 
     @user = @current_user
-    latest_messages = @user.messages.where(read: false).order(created_at: :desc).group(:sender_id, :user_id)
-    latest_messages = latest_messages.where("created_at >= ?", params[:date].to_time) unless params[:date].nil?
-    latest_messages = latest_messages.limit(params[:limit] || 20).offset(params[:offset] || 0)
-    serialized_messages = latest_messages.map { |msg| MessageSerializer.new(msg).as_json(root: false) }
-    render json: {latest_messages: serialized_messages},
+    messages = @user.messages.order(created_at: :desc).limit(params[:limit] || 100).offset(params[:offset] || 0)
+    messages = messages.where("created_at >= ?", params[:date].to_time) unless params[:date].nil?
+    count = 0
+    serialized_messages = nil
+    if params[:sender].nil?
+      messages = @user.messages.group(:sender_id, :user_id)
+      serialized_messages = messages.map { |msg| MessageSerializer.new(msg).as_json(root: false) }
+    else
+      messages = @user.messages.where(sender_id: params[:sender])
+      serialized_messages = messages.map { |msg| MessageSerializer.new(msg).as_json(root: false) }
+    end
+    render json: { count: serialized_messages.size, messages: serialized_messages},
       location: "/api/v1/users/#{@user.id}/messages",
       status: :ok
   end
 
-  def index_conversation
-  end
+  # def index_conversation
+  #   @user = @current_user
+  #   latest_messages = @user.messages.where(read: false).order(created_at: :desc).group(:sender_id, :user_id)
+  #   latest_messages = latest_messages.where("created_at >= ?", params[:date].to_time) unless params[:date].nil?
+  #   latest_messages = latest_messages.limit(params[:limit] || 20).offset(params[:offset] || 0)
+  #   serialized_messages = latest_messages.map { |msg| MessageSerializer.new(msg).as_json(root: false) }
+  #   render json: {latest_messages: serialized_messages},
+  #     location: "/api/v1/users/#{@user.id}/messages",
+  #     status: :ok
+  # end
 
   def show
     message = Message.find(params[:id])
