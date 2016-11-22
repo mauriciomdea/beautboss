@@ -1178,6 +1178,78 @@ Create user with specifed user params. Returns saved user and authorization toke
               ]
             }
 
+### List Messages between Users (conversations) [GET]
+
++ Parameters
+
+    + user_id (number) - The ID of the current logged User.
+    + sender_id (number) - The ID of the other User of the conversation.
+    + date (date, optional) - The last date from which you want to retrieve messages in the format **YYYYMMDD**
+    + limit (number, optional) - Maximum number of records to be retrieved.
+        + Default: `100`
+    + offset (number, optional) - Number of records to skip before starting to return the records.
+        + Default: `0`
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 200 (application/json)
+
+    + Headers
+
+            Location: /users/{user_id}/conversations/{sender_id}
+
+    + Body
+    
+        {
+          "count": 2,
+          "messages": [
+            {
+              "id": 2,
+              "message": "Hello back!",
+              "read": false,
+              "created_at": "2016-11-13T23:07:12.000Z",
+              "user": {
+                "id": 3,
+                "name": "Jane Smith",
+                "username": "jane",
+                "avatar": "somecdn.com/images/user.png",
+                "location": "São Paulo, Brazil"
+              },
+              "sender": {
+                "id": 1,
+                "name": "Rogerio Shimizu",
+                "username": "roja",
+                "avatar": "somecdn.com/images/user.png",
+                "location": "São Paulo, Brazil"
+              }
+            },
+            {
+              "id": 1,
+              "message": "Hello!",
+              "read": true,
+              "created_at": "2016-11-10T00:24:25.000Z",
+              "user": {
+                "id": 1,
+                "name": "Rogerio Shimizu",
+                "username": "roja",
+                "avatar": "somecdn.com/images/user.png",
+                "location": "São Paulo, Brazil"
+              },
+              "sender": {
+                "id": 3,
+                "name": "Jane Smith",
+                "username": "jane",
+                "avatar": "somecdn.com/images/user.png",
+                "location": "São Paulo, Brazil"
+              }
+            }
+          ]
+        }
+
 ### Post a new Message [POST]
 
 + Parameters
