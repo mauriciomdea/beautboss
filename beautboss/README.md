@@ -1203,7 +1203,7 @@ Create user with specifed user params. Returns saved user and authorization toke
             Location: /users/{user_id}/conversations/{sender_id}
 
     + Body
-    
+
             {
               "count": 2,
               "messages": [
@@ -1336,6 +1336,21 @@ Create user with specifed user params. Returns saved user and authorization toke
 
     + user_id (number) - The ID of the User who received the message. Can only delete messages sent to the current logged user.
     + message_id (number) - The ID of the Message.
+
++ Request
+
+    + Headers
+    
+            TOKEN: {authentication}
+
++ Response 204
+
+### Delete all Messages between users [DELETE /users/{user_id}/conversations/{sender_id}]
+
++ Parameters 
+
+    + user_id (number) - The ID of the current logged User.
+    + sender_id (number) - The ID of the other User of the conversation.
 
 + Request
 

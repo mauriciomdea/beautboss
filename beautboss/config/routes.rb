@@ -19,7 +19,8 @@ Rails.application.routes.draw do
           get 'blocked' => 'blocked#index'
           post 'block' => 'blocked#create'
           delete 'block' => 'blocked#destroy'
-          get 'conversations/:id' => 'conversations#index'
+          get 'conversations/:sender_id' => 'conversations#index'
+          delete 'conversations/:sender_id' => 'conversations#destroy'
         end
         resources :messages #, only: [:index, :create, :update, :destroy]
       end
