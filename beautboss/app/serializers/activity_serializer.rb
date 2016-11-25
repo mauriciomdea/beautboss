@@ -18,6 +18,8 @@ class ActivitySerializer < ActiveModel::Serializer
       :wow
     when 'Comment'  # Somebody said: "Comment"
       :comment
+    when 'Message'  # Somebody sent a message to you
+      :message
     when 'Post'
       :post
     else
@@ -29,6 +31,8 @@ class ActivitySerializer < ActiveModel::Serializer
   def message 
     if object.subject_type == 'Comment'
       Comment.find(object.subject_id).comment
+    elsif object.subject_type == 'Message'
+      Message.find(object.subject_id).message
     else
       nil
     end
@@ -46,6 +50,8 @@ class ActivitySerializer < ActiveModel::Serializer
       object.subject.post.image
     when 'Post'
       object.subject.image
+    when 'Message'
+      object.subject.sender.image
     else
       nil
     end

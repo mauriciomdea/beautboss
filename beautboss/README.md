@@ -1204,51 +1204,51 @@ Create user with specifed user params. Returns saved user and authorization toke
 
     + Body
     
-        {
-          "count": 2,
-          "messages": [
             {
-              "id": 2,
-              "message": "Hello back!",
-              "read": false,
-              "created_at": "2016-11-13T23:07:12.000Z",
-              "user": {
-                "id": 3,
-                "name": "Jane Smith",
-                "username": "jane",
-                "avatar": "somecdn.com/images/user.png",
-                "location": "São Paulo, Brazil"
-              },
-              "sender": {
-                "id": 1,
-                "name": "Rogerio Shimizu",
-                "username": "roja",
-                "avatar": "somecdn.com/images/user.png",
-                "location": "São Paulo, Brazil"
-              }
-            },
-            {
-              "id": 1,
-              "message": "Hello!",
-              "read": true,
-              "created_at": "2016-11-10T00:24:25.000Z",
-              "user": {
-                "id": 1,
-                "name": "Rogerio Shimizu",
-                "username": "roja",
-                "avatar": "somecdn.com/images/user.png",
-                "location": "São Paulo, Brazil"
-              },
-              "sender": {
-                "id": 3,
-                "name": "Jane Smith",
-                "username": "jane",
-                "avatar": "somecdn.com/images/user.png",
-                "location": "São Paulo, Brazil"
-              }
+              "count": 2,
+              "messages": [
+                {
+                  "id": 2,
+                  "message": "Hello back!",
+                  "read": false,
+                  "created_at": "2016-11-13T23:07:12.000Z",
+                  "user": {
+                    "id": 3,
+                    "name": "Jane Smith",
+                    "username": "jane",
+                    "avatar": "somecdn.com/images/user.png",
+                    "location": "São Paulo, Brazil"
+                  },
+                  "sender": {
+                    "id": 1,
+                    "name": "Rogerio Shimizu",
+                    "username": "roja",
+                    "avatar": "somecdn.com/images/user.png",
+                    "location": "São Paulo, Brazil"
+                  }
+                },
+                {
+                  "id": 1,
+                  "message": "Hello!",
+                  "read": true,
+                  "created_at": "2016-11-10T00:24:25.000Z",
+                  "user": {
+                    "id": 1,
+                    "name": "Rogerio Shimizu",
+                    "username": "roja",
+                    "avatar": "somecdn.com/images/user.png",
+                    "location": "São Paulo, Brazil"
+                  },
+                  "sender": {
+                    "id": 3,
+                    "name": "Jane Smith",
+                    "username": "jane",
+                    "avatar": "somecdn.com/images/user.png",
+                    "location": "São Paulo, Brazil"
+                  }
+                }
+              ]
             }
-          ]
-        }
 
 ### Post a new Message [POST]
 
