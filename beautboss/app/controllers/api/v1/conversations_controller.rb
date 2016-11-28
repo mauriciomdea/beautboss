@@ -15,13 +15,16 @@ class Api::V1::ConversationsController < Api::V1::ApiController
 
   def destroy 
     verify_user
-    if messages = get_messages(User.find(params[:sender_id]), @current_user).delete_all
+    messages = get_messages(User.find(params[:sender_id]), @current_user).delete_all
+    if messages > 0
       render json: { count: messages.to_json },
         location: "/api/v1/users/#{@current_user.id}/messages",
         status: :ok
     else
       render json: { errors: messages.errors.full_messages }, status: 422
     end
+  rescue ActiveRecord::ActiveRecordError => err 
+    render json: { errors: err.to_s }, status: 422
   end
 
   private

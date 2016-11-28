@@ -5,7 +5,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
     @user = @current_user
     messages = @user.messages.order(created_at: :desc).limit(params[:limit] || 100).offset(params[:offset] || 0)
     messages = messages.where("created_at >= ?", params[:date].to_time) unless params[:date].nil?
-    messages = @user.messages.group(:sender_id, :user_id)
+    messages = @user.messages.group(:user_id, :sender_id)
     serialized_messages = messages.map { |msg| MessageSerializer.new(msg).as_json(root: false) }
     render json: {latest_messages: serialized_messages},
       location: "/api/v1/users/#{@user.id}/messages",
@@ -31,7 +31,7 @@ class Api::V1::MessagesController < Api::V1::ApiController
     message = Message.new(sender_id: sender.id, user_id: user.id, message: message_params["message"])
     if message.save
       # saves activity
-      activity = Activity.create(owner: user, actor: sender, subject: message)
+      activity = Activity.new(owner: user, actor: sender, subject: message)
       # sends push notification
       msg = I18n.t('notifications.message', name: sender.name, comment: message.message)
       device = Device.where(user: user).last
