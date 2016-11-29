@@ -98,6 +98,7 @@ en:
     follow: "%{name} started following you"
     wow: "%{name} wowed your register"
     comment: "%{name} said: '%{comment}'"
+    message: "%{name} sent a message to you"
     unknow: "Unknow activity"
   activerecord:
     errors:

@@ -77,6 +77,7 @@ pt_BR:
     follow: "%{name} está te seguindo"
     wow: "%{name} deram wow!"
     comment: "%{name} disse: '%{comment}'"
+    message: "%{name} mandou uma mensagem para você"
     unknow: "atividade desconhecida"
   activerecord:
     errors:

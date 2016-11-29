@@ -53,19 +53,22 @@ RSpec.describe "Messages API v1", type: :request do
 
     it "gets messages for current user" do 
       user = FactoryGirl.create :user
+      friend = FactoryGirl.create :user, name: "My Friend"
       troll = FactoryGirl.create :user, name: "Internet Troll"
       user.block(troll)
-      message1 = FactoryGirl.create :message, user: user
-      message2 = FactoryGirl.create :message, user: user
+      message1 = FactoryGirl.create :message, user: user, sender: friend
+      message2 = FactoryGirl.create :message, user: user, sender: friend
       # message3 = FactoryGirl.create :message, user: user, sender: troll
+      message4 = FactoryGirl.create :message, user: user
       get "/api/v1/users/#{user.id}/messages", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
-      expect(user.messages.size).to eq 2
+      expect(user.messages.size).to eq 3
       expect(response.status).to eq 200 # ok
       body = JSON.parse(response.body)
-      # expect(body["count"]).to eq 2
-      expect(body["latest_messages"][0]["sender"]["id"]).to eq message1.sender_id
+      puts body.to_yaml
+      expect(body["latest_messages"].size).to eq 2
+      expect(body["latest_messages"][0]["sender"]["id"]).to eq friend.id
       # expect(body[0][1]["last_message"]["id"]).to eq message1.id
-      expect(body["latest_messages"][1]["sender"]["id"]).to eq message2.sender_id
+      expect(body["latest_messages"][1]["sender"]["id"]).to eq message4.sender_id
       # expect(body[1][1]["last_message"]["id"]).to eq message2.id
     end
 
