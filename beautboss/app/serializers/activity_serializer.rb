@@ -51,7 +51,7 @@ class ActivitySerializer < ActiveModel::Serializer
     when 'Post'
       object.subject.image
     when 'Message'
-      object.subject.sender.image unless object.subject.sender.image.nil?
+      object.subject.sender.avatar unless object.subject.sender.avatar.nil?
     else
       nil
     end
