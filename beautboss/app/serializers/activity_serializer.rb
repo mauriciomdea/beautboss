@@ -43,7 +43,7 @@ class ActivitySerializer < ActiveModel::Serializer
     case object.subject_type
     
     when 'User'
-      object.subject.avatar
+      object.subject.avatar unless object.subject.avatar.nil?
     when 'Wow'
       object.subject.post.image
     when 'Comment'
@@ -51,7 +51,7 @@ class ActivitySerializer < ActiveModel::Serializer
     when 'Post'
       object.subject.image
     when 'Message'
-      object.subject.sender.image
+      object.subject.sender.image unless object.subject.sender.image.nil?
     else
       nil
     end
