@@ -32,8 +32,9 @@ class Api::V1::MessagesController < Api::V1::ApiController
     user = User.find(message_params[:user_id])
     message = Message.new(sender_id: sender.id, user_id: user.id, message: message_params["message"])
     if message.save
+      # saves activity
+      activity = Activity.create(owner: user, actor: sender, subject: message)
       # sends push notification
-      activity = Activity.new(owner: user, actor: sender, subject: message)
       msg = I18n.t('notifications.message', name: sender.name, comment: message.message)
       device = Device.where(user: user).last
       device.push_notification(msg, ActivitySerializer.new(activity).as_json(root: false)) unless device.nil?
