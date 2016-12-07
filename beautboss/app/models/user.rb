@@ -40,11 +40,12 @@ class User < ActiveRecord::Base
   has_many :messages_received, -> { where(blocked: false) }, class_name: 'Message', foreign_key: 'user_id'
   has_many :messages_sent, class_name: 'Message', foreign_key: 'sender_id'
 
-  has_many :activities, class_name: 'Activity',
+  has_many :activities,  -> { where("subject_type != 'message'") },
+                        class_name: 'Activity',
                         foreign_key: 'actor_id',
                         dependent: :destroy
 
-  has_many :notifications,  -> { where("actor_id != user_id") },
+  has_many :notifications,  -> { where("actor_id != user_id OR subject_type = 'message'") },
                             class_name:  'Activity',
                             foreign_key: 'user_id',
                             dependent: :destroy

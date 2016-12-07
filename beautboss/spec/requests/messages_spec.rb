@@ -22,12 +22,12 @@ RSpec.describe "Messages API v1", type: :request do
       post "/api/v1/users/#{receiver.id}/messages", message_params, request_headers
       expect(sender.messages_sent.size).to eq 1
       expect(receiver.messages_received.size).to eq 1
+      expect(receiver.notifications.size).to eq 1
       expect(response.status).to eq 201 # created
       body = JSON.parse(response.body)
       expect(body["message"]).to eq "Hello World!"
       expect(body["user"]["id"]).to eq receiver.id
       expect(body["sender"]["id"]).to eq sender.id
-      # expect(body["read"]).to eq 0
     end
 
     it "does not send a message to an user who blocked sender" do 
