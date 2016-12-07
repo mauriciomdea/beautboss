@@ -94,15 +94,15 @@ RSpec.describe "Messages API v1", type: :request do
 
   describe "PUT/PATCH /api/v1/users/:id/messages/:id" do
 
-    it "marks message as read" do 
+    it "marks a message and all messages before it as read" do 
       user = FactoryGirl.create :user
-      message = FactoryGirl.create :message, user: user
-      put "/api/v1/users/#{user.id}/messages/#{message.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
+      message1 = FactoryGirl.create :message, user: user, created_at: DateTime.now-1
+      message2 = FactoryGirl.create :message, user: user, created_at: DateTime.now
+      put "/api/v1/users/#{user.id}/messages/#{message2.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
       expect(response.status).to eq 200 # ok
+      expect(user.messages_received.size).to eq 2
       body = JSON.parse(response.body)
-      expect(body["user"]["id"]).to eq user.id
-      expect(body["sender"]["id"]).to eq message.sender_id
-      expect(body["read"]).to eq true
+      expect(body["count"]).to eq 2
     end
 
     # xit "marks message as unread" do 

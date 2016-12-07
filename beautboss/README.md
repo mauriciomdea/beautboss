@@ -1360,7 +1360,7 @@ Create user with specifed user params. Returns saved user and authorization toke
 
 + Response 204
 
-### Mark a Message as read [PUT/PATCH /users/{user_id}/messages/{message_id}]
+### Mark a Message and all messages before it as read [PUT/PATCH /users/{user_id}/messages/{message_id}]
 
 + Parameters 
 

@@ -52,13 +52,16 @@ class Api::V1::MessagesController < Api::V1::ApiController
   def update
     # verify_user
     message = Message.find(params[:id])
-    if message.update(read: true)
-      render  json: MessageSerializer.new(message).as_json(root: false),
+    messages = @current_user.messages_received.where("created_at <= '#{message.created_at}'")
+    if count = messages.update_all(read: true)
+      render  json: { count: count },
         location: "/api/v1/users/#{@current_user.id}/messages/#{message.id}",
         status: :ok
     else
      render json: { errors: message.errors.full_messages }, status: 422
     end
+  rescue => e
+    _error e.message
   end
 
   def destroy
