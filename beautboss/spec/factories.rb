@@ -74,6 +74,10 @@ FactoryGirl.define do
       association :subject, factory: :comment
     end
 
+    factory :activity_message do
+      association :subject, factory: :message
+    end
+
   end
 
   factory :device do

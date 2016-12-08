@@ -54,14 +54,17 @@ class Api::V1::MessagesController < Api::V1::ApiController
     message = Message.find(params[:id])
     messages = @current_user.messages_received.where("created_at <= '#{message.created_at}'")
     if count = messages.update_all(read: true)
-      render  json: { count: count },
-        location: "/api/v1/users/#{@current_user.id}/messages/#{message.id}",
-        status: :ok
+      activities = Activity.where(subject_id: messages.pluck(:id), subject_type: 'message')
+      if activities.update_all(read: true)
+        render  json: { count: count },
+          location: "/api/v1/users/#{@current_user.id}/messages/#{message.id}",
+          status: :ok
+      else
+        render json: { errors: activities.errors.full_messages }, status: 422
+      end
     else
-     render json: { errors: message.errors.full_messages }, status: 422
+     render json: { errors: messages.errors.full_messages }, status: 422
     end
-  rescue => e
-    _error e.message
   end
 
   def destroy

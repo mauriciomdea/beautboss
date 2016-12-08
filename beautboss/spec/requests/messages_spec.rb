@@ -97,7 +97,9 @@ RSpec.describe "Messages API v1", type: :request do
     it "marks a message and all messages before it as read" do 
       user = FactoryGirl.create :user
       message1 = FactoryGirl.create :message, user: user, created_at: DateTime.now-1
+      acivity1 = FactoryGirl.create :activity, owner: user, actor: message1.user, subject: message1, created_at: DateTime.now-1
       message2 = FactoryGirl.create :message, user: user, created_at: DateTime.now
+      acivity2 = FactoryGirl.create :activity, owner: user, actor: message2.user, subject: message2, created_at: DateTime.now
       put "/api/v1/users/#{user.id}/messages/#{message2.id}", {}, { "Accept" => "application/json", "HTTP_TOKEN" => valid_auth_token(user) }
       expect(response.status).to eq 200 # ok
       expect(user.messages_received.size).to eq 2
