@@ -12,8 +12,6 @@ class Api::V1::UsersController < Api::V1::ApiController
   def show
     user = User.find(params[:id])
     _render_user(user)
-  rescue ActiveRecord::RecordNotFound
-    render json: {error: "Not found"}, status: :not_found, root: false
   end
 
   def create
@@ -57,8 +55,6 @@ class Api::V1::UsersController < Api::V1::ApiController
     render json: {count: @user.followers.size, followers: serialized_followers},
       location: "/api/v1/users/#{@user.id}/followers",
       status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: {error: "Not found"}, status: :not_found, root: false
   end
 
   def following 
@@ -69,22 +65,17 @@ class Api::V1::UsersController < Api::V1::ApiController
     render json: {count: @user.following.size, following: serialized_following},
       location: "/api/v1/users/#{@user.id}/following",
       status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: {error: "Not found"}, status: :not_found, root: false
   end
 
   def notifications 
-    # @user = User.find(params[:id])
     verify_user
     @user = @current_user
     notifications = @user.notifications.limit(params[:limit] || 20).offset(params[:offset] || 0).order(created_at: :desc)
     notifications.update_all(read: true) if params[:mark_as_read] && params[:mark_as_read] == "true"
     serialized_notifications = notifications.map { |notification| ActivitySerializer.new(notification).as_json(root: false) }
-    render json: {count: @user.notifications.count(conditions: "read = false"), notifications: serialized_notifications},
+    render json: { count: @user.notifications.size, unread: @user.notifications.where(read: false).count, notifications: serialized_notifications },
       location: "/api/v1/users/#{@user.id}/notifications",
       status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: {error: "Not found"}, status: :not_found, root: false
   end
 
   def posts 
@@ -95,8 +86,6 @@ class Api::V1::UsersController < Api::V1::ApiController
     render json: {count: count, posts: serialized_posts},
       location: "/api/v1/users/#{user.id}/posts",
       status: :ok
-  rescue ActiveRecord::RecordNotFound
-    render json: {error: "Not found"}, status: :not_found, root: false
   end
 
   def friends

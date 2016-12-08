@@ -6,9 +6,9 @@ RSpec.describe "Notifications API v1", type: :request do
     Token.get_token(user, 1)
   end
 
-  describe "GET /api/v1/users/:id/activities" do
+  describe "GET /api/v1/users/:id/notifications" do
 
-    it "returns all recent activities for the user" do 
+    it "returns all recent notifications for the user" do 
       followed = FactoryGirl.create :user, name: "The Followed"
       follower = FactoryGirl.create :user, name: "A Follower"
       follower.follow(followed)
