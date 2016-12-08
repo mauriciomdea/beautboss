@@ -80,7 +80,7 @@ class Api::V1::UsersController < Api::V1::ApiController
     notifications = @user.notifications.limit(params[:limit] || 20).offset(params[:offset] || 0).order(created_at: :desc)
     notifications.update_all(read: true) if params[:mark_as_read] && params[:mark_as_read] == "true"
     serialized_notifications = notifications.map { |notification| ActivitySerializer.new(notification).as_json(root: false) }
-    render json: {count: @user.notifications.count(conditions: "read = TRUE"), notifications: serialized_notifications},
+    render json: {count: @user.notifications.count(conditions: "read = false"), notifications: serialized_notifications},
       location: "/api/v1/users/#{@user.id}/notifications",
       status: :ok
   rescue ActiveRecord::RecordNotFound
