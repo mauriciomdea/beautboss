@@ -32,7 +32,7 @@ class ActivitySerializer < ActiveModel::Serializer
     if object.subject_type == 'Comment'
       Comment.find(object.subject_id).comment
     elsif object.subject_type == 'Message'
-      Message.find(object.subject_id).message
+      Message.where(id: object.subject_id).first.message
     else
       nil
     end

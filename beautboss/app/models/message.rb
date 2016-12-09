@@ -3,6 +3,7 @@ class Message < ActiveRecord::Base
 
   belongs_to :user, class_name: 'User', foreign_key: 'user_id'
   belongs_to :sender, class_name: 'User', foreign_key: 'sender_id'
+  has_many :activities, as: :subject, dependent: :delete_all
 
   validates :user_id, presence: true
   validates :sender_id, presence: true
